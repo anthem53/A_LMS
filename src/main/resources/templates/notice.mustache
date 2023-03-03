@@ -1,0 +1,42 @@
+{{>layout/header}}
+
+
+
+<!--여기서 본편-->
+<div   style="padding-top: 0px; ">
+
+    <div class="container d-flex flex-wrap justify-content-end">
+        <a type="button" href="/openLecture" class="btn btn-success active  my-3"> 공지사항 등록</a>
+    </div>
+    <!--여기서 본편 내용-->
+    <div class="container justify-content-around">
+        <h1 class=""> 공지 사항 </h1>
+        <table class="table table-horizontal table-bordered px-3" >
+            <thead class="thead-strong">
+            <colgroup>
+                <col width=10%>
+                <col width=70%>
+                <col width=20%>
+            </colgroup>
+            <tr>
+                <th>게시글번호</th>
+                <th>제목</th>
+                <th>최종수정일</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            {{#notices}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td><a href="/notice/inquiry/{{id}}">{{title}}</a></td>
+                    <td>{{modifiedDate}}</td>
+                </tr>
+            {{/notices}}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+{{>layout/footer}}

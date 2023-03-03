@@ -1,0 +1,45 @@
+{{>layout/header}}
+
+
+
+<!--여기서 본편-->
+<div   style="padding-top: 0px; ">
+    <!--여기서 본편 내용-->
+    <div class="container d-flex flex-wrap justify-content-end">
+        <a type="button" href="/openLecture" class="btn btn-success active  my-3"> 강의 개설</a>
+    </div>
+    <div class="container justify-content-around">
+
+        <h1>개설된 강의</h1>
+            <table class="table table-horizontal table-bordered px-3"  >
+                <thead class="thead-strong">
+                <colgroup>
+                    <col width=10%>
+                    <col width=60%>
+                    <col width=20%>
+                    <col width=10%>
+                </colgroup>
+                <tr>
+                    <th>게시글번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>최종수정일</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+                {{#lectures}}
+                    <tr>
+                        <td>{{id}}</td>
+                        <td><a href="/inquiryLecture">{{title}}</a></td>
+                        <td>{{lecturer}}</td>
+                        <td>{{modifiedDate}}</td>
+                    </tr>
+                {{/lectures}}
+                </tbody>
+            </table>
+
+    </div>
+</div>
+
+
+{{>layout/footer}}
