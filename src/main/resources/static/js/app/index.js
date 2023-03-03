@@ -29,6 +29,10 @@ var main = {
             _this.lectureSave();
         });
 
+        $('#btn-notice-save').on('click',function(){
+            _this.noticeSave();
+        });
+
 
 
 
@@ -40,7 +44,32 @@ var main = {
             });
         });
     },
-    lectureSave : function  (){
+    noticeSave : function (){
+
+        alert("Notice save");
+
+        var data = {
+            title: $('#title').val(),
+            content: $('#content').val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/v1/notice-save',
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function() {
+            alert('공지사항이 등록되었습니다.');
+            window.location.href = '/notice';
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+
+    }
+
+
+    ,lectureSave : function  (){
 
 
         var data = {
@@ -55,7 +84,7 @@ var main = {
             contentType:'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function() {
-            alert('글이 등록되었습니다.');
+            alert('강좌가 등록되었습니다.');
             window.location.href = '/showLecture';
         }).fail(function (error) {
             alert(JSON.stringify(error));

@@ -3,7 +3,9 @@ package com.anthem53LMS.web;
 
 import com.anthem53LMS.config.auth.LoginUser;
 import com.anthem53LMS.config.auth.dto.SessionUser;
+import com.anthem53LMS.domain.notice.NoticeRepository;
 import com.anthem53LMS.service.lectures.LecturesService;
+import com.anthem53LMS.service.notice.NoticeService;
 import com.anthem53LMS.web.Dto.lecturesSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -20,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 public class indexController {
 
     private final LecturesService lecturesService;
+    private final NoticeRepository noticeRepository;
+    private final NoticeService noticeService;
 
     @GetMapping("/")
     public String index(Model model ,@LoginUser SessionUser user){
@@ -35,6 +40,8 @@ public class indexController {
         }
 
         model.addAttribute("lectures",lecturesService.findAllDesc());
+        model.addAttribute("notices",noticeService.findAllDesc());
+
 
         return "index";
     }
@@ -87,6 +94,24 @@ public class indexController {
         return "lecture-open";
     }
 
+    @GetMapping("/showLecture/inquiry/{id}")
+    public String lecture_inquiry(Model model, @LoginUser SessionUser user , @PathVariable Long id){
+
+        if ( user == null){
+            System.out.println("guest");
+        }
+        else{
+            model.addAttribute("userName",user.getName());
+            System.out.println("User");
+        }
+
+        model.addAttribute("notice",lecturesService.findById(id));
+
+
+        return "lecture-inquiry";
+
+    }
+
     @GetMapping("/notice")
     public String notice(Model model, @LoginUser SessionUser user){
         if ( user == null){
@@ -97,15 +122,33 @@ public class indexController {
             System.out.println("User");
         }
 
+        model.addAttribute("notices",noticeService.findAllDesc());
+
         return "notice";
 
     }
 
-    @GetMapping("/notice/inquiry/{id}")
-    public Long noticeInquiry(@RequestBody lecturesSaveRequestDto requestDto , Model model, @LoginUser SessionUser user, @PathVariable("id") String id) {
+    @GetMapping("/notice/post")
+    public String notice_post(Model model, @LoginUser SessionUser user){
+        if ( user == null){
+            System.out.println("guest");
+        }
+        else{
+            model.addAttribute("userName",user.getName());
+            System.out.println("User");
+        }
 
+        return "notice-post";
+
+
+    }
+
+    @GetMapping("/notice/inquiry/{id}")
+    public String noticeInquiry(Model model, @LoginUser SessionUser user, @PathVariable Long id) {
+
+        model.addAttribute("notice",noticeService.findById(id));
         System.out.println(id);
 
-        return 1l;
+        return "notice-inquiry";
     }
 }

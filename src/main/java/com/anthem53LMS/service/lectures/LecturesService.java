@@ -6,6 +6,7 @@ import com.anthem53LMS.domain.lecture.Lecture;
 import com.anthem53LMS.domain.lecture.LectureRepository;
 import com.anthem53LMS.domain.user.User;
 import com.anthem53LMS.domain.user.UserRepository;
+import com.anthem53LMS.web.Dto.LecturesResponseDto;
 import com.anthem53LMS.web.Dto.lecturesListResponseDto;
 import com.anthem53LMS.web.Dto.lecturesSaveRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,13 @@ public class LecturesService {
     public List<lecturesListResponseDto> findAllDesc(){
 
         return lectureRepository.findAllDesc().stream().map(lecturesListResponseDto::new).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public LecturesResponseDto findById( Long id) {
+        Lecture entity = lectureRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
+
+        return new LecturesResponseDto(entity);
     }
 
 }

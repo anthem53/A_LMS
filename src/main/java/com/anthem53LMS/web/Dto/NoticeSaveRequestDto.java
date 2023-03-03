@@ -7,13 +7,18 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class NoticeRequestDto {
+public class NoticeSaveRequestDto {
 
     private Long id;
     private String title;
     private String content;
 
-    public NoticeRequestDto(String title, String content){
+    public NoticeSaveRequestDto(){
+
+
+    }
+
+    public NoticeSaveRequestDto(String title, String content){
         this.title= title;
         this.content = content;
     }

@@ -1,21 +1,26 @@
 package com.anthem53LMS.web;
 
-import com.anthem53LMS.config.auth.LoginUser;
-import com.anthem53LMS.config.auth.dto.SessionUser;
-import com.anthem53LMS.web.Dto.lecturesSaveRequestDto;
+import com.anthem53LMS.service.notice.NoticeService;
+import com.anthem53LMS.web.Dto.NoticeSaveRequestDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RequiredArgsConstructor
 @RestController
 public class noticeController {
 
+    private final NoticeService noticeService;
 
+    @PostMapping("/api/v1/notice-save")
+    public Long notice_save (@RequestBody NoticeSaveRequestDto requestDto){
+
+        System.out.println("Start notice-save");
+        Long notice_id = noticeService.save(requestDto);
+
+        System.out.println("end notice-save");
+        return notice_id;
+    }
 
 
 }

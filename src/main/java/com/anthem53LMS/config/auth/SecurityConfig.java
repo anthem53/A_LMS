@@ -22,7 +22,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                 .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile").permitAll()
-                .antMatchers("/",  "/loginPage","/test","login","/showLecture").permitAll() // 설정된 url은 인증되지 않더라도 누구든 접근 가능
+                .antMatchers("/",  "/loginPage","/test","login","/showLecture","/notice").permitAll() // 설정된 url은 인증되지 않더라도 누구든 접근 가능
                 .anyRequest().authenticated()
             .and()
                 .logout()
