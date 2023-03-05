@@ -2,6 +2,7 @@ package com.anthem53LMS.web.Dto;
 
 
 import com.anthem53LMS.domain.lecture.Lecture;
+import com.anthem53LMS.domain.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,8 @@ public class lecturesSaveRequestDto {
     private String outline;
 
     private String lecturer;
+
+    private User lecturer_user;
 
     public lecturesSaveRequestDto(){
 
@@ -31,7 +34,7 @@ public class lecturesSaveRequestDto {
     }
     public Lecture toEntity(){
         Lecture lecture = Lecture.builder()
-                .title(title).outline(outline).lecturer(lecturer).build();
+                .title(title).outline(outline).lecturer(lecturer).user(lecturer_user).build();
         return lecture;
     }
 

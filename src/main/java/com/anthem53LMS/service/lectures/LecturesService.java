@@ -30,6 +30,7 @@ public class LecturesService {
 
         User user = userRepository.findByEmail(userEmail).orElseThrow(()-> new IllegalArgumentException("해당 유저가 없습니다. Email ="+userEmail));
         requestDto.setLecturer(user.getName());
+        requestDto.setLecturer_user(user);
 
         Lecture lecture = requestDto.toEntity();
 

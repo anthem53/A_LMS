@@ -5,8 +5,10 @@ import com.anthem53LMS.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.w3c.dom.stylesheets.LinkStyle;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -26,11 +28,20 @@ public class Lecture extends BaseTimeEntity {
     @Column (columnDefinition = "TEXT",nullable = false)
     private String lecturer;
 
+    @ManyToOne
+    @JoinColumn(name="User_id")
+    private User user;
+
+    @OneToMany(mappedBy = "lecture", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OrderBy("id")
+    private List<User> students;
+
     @Builder
-    public Lecture (String title, String outline, String lecturer){
+    public Lecture (String title, String outline, String lecturer, User user){
         this.title = title;
         this.outline = outline;
         this.lecturer = lecturer;
+        this.user = user;
     }
 
 

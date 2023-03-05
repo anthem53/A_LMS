@@ -2,11 +2,13 @@ package com.anthem53LMS.domain.user;
 
 
 import com.anthem53LMS.domain.BaseTimeEntity;
+import com.anthem53LMS.domain.lecture.Lecture;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -25,6 +27,10 @@ public class User extends BaseTimeEntity {
 
     @Column
     private String picture;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OrderBy("id")
+    private List<Lecture> lectures;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
