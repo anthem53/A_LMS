@@ -1,14 +1,15 @@
 package com.anthem53LMS.domain.lecture;
 
 import com.anthem53LMS.domain.BaseTimeEntity;
-import com.anthem53LMS.domain.user.User;
+import com.anthem53LMS.domain.courceRegistration.CourseRegistration;
+import com.anthem53LMS.domain.subLecturer.SubLecturer;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -25,23 +26,22 @@ public class Lecture extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT",nullable = false)
     private String outline;
 
-    @Column (columnDefinition = "TEXT",nullable = false)
-    private String lecturer;
 
     @ManyToOne
     @JoinColumn(name="User_id")
-    private User user;
+    private SubLecturer Lecturer;
 
-    @OneToMany(mappedBy = "lecture", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @OrderBy("id")
-    private List<User> students;
+
+    @OneToMany(mappedBy = "lecture")
+    Set<CourseRegistration> current_Attendees = new HashSet<CourseRegistration>();
+
+
 
     @Builder
-    public Lecture (String title, String outline, String lecturer, User user){
+    public Lecture (String title, String outline, String lecturer, SubLecturer subLecturer ){
         this.title = title;
         this.outline = outline;
-        this.lecturer = lecturer;
-        this.user = user;
+        this.Lecturer = subLecturer;
     }
 
 

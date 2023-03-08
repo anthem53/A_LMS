@@ -1,5 +1,6 @@
 package com.anthem53LMS.config.auth.dto;
 
+import com.anthem53LMS.domain.subLecturer.SubLecturer;
 import com.anthem53LMS.domain.user.Role;
 import com.anthem53LMS.domain.user.User;
 import lombok.Builder;
@@ -16,6 +17,8 @@ public class OAuthAttributes {
     private String name;
     private String email;
     private String picture;
+
+
 
     @Builder
     public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email, String picture) {
@@ -92,12 +95,18 @@ public class OAuthAttributes {
     }
 
     public User toEntity() {
-        return User.builder()
+
+        User user =User.builder()
                 .name(name)
                 .email(email)
                 .picture(picture)
                 .role(Role.USER)
                 .build();
+
+        SubLecturer subLecturer = new SubLecturer(user);
+        user.setConnectEntity(subLecturer);
+
+        return user;
     }
 
 }

@@ -105,11 +105,20 @@ public class indexController {
             System.out.println("User");
         }
 
-        model.addAttribute("notice",lecturesService.findById(id));
+        model.addAttribute("lecture",lecturesService.findById(id));
+        model.addAttribute("lectureId",id);
 
 
         return "lecture-inquiry";
 
+    }
+
+    @GetMapping("/showLecture/register")
+    public String lecture_register_show(Model model, @LoginUser SessionUser){
+
+
+
+        return "lecture-register";
     }
 
     @GetMapping("/notice")
@@ -151,4 +160,5 @@ public class indexController {
 
         return "notice-inquiry";
     }
+
 }

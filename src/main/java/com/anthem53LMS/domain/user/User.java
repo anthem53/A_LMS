@@ -2,13 +2,16 @@ package com.anthem53LMS.domain.user;
 
 
 import com.anthem53LMS.domain.BaseTimeEntity;
-import com.anthem53LMS.domain.lecture.Lecture;
+import com.anthem53LMS.domain.attendee.AttendeeList;
+import com.anthem53LMS.domain.courceRegistration.CourseRegistration;
+import com.anthem53LMS.domain.subLecturer.SubLecturer;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -28,9 +31,13 @@ public class User extends BaseTimeEntity {
     @Column
     private String picture;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @OrderBy("id")
-    private List<Lecture> lectures;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private SubLecturer subLecturer = null;
+
+    @OneToMany(mappedBy = "user")
+    Set<CourseRegistration> current_Lectures = new HashSet<CourseRegistration>();
+
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -53,6 +60,11 @@ public class User extends BaseTimeEntity {
 
     public String getRoleKey(){
         return this.role.getKey();
+    }
+
+    public void setConnectEntity(SubLecturer subLecturer){
+        this.subLecturer = subLecturer;
+
     }
 
 }

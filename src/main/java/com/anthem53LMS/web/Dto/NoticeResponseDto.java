@@ -13,11 +13,14 @@ public class NoticeResponseDto {
     private String content;
     private String author;
 
+    private Long id;
+
 
     public NoticeResponseDto(Notice entity){
         this.title = entity.getTitle();
         this.content = entity.getContent();
         this.author = "관리자";
+        this.id = entity.getId();
 
     }
 

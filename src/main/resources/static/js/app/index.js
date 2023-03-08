@@ -33,6 +33,10 @@ var main = {
             _this.noticeSave();
         });
 
+        $('#btn-lecture_registration').on('click',function(){
+            _this.lectureRegistration();
+        });
+
 
 
 
@@ -67,7 +71,29 @@ var main = {
         });
 
     }
+    ,
+    lectureRegistration : function() {
+        alert("lectureRegistration Alert");
 
+        var data = {
+            lecture_id: $('#lectureId').val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/v1/lecture_register',
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function() {
+            alert('강좌 수강 신청 완료 했습니다.');
+            window.location.href = '/';
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+
+
+    }
 
     ,lectureSave : function  (){
 
