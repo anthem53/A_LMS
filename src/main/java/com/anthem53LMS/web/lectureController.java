@@ -52,7 +52,8 @@ public class lectureController {
         return id;
     }
 
-    @PostMapping(" /api/v1/lecture/{lecture_id}/lesson/save")
+    ///showLecture/register/take_course/"+$('#lectureId').val()+"/lesson/
+    @PostMapping("/api/v1/lecture/{lecture_id}/lesson/save")
     public Long save_lecture_lesson(@PathVariable Long lecture_id, @RequestBody LectureLessonSaveRequestDto requestDto, @LoginUser SessionUser sessionUser) {
         System.out.println("call register_lecture_notice");
 

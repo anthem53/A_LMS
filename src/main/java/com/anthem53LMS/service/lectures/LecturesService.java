@@ -139,6 +139,7 @@ public class LecturesService {
 
     }
 
+
     @Transactional
     public Long LectureLessonSave(LectureLessonSaveRequestDto requestDto, Long lecture_id){
         Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));
@@ -146,9 +147,21 @@ public class LecturesService {
         LectureLesson lectureLesson = requestDto.toEntity();
         lecture.getLectureLessons().add(lectureLesson);
         lectureLesson.setLecture(lecture);
+        lectureLesson.setSequence(lecture.getLectureNotices().size());
 
 
         return lectureLessonRepository.save(lectureLesson).getId();
+    }
+
+    @Transactional
+    public LectureLessonResponseDto findLessonInfo(Long lecture_id, Long lesson_id){
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));
+
+        LectureLesson lectureLesson = lectureLessonRepository.findById(lesson_id).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));
+
+        LectureLessonResponseDto lectureLessonResponseDto = new LectureLessonResponseDto(lectureLesson);
+
+        return lectureLessonResponseDto;
 
 
     }

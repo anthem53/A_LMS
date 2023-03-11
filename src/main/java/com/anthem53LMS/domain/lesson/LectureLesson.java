@@ -25,7 +25,7 @@ public class LectureLesson extends BaseTimeEntity {
     private Integer sequence;
 
     @Column
-    private String lesson_video_Link;
+    private String videoLink;
 
     @ManyToOne
     @JoinColumn(name="Lecture_id")
@@ -33,15 +33,16 @@ public class LectureLesson extends BaseTimeEntity {
 
 
     @Builder
-    public LectureLesson(Integer sequence, String lesson_video_Link,String title){
+    public LectureLesson(Integer sequence, String videoLink, String title){
         this.sequence = sequence;
-        this.lesson_video_Link =lesson_video_Link;
+        this.videoLink = videoLink;
         this.title = title;
     }
 
     public void setLecture(Lecture lecture){
         this.lecture = lecture;
     }
+    public void setSequence(Integer sequenceValue) { this.sequence = sequenceValue;}
 
 
 

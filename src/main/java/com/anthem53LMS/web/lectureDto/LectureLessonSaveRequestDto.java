@@ -26,7 +26,7 @@ public class LectureLessonSaveRequestDto {
     }
 
     public LectureLesson toEntity(){
-        LectureLesson lectureLesson = LectureLesson.builder().title(title).sequence(order).lesson_video_Link(link).build();
+        LectureLesson lectureLesson = LectureLesson.builder().title(title).sequence(order).videoLink(link).build();
 
         return lectureLesson;
     }

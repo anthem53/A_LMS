@@ -239,11 +239,25 @@ public class indexController {
         System.out.println("lecture_lesson_list");
 
         setUserInfo(model, sessionUser);
-        System.out.println("lecture_lesson_list call user");
-        model.addAttribute("lecture_lesson",lecturesService.findLectureLesson(lecture_id));
         setLectureInfo(model,lecture_id);
 
+        System.out.println("lecture_lesson_list call user");
+        model.addAttribute("lecture_lesson",lecturesService.findLectureLesson(lecture_id));
+
+
         return "lecture/lecture-lesson";
+    }
+
+    @GetMapping("/showLecture/register/take_course/{lecture_id}/lesson/{lesson_id}")
+    public String lecture_lesson_inquiry (Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id , @PathVariable Long lesson_id){
+        System.out.println("lecture_lesson_inquiry");
+        setUserInfo(model, sessionUser);
+        setLectureInfo(model,lecture_id);
+
+        model.addAttribute("lesson",lecturesService.findLessonInfo(lecture_id,lesson_id));
+
+        return "lecture/lecture-lesson-inquiry";
+
     }
 
     @GetMapping("/showLecture/register/take_course/{lecture_id}/lesson/save")

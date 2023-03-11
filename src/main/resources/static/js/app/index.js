@@ -85,6 +85,7 @@ var main = {
 
         var url = "/api/v1/lecture/"+ $('#lectureId').val()+"/lesson/save";
         var redirectUrl = "/showLecture/register/take_course/"+$('#lectureId').val()+"/lesson/"
+        alert(url)
         $.ajax({
             type: 'POST',
             url: url,

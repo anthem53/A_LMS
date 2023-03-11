@@ -3,23 +3,22 @@
     <thead class="thead-strong">
     <colgroup>
         <col width=10%>
-        <col width=60%>
+        <col width=70%>
         <col width=20%>
-        <col width=10%>
     </colgroup>
     <tr>
         <th>수업번호</th>
         <th>제목</th>
-        <th>작성자</th>
+
         <th>최종수정일</th>
     </tr>
     </thead>
     <tbody id="tbody">
     {{#lecture_lesson}}
         <tr>
-            <td>{{id}}</td>
+            <input type="hidden" id="lessonId{{id}}" value="{{id}}">
+            <td>{{order}}</td>
             <td><a href="/showLecture/register/take_course/{{lecture.id}}/lesson/{{id}}">{{title}}</a></td>
-            <td>{{author}}</td>
             <td>{{modifiedDate}}</td>
         </tr>
     {{/lecture_lesson}}
