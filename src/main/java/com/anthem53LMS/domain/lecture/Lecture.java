@@ -2,13 +2,16 @@ package com.anthem53LMS.domain.lecture;
 
 import com.anthem53LMS.domain.BaseTimeEntity;
 import com.anthem53LMS.domain.courceRegistration.CourseRegistration;
+import com.anthem53LMS.domain.lecture_notice.LectureNotice;
 import com.anthem53LMS.domain.subLecturer.SubLecturer;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -34,6 +37,9 @@ public class Lecture extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "lecture")
     Set<CourseRegistration> current_Attendees = new HashSet<CourseRegistration>();
+
+    @OneToMany(mappedBy = "lecture")
+    List<LectureNotice> lectureNotices  = new ArrayList<LectureNotice>();
 
 
 

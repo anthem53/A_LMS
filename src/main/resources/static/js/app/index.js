@@ -36,7 +36,9 @@ var main = {
         $('#btn-lecture_registration').on('click',function(){
             _this.lectureRegistration();
         });
-
+        $('#btn-lecture-notice-save').on('click',function(){
+            _this.lectureNoticeRegistration();
+        });
 
 
 
@@ -70,10 +72,35 @@ var main = {
             alert(JSON.stringify(error));
         });
 
-    }
-    ,
+    },
+    lectureNoticeRegistration : function() {
+        alert("lectureNoticeRegistration")
+
+        var data = {
+            title : $('#title').val(),
+            content : $('#content').val()
+        }
+
+
+        var url = "/api/v1/lecture/"+ $('#lectureId').val()+"/notice/save";
+
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function() {
+            alert('강좌 공지사항 등록을 완료했습니다.');
+            window.location.href = '/';
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+
+    },
     lectureRegistration : function() {
-        alert("lectureRegistration Alert");
+
 
         var data = {
             lecture_id: $('#lectureId').val()

@@ -2,7 +2,6 @@ package com.anthem53LMS.domain.user;
 
 
 import com.anthem53LMS.domain.BaseTimeEntity;
-import com.anthem53LMS.domain.attendee.AttendeeList;
 import com.anthem53LMS.domain.courceRegistration.CourseRegistration;
 import com.anthem53LMS.domain.subLecturer.SubLecturer;
 import lombok.Builder;

@@ -1,0 +1,56 @@
+{{>layout/header}}
+
+
+
+<!--여기서 본편-->
+<div   style="padding-top: 0px; ">
+    <!--여기서 본편 내용-->
+    <div class="container justify-content-around">
+
+        <div class="d-flex flex-row mb-3" >
+            <div class="p-2 bd-highlight"> {{>layout/sidebar}}</div>
+
+            <div class="d-flex flex-column flex-shrink-1  p-3 flex-fill" >
+                <div class="d-flex justify-content-end">
+                    <a type="button" href="/showLecture/register/take_course/{{lecture.id}}/notice/save" class="btn btn-success active  my-3"> 공지사항 등록</a>
+                </div>
+
+                <h1 class=""> 강의 공지 사항 </h1>
+                <table class="table table-horizontal table-bordered px-3" >
+                    <thead class="thead-strong">
+                    <colgroup>
+                        <col width=10%>
+                        <col width=60%>
+                        <col width=20%>
+                        <col width=10%>
+                    </colgroup>
+                    <tr>
+                        <th>게시글번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>최종수정일</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody">
+                    {{#lecture_notice}}
+                        <tr>
+                            <td>{{id}}</td>
+                            <td><a href="/posts/inquiry/{{id}}">{{title}}</a></td>
+                            <td>{{author}}</td>
+                            <td>{{modifiedDate}}</td>
+                        </tr>
+                    {{/lecture_notice}}
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+</div>
+
+
+{{>layout/footer}}

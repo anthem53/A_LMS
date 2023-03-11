@@ -1,0 +1,28 @@
+package com.anthem53LMS.web.lectureDto;
+
+
+import com.anthem53LMS.domain.lecture_notice.LectureNotice;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class LectureNoticeListResponseDto {
+
+    private Long id;
+    private String title;
+    private String author;
+    private LocalDateTime localDateTime;
+
+    public LectureNoticeListResponseDto (LectureNotice lectureNotice){
+        this.id = lectureNotice.getId();
+        this.title = lectureNotice.getTitle();
+        this.localDateTime = lectureNotice.getModifiedDate();
+        this.author = lectureNotice.getLecture().getLecturer().getUser().getName();
+
+    }
+}

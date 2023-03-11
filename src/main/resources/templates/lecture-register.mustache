@@ -17,7 +17,7 @@
                 <col width=10%>
             </colgroup>
             <tr>
-                <th>게시글번호</th>
+                <th>강의 고유 번호</th>
                 <th>제목</th>
                 <th>작성자</th>
                 <th>최종수정일</th>
@@ -27,8 +27,8 @@
             {{#lectures}}
                 <tr>
                     <td>{{id}}</td>
-                    <td><a href="/showLecture/inquiry/{{id}}">{{title}}</a></td>
-                    <td>{{lecturer.user.name}}</td>
+                    <td><a href="/showLecture/register/take_course/{{id}}">{{title}}</a></td>
+                    <td>{{lecturer}}</td>
                     <td>{{modifiedDate}}</td>
                 </tr>
             {{/lectures}}
