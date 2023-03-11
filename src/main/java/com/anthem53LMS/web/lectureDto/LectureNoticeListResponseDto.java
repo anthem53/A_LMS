@@ -16,12 +16,12 @@ public class LectureNoticeListResponseDto {
     private Long id;
     private String title;
     private String author;
-    private LocalDateTime localDateTime;
+    private LocalDateTime modifiedDate;
 
     public LectureNoticeListResponseDto (LectureNotice lectureNotice){
         this.id = lectureNotice.getId();
         this.title = lectureNotice.getTitle();
-        this.localDateTime = lectureNotice.getModifiedDate();
+        this.modifiedDate = lectureNotice.getModifiedDate();
         this.author = lectureNotice.getLecture().getLecturer().getUser().getName();
 
     }

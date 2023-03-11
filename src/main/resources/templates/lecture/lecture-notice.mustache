@@ -15,33 +15,7 @@
                     <a type="button" href="/showLecture/register/take_course/{{lecture.id}}/notice/save" class="btn btn-success active  my-3"> 공지사항 등록</a>
                 </div>
 
-                <h1 class=""> 강의 공지 사항 </h1>
-                <table class="table table-horizontal table-bordered px-3" >
-                    <thead class="thead-strong">
-                    <colgroup>
-                        <col width=10%>
-                        <col width=60%>
-                        <col width=20%>
-                        <col width=10%>
-                    </colgroup>
-                    <tr>
-                        <th>게시글번호</th>
-                        <th>제목</th>
-                        <th>작성자</th>
-                        <th>최종수정일</th>
-                    </tr>
-                    </thead>
-                    <tbody id="tbody">
-                    {{#lecture_notice}}
-                        <tr>
-                            <td>{{id}}</td>
-                            <td><a href="/posts/inquiry/{{id}}">{{title}}</a></td>
-                            <td>{{author}}</td>
-                            <td>{{modifiedDate}}</td>
-                        </tr>
-                    {{/lecture_notice}}
-                    </tbody>
-                </table>
+                {{>lecture/lecture-layout/lecture-notice-board}}
 
             </div>
 

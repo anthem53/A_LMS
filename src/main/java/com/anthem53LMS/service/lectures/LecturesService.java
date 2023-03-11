@@ -8,16 +8,17 @@ import com.anthem53LMS.domain.lecture.Lecture;
 import com.anthem53LMS.domain.lecture.LectureRepository;
 import com.anthem53LMS.domain.lecture_notice.LectureNotice;
 import com.anthem53LMS.domain.lecture_notice.LectureNoticeRepository;
+import com.anthem53LMS.domain.lesson.LectureLesson;
+import com.anthem53LMS.domain.lesson.LectureLessonRepository;
 import com.anthem53LMS.domain.user.User;
 import com.anthem53LMS.domain.user.UserRepository;
 import com.anthem53LMS.web.Dto.*;
-import com.anthem53LMS.web.lectureDto.LectureNoticeListResponseDto;
-import com.anthem53LMS.web.lectureDto.LectureNoticeSaveRequestDto;
-import com.anthem53LMS.web.lectureDto.LectureTakeViewRespondDto;
+import com.anthem53LMS.web.lectureDto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,6 +31,9 @@ public class LecturesService {
     private final LectureRepository lectureRepository;
     private final UserRepository userRepository;
     private final LectureNoticeRepository lectureNoticeRepository;
+    private final LectureLessonRepository lectureLessonRepository;
+
+
 
     private final CourseRegistrationRepository courseRegistrationRepository;
     @Transactional
@@ -116,4 +120,36 @@ public class LecturesService {
 
     }
 
+    @Transactional
+    public LectureNoticeResponseDto findLectureNoticeInfo(Long lecture_id, Long notice_id){
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));
+        LectureNotice lectureNotice = lectureNoticeRepository.findById(notice_id).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));
+
+        LectureNoticeResponseDto responseDto = new LectureNoticeResponseDto(lectureNotice);
+
+        return responseDto;
+
+    }
+
+    @Transactional
+    public List<LectureLessonListDto> findLectureLesson (Long lecture_id){
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));
+
+        return lecture.getLectureLessons().stream().map(LectureLessonListDto::new).collect(Collectors.toList());
+
+    }
+
+    @Transactional
+    public Long LectureLessonSave(LectureLessonSaveRequestDto requestDto, Long lecture_id){
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));
+
+        LectureLesson lectureLesson = requestDto.toEntity();
+        lecture.getLectureLessons().add(lectureLesson);
+        lectureLesson.setLecture(lecture);
+
+
+        return lectureLessonRepository.save(lectureLesson).getId();
+
+
+    }
 }

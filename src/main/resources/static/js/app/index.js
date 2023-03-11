@@ -39,6 +39,9 @@ var main = {
         $('#btn-lecture-notice-save').on('click',function(){
             _this.lectureNoticeRegistration();
         });
+        $('#btn-lecture-lesson-save').on('click',function(){
+            _this.lectureLessonSave();
+        })
 
 
 
@@ -73,6 +76,30 @@ var main = {
         });
 
     },
+    lectureLessonSave : function (){
+        alert("lectureLessonSave")
+        var data = {
+            title: $('#title').val(),
+            videoLink: $('#videoLink').val()
+        };
+
+        var url = "/api/v1/lecture/"+ $('#lectureId').val()+"/lesson/save";
+        var redirectUrl = "/showLecture/register/take_course/"+$('#lectureId').val()+"/lesson/"
+        $.ajax({
+            type: 'POST',
+            url: url,
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function() {
+            alert('수업 등록을 완료했습니다.');
+            window.location.href = redirectUrl;
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+
+
+    },
     lectureNoticeRegistration : function() {
         alert("lectureNoticeRegistration")
 
@@ -83,7 +110,7 @@ var main = {
 
 
         var url = "/api/v1/lecture/"+ $('#lectureId').val()+"/notice/save";
-
+        var redirectUrl = "/showLecture/register/take_course/"+$('#lectureId').val()+"/notice/"
 
         $.ajax({
             type: 'POST',
@@ -93,7 +120,7 @@ var main = {
             data: JSON.stringify(data)
         }).done(function() {
             alert('강좌 공지사항 등록을 완료했습니다.');
-            window.location.href = '/';
+            window.location.href = redirectUrl;
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });

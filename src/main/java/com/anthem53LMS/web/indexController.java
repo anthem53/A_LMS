@@ -6,11 +6,13 @@ import com.anthem53LMS.config.auth.dto.SessionUser;
 import com.anthem53LMS.domain.notice.NoticeRepository;
 import com.anthem53LMS.service.lectures.LecturesService;
 import com.anthem53LMS.service.notice.NoticeService;
+import com.anthem53LMS.web.lectureDto.LectureLessonSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -54,7 +56,7 @@ public class indexController {
             System.out.println("User");
         }
 
-        return "lecture/lecture-home";
+        return "test";
     }
     @GetMapping("/test/notice")
     public String test_notice(Model model, @LoginUser SessionUser user){
@@ -178,6 +180,7 @@ public class indexController {
         }
 
         model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(id));
+        model.addAttribute("lecture_notice", lecturesService.findLectureNotice(id));
 
         return "lecture/lecture-home";
     }
@@ -212,6 +215,45 @@ public class indexController {
 
         return "lecture/lecture-notice-save";
     }
+
+    @GetMapping("/showLecture/register/take_course/{lecture_id}/notice/{notice_id}")
+    public String LectureNoticeInquiry(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id , @PathVariable Long notice_id ){
+        System.out.println("LectureNoticeInquiry");
+
+        if ( sessionUser == null){
+            System.out.println("guest");
+        }
+        else{
+            model.addAttribute("userName",sessionUser.getName());
+            System.out.println("User");
+        }
+
+        model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(lecture_id));
+        model.addAttribute("lecture_notice",lecturesService.findLectureNoticeInfo(lecture_id,notice_id));
+
+        return "lecture/lecture-notice-inquiry";
+    }
+
+    @GetMapping("/showLecture/register/take_course/{lecture_id}/lesson")
+    public String lecture_lesson_list (Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id ){
+        System.out.println("lecture_lesson_list");
+
+        setUserInfo(model, sessionUser);
+        System.out.println("lecture_lesson_list call user");
+        model.addAttribute("lecture_lesson",lecturesService.findLectureLesson(lecture_id));
+        setLectureInfo(model,lecture_id);
+
+        return "lecture/lecture-lesson";
+    }
+
+    @GetMapping("/showLecture/register/take_course/{lecture_id}/lesson/save")
+    public String lecture_lesson_save (Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id){
+        setUserInfo(model,sessionUser);
+        setLectureInfo(model,lecture_id);
+
+        return "lecture/lecture-lesson-save";
+    }
+
 
     @GetMapping("/notice")
     public String notice(Model model, @LoginUser SessionUser user){
@@ -255,6 +297,22 @@ public class indexController {
 
 
 
+
+
+    private void setUserInfo(Model model, SessionUser sessionUser){
+        if ( sessionUser == null){
+            System.out.println("guest");
+        }
+        else{
+            model.addAttribute("userName",sessionUser.getName());
+            System.out.println("User");
+        }
+
+    }
+
+    private void setLectureInfo (Model model,Long lecture_id ){
+        model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(lecture_id));
+    }
 
 
 }

@@ -28,7 +28,7 @@ public class LectureNotice extends BaseTimeEntity {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name="Lecture_notice_id")
+    @JoinColumn(name="Lecture_id")
     private Lecture lecture = null;
 
 
