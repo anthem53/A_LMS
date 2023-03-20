@@ -12,12 +12,12 @@ import lombok.Setter;
 public class LectureLessonResponseDto {
 
     private String title;
-    private String videoLink;
+    private String link;
 
 
     public LectureLessonResponseDto (LectureLesson lectureLesson){
         title = lectureLesson.getTitle();
-        videoLink = lectureLesson.getVideoLink();
+        link = lectureLesson.getVideoLink();
 
     }
 }

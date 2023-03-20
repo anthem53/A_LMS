@@ -43,6 +43,10 @@ var main = {
             _this.lectureLessonSave();
         })
 
+        $('#btn-lecture-assignment-save').on('click',function(){
+           _this.lectureAssignmentSave();
+        });
+
 
 
 
@@ -76,13 +80,38 @@ var main = {
         });
 
     },
+    lectureAssignmentSave : function (){
+        alert("lectureAssignmentSave");
+
+        var data = {
+            title : $('#title').val(),
+            content : $('#content').val()
+        };
+
+        var url = "/api/v1/lecture/"+ $('#lectureId').val()+"/assignment/save";
+        var redirectUrl = "/showLecture/register/take_course/"+$('#lectureId').val()+"/assignment/"
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function() {
+            alert('수업 등록을 완료했습니다.');
+            window.location.href = redirectUrl;
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+
+    },
     lectureLessonSave : function (){
         alert("lectureLessonSave")
         var data = {
             title: $('#title').val(),
-            videoLink: $('#videoLink').val()
+            link: $('#videoLink').val()
         };
-
+        alert($('#videoLink').val())
         var url = "/api/v1/lecture/"+ $('#lectureId').val()+"/lesson/save";
         var redirectUrl = "/showLecture/register/take_course/"+$('#lectureId').val()+"/lesson/"
         alert(url)

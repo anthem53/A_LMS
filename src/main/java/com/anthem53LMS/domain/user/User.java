@@ -3,6 +3,7 @@ package com.anthem53LMS.domain.user;
 
 import com.anthem53LMS.domain.BaseTimeEntity;
 import com.anthem53LMS.domain.courceRegistration.CourseRegistration;
+import com.anthem53LMS.domain.studentAssignInfo.AssignmentCheck;
 import com.anthem53LMS.domain.subLecturer.SubLecturer;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,6 +38,8 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user")
     Set<CourseRegistration> current_Lectures = new HashSet<CourseRegistration>();
 
+    @OneToMany(mappedBy = "user")
+    Set<AssignmentCheck> current_Assignment = new HashSet<AssignmentCheck>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

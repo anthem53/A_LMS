@@ -6,6 +6,7 @@ import com.anthem53LMS.config.auth.dto.SessionUser;
 import com.anthem53LMS.service.lectures.LecturesService;
 import com.anthem53LMS.web.Dto.LectureRegisterRequestDto;
 import com.anthem53LMS.web.Dto.lecturesSaveRequestDto;
+import com.anthem53LMS.web.lectureDto.LectureAssignmentSaveRequestDto;
 import com.anthem53LMS.web.lectureDto.LectureLessonSaveRequestDto;
 import com.anthem53LMS.web.lectureDto.LectureNoticeSaveRequestDto;
 import com.anthem53LMS.web.lectureDto.LectureTakeViewRespondDto;
@@ -56,8 +57,19 @@ public class lectureController {
     @PostMapping("/api/v1/lecture/{lecture_id}/lesson/save")
     public Long save_lecture_lesson(@PathVariable Long lecture_id, @RequestBody LectureLessonSaveRequestDto requestDto, @LoginUser SessionUser sessionUser) {
         System.out.println("call register_lecture_notice");
-
+        System.out.println(requestDto.getLink());
         Long id = lecturesService.LectureLessonSave(requestDto, lecture_id);
         return id;
     }
+
+    @PostMapping("/api/v1/lecture/{lecture_id}/assignment/save")
+    public Long save_lecture_assignment(@PathVariable Long lecture_id, @RequestBody LectureAssignmentSaveRequestDto requestDto, @LoginUser SessionUser sessionUser){
+        System.out.println("call save_lecture_assignment");
+
+
+        Long id = lecturesService.LectureAssignmentSave(requestDto,lecture_id);
+
+        return 1l;
+    }
+
 }

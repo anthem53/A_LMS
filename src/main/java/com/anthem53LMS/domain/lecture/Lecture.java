@@ -2,6 +2,7 @@ package com.anthem53LMS.domain.lecture;
 
 import com.anthem53LMS.domain.BaseTimeEntity;
 import com.anthem53LMS.domain.courceRegistration.CourseRegistration;
+import com.anthem53LMS.domain.lecture_assignment.LectureAssignment;
 import com.anthem53LMS.domain.lecture_notice.LectureNotice;
 import com.anthem53LMS.domain.lesson.LectureLesson;
 import com.anthem53LMS.domain.subLecturer.SubLecturer;
@@ -41,6 +42,9 @@ public class Lecture extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "lecture", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     List<LectureLesson> lectureLessons = new ArrayList<LectureLesson>();
+
+    @OneToMany(mappedBy = "lecture", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+    List<LectureAssignment> lectureAssignment = new ArrayList<LectureAssignment>();
 
 
 

@@ -7,6 +7,7 @@ import com.anthem53LMS.domain.notice.NoticeRepository;
 import com.anthem53LMS.service.lectures.LecturesService;
 import com.anthem53LMS.service.notice.NoticeService;
 import com.anthem53LMS.web.lectureDto.LectureLessonSaveRequestDto;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -268,6 +269,33 @@ public class indexController {
         return "lecture/lecture-lesson-save";
     }
 
+    @GetMapping("/showLecture/register/take_course/{lecture_id}/assignment")
+    public String lecture_assignment(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id){
+        setUserInfo(model,sessionUser);
+        setLectureInfo(model,lecture_id);
+
+        model.addAttribute("lecture_assignment", lecturesService.findLectureAssignment(lecture_id));
+
+        return "lecture/lecture-assignment";
+    }
+
+    @GetMapping("/showLecture/register/take_course/{lecture_id}/assignment/save")
+    public String lecture_assignment_save(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id){
+        setUserInfo(model,sessionUser);
+        setLectureInfo(model,lecture_id);
+
+        return "lecture/lecture-assignment-save";
+    }
+
+    @GetMapping("/showLecture/register/take_course/{lecture_id}/assignment/{assignment_id}")
+    public String lecture_assignment_inquiry(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id , @PathVariable Long assignment_id){
+        setUserInfo(model,sessionUser);
+        setLectureInfo(model,lecture_id);
+
+        model.addAttribute("lectureAssignment",lecturesService.findLectureAssignmentInfo(assignment_id));
+
+        return "lecture/lecture-assignment-inquiry";
+    }
 
     @GetMapping("/notice")
     public String notice(Model model, @LoginUser SessionUser user){
@@ -308,6 +336,8 @@ public class indexController {
 
         return "notice-inquiry";
     }
+
+
 
 
 

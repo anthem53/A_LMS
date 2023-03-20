@@ -1,0 +1,25 @@
+<h1 class=""> 과제 </h1>
+<table class="table table-horizontal table-bordered px-3" >
+    <thead class="thead-strong">
+    <colgroup>
+        <col width=10%>
+        <col width=70%>
+        <col width=20%>
+    </colgroup>
+    <tr>
+        <th>과제번호</th>
+        <th>제목</th>
+
+        <th>최종수정일</th>
+    </tr>
+    </thead>
+    <tbody id="tbody">
+    {{#lecture_assignment}}
+        <tr>
+            <td>{{id}}</td>
+            <td><a href="/showLecture/register/take_course/{{lecture.id}}/assignment/{{id}}">{{title}}</a></td>
+            <td>{{modifiedDate}}</td>
+        </tr>
+    {{/lecture_assignment}}
+    </tbody>
+</table>

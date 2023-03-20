@@ -6,10 +6,13 @@ import com.anthem53LMS.domain.courceRegistration.CourseRegistration;
 import com.anthem53LMS.domain.courceRegistration.CourseRegistrationRepository;
 import com.anthem53LMS.domain.lecture.Lecture;
 import com.anthem53LMS.domain.lecture.LectureRepository;
+import com.anthem53LMS.domain.lecture_assignment.LectureAssignment;
+import com.anthem53LMS.domain.lecture_assignment.LectureAsssignmentRepository;
 import com.anthem53LMS.domain.lecture_notice.LectureNotice;
 import com.anthem53LMS.domain.lecture_notice.LectureNoticeRepository;
 import com.anthem53LMS.domain.lesson.LectureLesson;
 import com.anthem53LMS.domain.lesson.LectureLessonRepository;
+import com.anthem53LMS.domain.studentAssignInfo.AssignmentCheck;
 import com.anthem53LMS.domain.user.User;
 import com.anthem53LMS.domain.user.UserRepository;
 import com.anthem53LMS.web.Dto.*;
@@ -18,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
+import java.net.*;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,6 +35,7 @@ public class LecturesService {
     private final UserRepository userRepository;
     private final LectureNoticeRepository lectureNoticeRepository;
     private final LectureLessonRepository lectureLessonRepository;
+    private final LectureAsssignmentRepository lectureAsssignmentRepository;
 
 
 
@@ -44,12 +48,12 @@ public class LecturesService {
         User user = userRepository.findByEmail(userEmail).orElseThrow(()-> new IllegalArgumentException("해당 유저가 없습니다. Email ="+userEmail));
 
         requestDto.setSubLecturer(user.getSubLecturer());
-
+        if (requestDto.getTitle().equals("")){
+            requestDto.setTitle("강의제목 - 무제");
+            
+        }
 
         Lecture lecture = requestDto.toEntity();
-
-
-
 
         Long id = lectureRepository.save(lecture).getId();
 
@@ -144,10 +148,13 @@ public class LecturesService {
     public Long LectureLessonSave(LectureLessonSaveRequestDto requestDto, Long lecture_id){
         Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));
 
+
+        requestDto.setLink(processYoutubeLink(requestDto.getLink()));
+
         LectureLesson lectureLesson = requestDto.toEntity();
         lecture.getLectureLessons().add(lectureLesson);
         lectureLesson.setLecture(lecture);
-        lectureLesson.setSequence(lecture.getLectureNotices().size());
+        lectureLesson.setSequence(lecture.getLectureLessons().size());
 
 
         return lectureLessonRepository.save(lectureLesson).getId();
@@ -164,5 +171,94 @@ public class LecturesService {
         return lectureLessonResponseDto;
 
 
+    }
+
+    @Transactional
+    public List<LectureAssignmentListResponseDto> findLectureAssignment(Long lecture_id){
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));
+
+        return lecture.getLectureAssignment().stream().map(LectureAssignmentListResponseDto::new).collect(Collectors.toList());
+
+    }
+
+    @Transactional
+    public Long LectureAssignmentSave(LectureAssignmentSaveRequestDto requestDto, Long lecture_id){
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));
+
+        requestDto.setLecture(lecture);
+
+        LectureAssignment lectureAssignment = requestDto.toEntity();
+
+        Set<CourseRegistration> attendeesInfoSet = lecture.getCurrent_Attendees();
+
+        for (CourseRegistration attendeesInfoItem : attendeesInfoSet){
+            User target = attendeesInfoItem.getUser();
+            AssignmentCheck assignmentCheck = new AssignmentCheck(lectureAssignment,target);
+
+            target.getCurrent_Assignment().add(assignmentCheck);
+            lectureAssignment.getAttendee().add(assignmentCheck);
+
+        }
+
+        return lectureAsssignmentRepository.save(lectureAssignment).getId();
+    }
+
+    @Transactional
+    public LectureAssignmentReponseDto findLectureAssignmentInfo(Long assignment_id){
+
+        LectureAssignment lectureAssignment = lectureAsssignmentRepository.findById(assignment_id).orElseThrow(()->new IllegalArgumentException("해당 과제가 없습니다."));
+
+        LectureAssignmentReponseDto reponseDto = new LectureAssignmentReponseDto(lectureAssignment);
+
+        return reponseDto;
+    }
+
+
+    private String processYoutubeLink(String link){
+        String youtubeVideoCode = parsingYoutubeVideoUniqueCode(link);
+        String result = "https://www.youtube.com/embed/"+youtubeVideoCode;
+
+        System.out.println(result);
+        return result;
+    }
+    private String parsingYoutubeVideoUniqueCode(String link){
+
+        try {
+            URL aURL = new URL(link);
+
+            System.out.println("protocol = " + aURL.getProtocol());
+            System.out.println("authority = " + aURL.getAuthority());
+            System.out.println("host = " + aURL.getHost());
+            System.out.println("port = " + aURL.getPort());
+            System.out.println("path = " + aURL.getPath());
+            System.out.println("query = " + aURL.getQuery());
+            System.out.println("filename = " + aURL.getFile());
+            System.out.println("ref = " + aURL.getRef());
+
+            if (aURL.getHost().equals("youtu.be")){
+                System.out.println(aURL.getPath());
+                return aURL.getPath();
+            }
+            else{
+                String query = aURL.getQuery();
+                String[] queryList = query.split("&");;
+
+                for (String queryItem : queryList){
+                    String[] queryItemElements = queryItem.split("=");
+                    if (queryItemElements[0].equals("v")){
+                        System.out.println(queryItemElements[1]);
+                        return queryItemElements[1];
+                    }
+                    else{ ; }
+                }
+
+            }
+
+        }
+        catch(MalformedURLException e){
+            e.printStackTrace();
+        }
+
+        return "test";
     }
 }

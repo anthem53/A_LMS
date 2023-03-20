@@ -17,7 +17,6 @@ public class LectureLessonSaveRequestDto {
     private Integer order;
     private String link;
 
-    private Lecture lecutre;
 
     public LectureLessonSaveRequestDto (String title, String link){
         this.title = title;
