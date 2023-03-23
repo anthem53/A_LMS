@@ -3,6 +3,7 @@ package com.anthem53LMS.domain.lecture_assignment;
 import com.anthem53LMS.domain.BaseTimeEntity;
 import com.anthem53LMS.domain.lecture.Lecture;
 import com.anthem53LMS.domain.studentAssignInfo.AssignmentCheck;
+import com.anthem53LMS.domain.supportDomain.submitFile.SubmittedFile;
 import com.anthem53LMS.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,6 +36,9 @@ public class LectureAssignment extends BaseTimeEntity {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Set<AssignmentCheck>  attendee = new HashSet<AssignmentCheck>();
+    @OneToMany(mappedBy = "lectureAssignment", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private Set<SubmittedFile> submittedFileSet = new HashSet<SubmittedFile>();
+
 
     @Builder
     public LectureAssignment(String title, String content, Lecture lecture){

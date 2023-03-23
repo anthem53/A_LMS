@@ -1,4 +1,4 @@
-package com.anthem53LMS.domain.courceRegistration;
+package com.anthem53LMS.domain.courseRegistration;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -3,17 +3,15 @@ package com.anthem53LMS.web;
 
 import com.anthem53LMS.config.auth.LoginUser;
 import com.anthem53LMS.config.auth.dto.SessionUser;
-import com.anthem53LMS.domain.notice.NoticeRepository;
+import com.anthem53LMS.service.file.FileService;
 import com.anthem53LMS.service.lectures.LecturesService;
 import com.anthem53LMS.service.notice.NoticeService;
-import com.anthem53LMS.web.lectureDto.LectureLessonSaveRequestDto;
-import com.sun.org.apache.xpath.internal.operations.Mod;
+import com.anthem53LMS.web.lectureDto.SubmittedFileResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 public class indexController {
 
     private final LecturesService lecturesService;
-    private final NoticeRepository noticeRepository;
+    private final FileService fileService;
     private final NoticeService noticeService;
 
     @GetMapping("/")
@@ -289,10 +287,17 @@ public class indexController {
 
     @GetMapping("/showLecture/register/take_course/{lecture_id}/assignment/{assignment_id}")
     public String lecture_assignment_inquiry(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id , @PathVariable Long assignment_id){
+
+        System.out.println("lecture_assignment_inquiry");
+
         setUserInfo(model,sessionUser);
         setLectureInfo(model,lecture_id);
 
         model.addAttribute("lectureAssignment",lecturesService.findLectureAssignmentInfo(assignment_id));
+
+        model.addAttribute("submittedFile",fileService.findSubmittedFileList(assignment_id,sessionUser));
+        //public List<SubmittedFileReponseDto> findSubmittedFileList(Long assignment_id, SessionUser sessionUser){
+
 
         return "lecture/lecture-assignment-inquiry";
     }

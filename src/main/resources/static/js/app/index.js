@@ -47,6 +47,14 @@ var main = {
            _this.lectureAssignmentSave();
         });
 
+        $('#btn-lecture-assignment-submit').on('click',function(){
+            _this.lectureAssignmentSubmit();
+        });
+
+        $('#btn-file-delete').on('click',function(){
+            _this.lectureAssignmentSubmittedFileDelete();
+        });
+
 
 
 
@@ -56,6 +64,49 @@ var main = {
                 _this.commentUpdate(form); // 해당 form으로 업데이트 수행
             });
         });
+    },
+    lectureAssignmentSubmittedFileDelete : function(file_id){
+        var url = '/api/v1/file-delete/' + file_id;
+        alert(url)
+
+        $.ajax({
+           type: 'DELETE',
+           url: url,
+           dataType: 'text',
+           contentType:'application/json; charset=utf-8',
+       }).done(function() {
+           window.location.reload();
+       }).fail(function (error) {
+           alert(JSON.stringify(error));
+       });
+    },
+    lectureAssignmentSubmit : function (){
+
+        var formData = new FormData();
+        var inputFile = $('#assignFile')
+        var files = inputFile[0].files;
+
+        console.log(files);
+
+        for (var i = 0 ; i < files.length; i++){
+            formData.append("uploadFile",files[i]);
+        }
+
+        var url = '/api/v1/file-save/' + $('#assignmentId').val();
+        alert(url)
+        $.ajax({
+            type: 'POST',
+            url: url,
+            processData: false,
+            contentType:  false,
+            data: formData
+        }).done(function() {
+            alert('과제 제출이 완료되었습니다.');
+            window.location.reload();
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+
     },
     noticeSave : function (){
 

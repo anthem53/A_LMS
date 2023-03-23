@@ -2,8 +2,8 @@ package com.anthem53LMS.service.lectures;
 
 
 import com.anthem53LMS.config.auth.dto.SessionUser;
-import com.anthem53LMS.domain.courceRegistration.CourseRegistration;
-import com.anthem53LMS.domain.courceRegistration.CourseRegistrationRepository;
+import com.anthem53LMS.domain.courseRegistration.CourseRegistration;
+import com.anthem53LMS.domain.courseRegistration.CourseRegistrationRepository;
 import com.anthem53LMS.domain.lecture.Lecture;
 import com.anthem53LMS.domain.lecture.LectureRepository;
 import com.anthem53LMS.domain.lecture_assignment.LectureAssignment;
@@ -13,6 +13,7 @@ import com.anthem53LMS.domain.lecture_notice.LectureNoticeRepository;
 import com.anthem53LMS.domain.lesson.LectureLesson;
 import com.anthem53LMS.domain.lesson.LectureLessonRepository;
 import com.anthem53LMS.domain.studentAssignInfo.AssignmentCheck;
+import com.anthem53LMS.domain.supportDomain.submitFile.SubmittedFile;
 import com.anthem53LMS.domain.user.User;
 import com.anthem53LMS.domain.user.UserRepository;
 import com.anthem53LMS.web.Dto.*;
@@ -189,16 +190,22 @@ public class LecturesService {
 
         LectureAssignment lectureAssignment = requestDto.toEntity();
 
-        Set<CourseRegistration> attendeesInfoSet = lecture.getCurrent_Attendees();
+        for (CourseRegistration attendeesInfoItem : lecture.getCurrent_Attendees()){
 
-        for (CourseRegistration attendeesInfoItem : attendeesInfoSet){
-            User target = attendeesInfoItem.getUser();
-            AssignmentCheck assignmentCheck = new AssignmentCheck(lectureAssignment,target);
+            User attendee = attendeesInfoItem.getUser();
+            AssignmentCheck assignmentCheck = new AssignmentCheck(lectureAssignment,attendee);
+            SubmittedFile submittedFile = new SubmittedFile(lectureAssignment, attendee);
 
-            target.getCurrent_Assignment().add(assignmentCheck);
+            attendee.getCurrent_Assignment().add(assignmentCheck);
             lectureAssignment.getAttendee().add(assignmentCheck);
 
+            attendee.getSubmittedFile().add(submittedFile);
+            lectureAssignment.getSubmittedFileSet().add(submittedFile);
+            System.out.println("Attendee : " + attendee.getName());
         }
+
+        System.out.println("attendee num ");
+        System.out.println(lecture.getCurrent_Attendees().size());
 
         return lectureAsssignmentRepository.save(lectureAssignment).getId();
     }

@@ -2,15 +2,18 @@ package com.anthem53LMS.domain.user;
 
 
 import com.anthem53LMS.domain.BaseTimeEntity;
-import com.anthem53LMS.domain.courceRegistration.CourseRegistration;
+import com.anthem53LMS.domain.courseRegistration.CourseRegistration;
 import com.anthem53LMS.domain.studentAssignInfo.AssignmentCheck;
 import com.anthem53LMS.domain.subLecturer.SubLecturer;
+import com.anthem53LMS.domain.supportDomain.submitFile.SubmittedFile;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -40,6 +43,9 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user")
     Set<AssignmentCheck> current_Assignment = new HashSet<AssignmentCheck>();
+
+    @OneToMany(mappedBy = "user")
+    private List<SubmittedFile> SubmittedFile = new ArrayList<SubmittedFile>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

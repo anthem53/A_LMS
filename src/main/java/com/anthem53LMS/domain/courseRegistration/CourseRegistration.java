@@ -1,4 +1,4 @@
-package com.anthem53LMS.domain.courceRegistration;
+package com.anthem53LMS.domain.courseRegistration;
 
 
 import com.anthem53LMS.domain.lecture.Lecture;
