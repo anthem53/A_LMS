@@ -4,6 +4,7 @@ package com.anthem53LMS.service.lectures;
 import com.anthem53LMS.config.auth.dto.SessionUser;
 import com.anthem53LMS.domain.courseRegistration.CourseRegistration;
 import com.anthem53LMS.domain.courseRegistration.CourseRegistrationRepository;
+import com.anthem53LMS.domain.file.FileEntity;
 import com.anthem53LMS.domain.lecture.Lecture;
 import com.anthem53LMS.domain.lecture.LectureRepository;
 import com.anthem53LMS.domain.lecture_assignment.LectureAssignment;
@@ -22,7 +23,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,6 +40,8 @@ public class LecturesService {
     private final LectureNoticeRepository lectureNoticeRepository;
     private final LectureLessonRepository lectureLessonRepository;
     private final LectureAsssignmentRepository lectureAsssignmentRepository;
+
+
 
 
 
@@ -83,8 +88,18 @@ public class LecturesService {
         user.getCurrent_Lectures().add(courseRegistration);
         lecture.getCurrent_Attendees().add(courseRegistration);
 
-        Long id = courseRegistrationRepository.save(courseRegistration).getId();
+        for (LectureAssignment lectureAssignment : lecture.getLectureAssignment()){
 
+            SubmittedFile submittedFile = new SubmittedFile(lectureAssignment, user);
+
+            user.getSubmittedFile().add(submittedFile);
+            lectureAssignment.getSubmittedFileSet().add(submittedFile);
+
+        }
+
+
+
+        Long id = courseRegistrationRepository.save(courseRegistration).getId();
         return id;
     }
 
@@ -188,6 +203,10 @@ public class LecturesService {
 
         requestDto.setLecture(lecture);
 
+        if (requestDto.getTitle().equals("")){
+            requestDto.setTitle("과제 제목 없음.");
+        }
+
         LectureAssignment lectureAssignment = requestDto.toEntity();
 
         for (CourseRegistration attendeesInfoItem : lecture.getCurrent_Attendees()){
@@ -218,6 +237,27 @@ public class LecturesService {
         LectureAssignmentReponseDto reponseDto = new LectureAssignmentReponseDto(lectureAssignment);
 
         return reponseDto;
+    }
+
+    @Transactional
+    public List<LectureAssignmentSubmittedFileDto> findAllSubmitfile(Long assignment_id){
+
+        List<LectureAssignmentSubmittedFileDto> responseDtoList = new ArrayList<LectureAssignmentSubmittedFileDto>();
+        LectureAssignment lectureAssignment = lectureAsssignmentRepository.findById(assignment_id).orElseThrow(()->new IllegalArgumentException("해당 과제가 없습니다."));
+
+
+        for (SubmittedFile submittedFile : lectureAssignment.getSubmittedFileSet()){
+            User current_student = submittedFile.getUser();
+            List<FileEntity> fileList = submittedFile.getFileList();
+
+            List<SubmittedFileResponseDto> fileResponseDtoList = fileList.stream().map(SubmittedFileResponseDto::new).collect(Collectors.toList());
+            LectureAssignmentSubmittedFileDto tempResponseDto = new LectureAssignmentSubmittedFileDto(current_student.getName(),fileResponseDtoList);
+
+            responseDtoList.add(tempResponseDto);
+
+        }
+
+        return responseDtoList;
     }
 
 

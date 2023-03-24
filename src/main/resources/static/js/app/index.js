@@ -65,9 +65,25 @@ var main = {
             });
         });
     },
+    lectureAssignmentSubmittedFileDownload : function(file_id){
+        var url = '/api/v1/file-download/' + file_id;
+        alert(url)
+
+        $.ajax({
+           type: 'POST',
+           url: url,
+           dataType: 'text',
+           contentType:'application/json; charset=utf-8',
+       }).done(function() {
+           console.log("파일을 다운로드 했습니다.")
+       }).fail(function (error) {
+           alert(JSON.stringify(error));
+       });
+
+    },
     lectureAssignmentSubmittedFileDelete : function(file_id){
         var url = '/api/v1/file-delete/' + file_id;
-        alert(url)
+
 
         $.ajax({
            type: 'DELETE',

@@ -296,10 +296,24 @@ public class indexController {
         model.addAttribute("lectureAssignment",lecturesService.findLectureAssignmentInfo(assignment_id));
 
         model.addAttribute("submittedFile",fileService.findSubmittedFileList(assignment_id,sessionUser));
-        //public List<SubmittedFileReponseDto> findSubmittedFileList(Long assignment_id, SessionUser sessionUser){
 
 
         return "lecture/lecture-assignment-inquiry";
+    }
+
+    @GetMapping("/showLecture/register/take_course/{lecture_id}/assignment/{assignment_id}/submittedList")
+    public String lecture_assignment_submit_list(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id , @PathVariable Long assignment_id){
+
+        System.out.println("lecture_assignment_submit_list");
+
+        setUserInfo(model,sessionUser);
+        setLectureInfo(model,lecture_id);
+
+        model.addAttribute("lectureAssignment",lecturesService.findLectureAssignmentInfo(assignment_id));
+        model.addAttribute("attendee",lecturesService.findAllSubmitfile(assignment_id));
+
+
+        return "lecture/lecture-assignment-submitted-file";
     }
 
     @GetMapping("/notice")

@@ -9,15 +9,26 @@ import com.anthem53LMS.domain.lecture_assignment.LectureAsssignmentRepository;
 import com.anthem53LMS.domain.supportDomain.submitFile.SubmittedFile;
 import com.anthem53LMS.domain.user.User;
 import com.anthem53LMS.domain.user.UserRepository;
+import com.anthem53LMS.web.lectureDto.LectureAssignmentSubmittedFileDto;
 import com.anthem53LMS.web.lectureDto.SubmittedFileResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -106,12 +117,10 @@ public class FileService {
         }
 
 
-        /*    Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));
-
-            return lecture.getLectureLessons().stream().map(LectureLessonListDto::new).collect(Collectors.toList());*/
-
     }
 
+
+    @Transactional
     public void fileDelete(Long file_id){
         FileEntity fileEntity = fileEntityRepository.findById(file_id).orElseThrow(() -> new IllegalArgumentException("해당 파일이 없습니다."));
         SubmittedFile submittedFile = fileEntity.getSubmittedFile();
@@ -127,6 +136,30 @@ public class FileService {
         fileEntity.setSubmittedFile(null);
 
         fileEntityRepository.delete(fileEntity);
+    }
+
+
+    @Transactional
+    public void fileDownload(Long file_id, HttpServletResponse response) throws IOException{
+        FileEntity fileEntity = fileEntityRepository.findById(file_id).orElseThrow(() -> new IllegalArgumentException("해당 파일이 없습니다."));
+
+        File file = new File(fileEntity.getSavedPath());
+
+        // file 다운로드 설정
+        response.setContentType("application/download");
+        response.setContentLength((int)file.length());
+        //response.setHeader("Content-disposition", "attachment;filename=\"" + file + "\"");
+        response.setHeader("Content-disposition", "attachment;filename=\"" + fileEntity.getOriginalName() + "\"");
+
+        // response 객체를 통해서 서버로부터 파일 다운로드
+        OutputStream os = response.getOutputStream();
+        // 파일 입력 객체 생성
+        FileInputStream fis = new FileInputStream(file);
+        FileCopyUtils.copy(fis, os);
+        fis.close();
+        os.close();
 
     }
+
+
 }
