@@ -41,4 +41,14 @@ public class NoticeService {
 
         return new NoticeResponseDto(entity);
     }
+
+    @Transactional
+    public Long update(NoticeSaveRequestDto requestDto,Long notice_id){
+        Notice notice = noticeRepository.findById(notice_id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
+
+        notice.update(requestDto.getTitle(),requestDto.getContent());
+
+
+        return notice.getId();
+    }
 }

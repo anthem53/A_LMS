@@ -13,11 +13,13 @@ public class LectureLessonResponseDto {
 
     private String title;
     private String link;
+    private Long id;
 
 
     public LectureLessonResponseDto (LectureLesson lectureLesson){
         title = lectureLesson.getTitle();
         link = lectureLesson.getVideoLink();
+        id= lectureLesson.getId();
 
     }
 }

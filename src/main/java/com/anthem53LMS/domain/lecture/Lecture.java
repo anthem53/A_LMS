@@ -56,5 +56,9 @@ public class Lecture extends BaseTimeEntity {
     }
 
 
+    public void update(String title, String outline){
+        this.title = title;
+        this.outline = outline;
+    }
 
 }

@@ -61,7 +61,10 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
             }*/
         }
         System.out.println(uri);
-        uri = prevPage;
+        //uri = prevPage;
+        if (uri.equals("http://localhost:8080/login")){
+            uri = "http://localhost:8080/";
+        }
         redirectStrategy.sendRedirect(request, response, uri);
 
 

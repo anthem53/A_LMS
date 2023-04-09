@@ -133,6 +133,13 @@ public class LecturesService {
     }
 
     @Transactional
+    public List<LectureRegisterListResponseDto> findAllOwnLecture(SessionUser sessionUser){
+        User user = userRepository.findByEmail(sessionUser.getEmail()).orElseThrow(()-> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        return user.getSubLecturer().getLectures().stream().map(LectureRegisterListResponseDto::new).collect(Collectors.toList());
+    }
+
+    @Transactional
     public List<LectureNoticeListResponseDto> findLectureNotice(Long lecture_id){
         Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));
 
@@ -240,6 +247,17 @@ public class LecturesService {
     }
 
     @Transactional
+    public Long LectureAssignmentUpdate(LectureAssignmentSaveRequestDto requestDto,Long assignment_id){
+
+        LectureAssignment lectureAssignment = lectureAsssignmentRepository.findById(assignment_id).orElseThrow(()->new IllegalArgumentException("해당 과제가 없습니다."));
+
+        lectureAssignment.update(requestDto.getTitle(),requestDto.getContent());
+
+
+        return lectureAssignment.getId();
+    }
+
+    @Transactional
     public List<LectureAssignmentSubmittedFileDto> findAllSubmitfile(Long assignment_id){
 
         List<LectureAssignmentSubmittedFileDto> responseDtoList = new ArrayList<LectureAssignmentSubmittedFileDto>();
@@ -260,6 +278,54 @@ public class LecturesService {
         return responseDtoList;
     }
 
+    @Transactional
+    public Long lectureUpdate(lecturesSaveRequestDto requestDto, long lecture_id){
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
+
+        lecture.update(requestDto.getTitle(),requestDto.getOutline());
+
+        return lecture_id;
+    }
+    @Transactional
+    public Long lectureLessonUpdate(LectureLessonSaveRequestDto requestDto,Long lesson_id){
+
+        LectureLesson lectureLesson = lectureLessonRepository.findById(lesson_id).orElseThrow(() -> new IllegalArgumentException("그런 수업은 없습니다."));
+
+        lectureLesson.update(requestDto.getTitle(),processYoutubeLink(requestDto.getLink()));
+
+        return lesson_id;
+    }
+
+    @Transactional
+    public LectureLessonResponseDto  findPrevLesson(Long lecture_id, Long lesson_id){
+        LectureLesson lectureLesson = lectureLessonRepository.findById(lesson_id).orElseThrow(() -> new IllegalArgumentException("그런 수업은 없습니다."));
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
+
+        Integer lessonIndex = lecture.getLectureLessons().indexOf(lectureLesson);
+
+        if (lessonIndex == 0){
+            return null;
+        }
+        else{
+            return new LectureLessonResponseDto(lecture.getLectureLessons().get(lessonIndex-1));
+        }
+
+    }
+    @Transactional
+    public LectureLessonResponseDto  findNextLesson(Long lecture_id, Long lesson_id){
+        LectureLesson lectureLesson = lectureLessonRepository.findById(lesson_id).orElseThrow(() -> new IllegalArgumentException("그런 수업은 없습니다."));
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
+
+        Integer lessonIndex = lecture.getLectureLessons().indexOf(lectureLesson);
+
+        if (lessonIndex == lecture.getLectureLessons().size() - 1){
+            return null;
+        }
+        else{
+            return new LectureLessonResponseDto(lecture.getLectureLessons().get(lessonIndex+1));
+        }
+
+    }
 
     private String processYoutubeLink(String link){
         String youtubeVideoCode = parsingYoutubeVideoUniqueCode(link);

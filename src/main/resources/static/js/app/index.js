@@ -54,9 +54,19 @@ var main = {
         $('#btn-file-delete').on('click',function(){
             _this.lectureAssignmentSubmittedFileDelete();
         });
+        $('#btn-notice-update').on('click',function(){
+            _this.noticeUpdate();
+        });
 
-
-
+        $('#btn-lecture-update').on('click',function(){
+            _this.lectureUpdate();
+        });
+        $('#btn-lecture-assignment-update').on('click',function(){
+           _this.lectureAssignmentUpdate();
+        });
+        $('#btn-lecture-lesson-update').on('click',function(){
+                   _this.lectureLessonUpdate();
+                });
 
         document.querySelectorAll('#btn-comment-update').forEach(function (item) {
             item.addEventListener('click', function () { // 버튼 클릭 이벤트 발생시
@@ -64,6 +74,93 @@ var main = {
                 _this.commentUpdate(form); // 해당 form으로 업데이트 수행
             });
         });
+    },
+    lectureLessonUpdate : function (){
+        var data = {
+                        title: $('#title').val(),
+                        link: $('#videoLink').val()
+                    };
+         var url = '/api/v1/lecture-lesson-update/'+$('#lessonId').val()
+         alert(url)
+         $.ajax({
+             type: 'POST',
+             url: url,
+             dataType: 'json',
+             contentType:'application/json; charset=utf-8',
+             data: JSON.stringify(data)
+         }).done(function() {
+             alert('과제 정보가 변경되었습니다.');
+             window.location.href = '/showLecture/register/take_course/'+$('#lectureId').val()+"/lesson";
+         }).fail(function (error) {
+             alert(JSON.stringify(error));
+         });
+
+    },
+    lectureAssignmentUpdate : function (){
+        var data = {
+                        title: $('#title').val(),
+                        content: $('#content').val()
+                    };
+
+        var url = '/api/v1/lecture-assignment-update/'+$('#AssignmentId').val()
+        alert(url)
+        $.ajax({
+            type: 'POST',
+            url: url,
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function() {
+            alert('과제 정보가 변경되었습니다.');
+            window.location.href = '/showLecture/register/take_course/'+$('#lectureId').val()+"/assignment";
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    lectureUpdate : function (){
+            var data = {
+                    title: $('#title').val(),
+                    outline: $('#outline').val()
+                };
+
+            var url = '/api/v1/lecture-update/'+$('#lectureId').val()
+            alert(url)
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                contentType:'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function() {
+                alert('강의 정보가 변경되었습니다.');
+                window.location.href = '/showLecture/register/take_course/'+$('#lectureId').val();
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+
+    },
+    noticeUpdate : function (){
+            alert("noticeUpdate")
+            var data = {
+                title: $('#title').val(),
+                content: $('#content').val()
+            };
+
+            var url = '/api/v1/notice-update/'+$('#noticeId').val()
+            alert(url)
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                contentType:'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function() {
+                alert('공지사항이 등록되었습니다.');
+                window.location.href = '/notice';
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+
     },
     lectureAssignmentSubmittedFileDownload : function(file_id){
         var url = '/api/v1/file-download/' + file_id;
@@ -126,7 +223,7 @@ var main = {
     },
     noticeSave : function (){
 
-        alert("Notice save");
+
 
         var data = {
             title: $('#title').val(),
@@ -173,15 +270,15 @@ var main = {
 
     },
     lectureLessonSave : function (){
-        alert("lectureLessonSave")
+
         var data = {
             title: $('#title').val(),
             link: $('#videoLink').val()
         };
-        alert($('#videoLink').val())
+
         var url = "/api/v1/lecture/"+ $('#lectureId').val()+"/lesson/save";
         var redirectUrl = "/showLecture/register/take_course/"+$('#lectureId').val()+"/lesson/"
-        alert(url)
+
         $.ajax({
             type: 'POST',
             url: url,

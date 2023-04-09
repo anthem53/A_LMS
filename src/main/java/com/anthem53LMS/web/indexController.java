@@ -6,12 +6,12 @@ import com.anthem53LMS.config.auth.dto.SessionUser;
 import com.anthem53LMS.service.file.FileService;
 import com.anthem53LMS.service.lectures.LecturesService;
 import com.anthem53LMS.service.notice.NoticeService;
-import com.anthem53LMS.web.lectureDto.SubmittedFileResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -133,18 +133,11 @@ public class indexController {
     }
 
     @GetMapping("/showLecture/inquiry/{id}")
-    public String lecture_inquiry(Model model, @LoginUser SessionUser user , @PathVariable Long id){
+    public String lecture_inquiry(Model model, @LoginUser SessionUser sessionUser , @PathVariable Long id){
 
-        if ( user == null){
-            System.out.println("guest");
-        }
-        else{
-            model.addAttribute("userName",user.getName());
-            System.out.println("User");
-        }
+        setLectureInfo(model, id);
+        setUserInfo(model, sessionUser);
 
-        model.addAttribute("lecture",lecturesService.findById(id));
-        model.addAttribute("lectureId",id);
 
 
         return "lecture-inquiry";
@@ -184,6 +177,24 @@ public class indexController {
         return "lecture/lecture-home";
     }
 
+    @GetMapping("/showLecture/register/take_course/{lecture_id}/introduction")
+    public String lecture_introduction(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id){
+
+        setLectureInfo(model,lecture_id);
+        setUserInfo(model,sessionUser);
+
+        return "/lecture/lecture-introduction";
+    }
+
+    @GetMapping("/showLecture/register/take_course/{lecture_id}/change")
+    public String lecture_change(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id){
+        setUserInfo(model,sessionUser);
+        setLectureInfo(model,lecture_id);
+
+
+
+        return "lecture-update";
+    }
     @GetMapping("/showLecture/register/take_course/{id}/notice")
     public String lecture_notice (Model model, @LoginUser SessionUser sessionUser, @PathVariable Long id){
         if ( sessionUser == null){
@@ -254,6 +265,8 @@ public class indexController {
         setLectureInfo(model,lecture_id);
 
         model.addAttribute("lesson",lecturesService.findLessonInfo(lecture_id,lesson_id));
+        model.addAttribute("prevLesson",lecturesService.findPrevLesson(lecture_id,lesson_id));
+        model.addAttribute("nextLesson",lecturesService.findNextLesson(lecture_id,lesson_id));
 
         return "lecture/lecture-lesson-inquiry";
 
@@ -266,6 +279,18 @@ public class indexController {
 
         return "lecture/lecture-lesson-save";
     }
+
+    @GetMapping("/showLecture/register/take_course/{lecture_id}/lesson/{lesson_id}/update")
+    public String lecture_lesson_update(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id, @PathVariable Long lesson_id){
+        setUserInfo(model, sessionUser);
+        setLectureInfo(model,lecture_id);
+
+        model.addAttribute("lesson",lecturesService.findLessonInfo(lecture_id,lesson_id));
+
+        return "lecture/lecture-lesson-update";
+
+    }
+
 
     @GetMapping("/showLecture/register/take_course/{lecture_id}/assignment")
     public String lecture_assignment(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id){
@@ -301,6 +326,18 @@ public class indexController {
         return "lecture/lecture-assignment-inquiry";
     }
 
+    @GetMapping("/showLecture/register/take_course/{lecture_id}/assignment/{assignment_id}/change")
+    public String lecture_assignment_change(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id , @PathVariable Long assignment_id){
+
+        setUserInfo(model,sessionUser);
+        setLectureInfo(model,lecture_id);
+
+        //LectureAssignmentReponseDto
+        model.addAttribute("lectureAssignment",lecturesService.findLectureAssignmentInfo(assignment_id));
+
+        return "lecture/lecture-assignment-update";
+    }
+
     @GetMapping("/showLecture/register/take_course/{lecture_id}/assignment/{assignment_id}/submittedList")
     public String lecture_assignment_submit_list(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id , @PathVariable Long assignment_id){
 
@@ -314,6 +351,15 @@ public class indexController {
 
 
         return "lecture/lecture-assignment-submitted-file";
+    }
+
+    @GetMapping("/showOwnLecture")
+    public String lecture_own(Model model, @LoginUser SessionUser sessionUser){
+
+        setUserInfo(model,sessionUser);
+        model.addAttribute("lectures", lecturesService.findAllOwnLecture(sessionUser));
+
+        return "lecture-own";
     }
 
     @GetMapping("/notice")
@@ -346,6 +392,15 @@ public class indexController {
 
 
     }
+    @GetMapping("/notice/update/{id}")
+    public String notice_update(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long id){
+
+        setUserInfo(model, sessionUser);
+
+        model.addAttribute("notice",noticeService.findById(id));
+
+        return "notice-update";
+    }
 
     @GetMapping("/notice/inquiry/{id}")
     public String noticeInquiry(Model model, @LoginUser SessionUser user, @PathVariable Long id) {
@@ -374,6 +429,7 @@ public class indexController {
     }
 
     private void setLectureInfo (Model model,Long lecture_id ){
+        //LectureTakeViewRespondDto
         model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(lecture_id));
     }
 

@@ -30,4 +30,13 @@ public class LectureRegisterListResponseDto {
 
     }
 
+    public LectureRegisterListResponseDto (Lecture lecture){
+
+        this.id = lecture.getId();
+        this.title = lecture.getTitle();
+        this.Lecturer = lecture.getLecturer().getUser().getName();
+        this.modifiedDate = lecture.getModifiedDate();
+
+    }
+
 }

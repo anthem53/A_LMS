@@ -13,8 +13,21 @@
 
             <div class="d-flex flex-column flex-shrink-1  p-3 flex-fill" >
                 <div class="d-flex flex-row mb-3 justify-content-between" >
-                    <a href="/showLecture/register/take_course/{{lecture.id}}/lesson/" role="button" class="btn btn-secondary">이전 강의</a>
-                    <button type="button" class="btn btn-primary" id="btn-lecture-lesson-save">다음 강의</button>
+                    {{#prevLesson}}
+                        <a href="/showLecture/register/take_course/{{lecture.id}}/lesson/{{prevLesson.id}}" role="button" class="btn btn-primary">이전 강의</a>
+                    {{/prevLesson}}
+                    {{^prevLesson}}
+                        <button type="button" class="btn btn-secondary" onclick="alert('이전강의가 없습니다.');">이전 강의</button>
+                    {{/prevLesson}}
+
+                    {{#nextLesson}}
+                        <a href="/showLecture/register/take_course/{{lecture.id}}/lesson/{{nextLesson.id}}" role="button" class="btn btn-primary">다음 강의</a>
+                    {{/nextLesson}}
+                    {{^nextLesson}}
+                        <button type="button" class="btn btn-secondary" onclick="alert('다음강의가 없습니다.');">다음 강의</button>
+                    {{/nextLesson}}
+
+
                 </div>
 
 
@@ -28,6 +41,7 @@
 
                 <div class="d-flex flex-row mb-3" >
                     <a href="/showLecture/register/take_course/{{lecture.id}}/lesson/" role="button" class="btn btn-secondary"> 수업목록</a>
+                    <a href="/showLecture/register/take_course/{{lecture.id}}/lesson/{{lesson.id}}/update" role="button" class="btn btn-secondary"> 수정</a>
                 </div>
             </div>
 

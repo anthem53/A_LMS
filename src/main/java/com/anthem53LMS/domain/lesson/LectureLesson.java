@@ -45,6 +45,11 @@ public class LectureLesson extends BaseTimeEntity {
     public void setSequence(Integer sequenceValue) { this.sequence = sequenceValue;}
 
 
+    public void update(String title, String link){
+        this.title = title;
+        this.videoLink = link;
+
+    }
 
 
 

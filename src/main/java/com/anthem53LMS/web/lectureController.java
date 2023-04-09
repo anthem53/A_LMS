@@ -72,4 +72,30 @@ public class lectureController {
         return 1l;
     }
 
+    @PostMapping("/api/v1/lecture-update/{lecture_id}")
+    public Long update_lecture(@RequestBody lecturesSaveRequestDto requestDto, @LoginUser SessionUser user, @PathVariable("lecture_id") Long lecture_id){
+
+
+        return lecturesService.lectureUpdate(requestDto,lecture_id);
+    }
+
+
+    //api/v1/lecture-assignment-update/'+$('#AssignmentId').val()
+    @PostMapping("/api/v1/lecture-assignment-update/{assignment_id}")
+    public Long update_lecture_assignment(@RequestBody LectureAssignmentSaveRequestDto requestDto, @LoginUser SessionUser sessionUser, @PathVariable Long assignment_id){
+        System.out.println("call update_lecture_assignment");
+        System.out.println(requestDto.getTitle());
+        System.out.println(requestDto.getContent());
+
+        Long id = lecturesService.LectureAssignmentUpdate(requestDto,assignment_id);
+
+        return id;
+    }
+
+    @PostMapping("/api/v1/lecture-lesson-update/{lesson_id}")
+    public Long update_lecture_lesson(@RequestBody LectureLessonSaveRequestDto requestDto, @LoginUser SessionUser sessionUser, @PathVariable Long lesson_id){
+
+        return lecturesService.lectureLessonUpdate(requestDto,lesson_id);
+    }
+
 }

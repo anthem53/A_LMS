@@ -22,6 +22,13 @@ public class noticeController {
         return notice_id;
     }
 
+    @PostMapping("/api/v1/notice-update/{notice_id}")
+    public Long notice_update (@RequestBody NoticeSaveRequestDto requestDto , @PathVariable Long notice_id){
+
+
+        return noticeService.update(requestDto,notice_id);
+    }
+
 
 }
 
