@@ -42,7 +42,18 @@
         <input type="hidden" id="lectureId" value="{{lecture.id}}">
 
         <a href="/" role="button" class="btn btn-secondary">취소</a>
-        <button type="button" class="btn btn-primary" id="btn-lecture_registration">강의 수강</button>
+        {{#isLecturer}}
+            <a href="/showLecture/register/take_course/{{lecture.id}}" role="button" class="btn btn btn-primary">강의로 가기</a>
+        {{/isLecturer}}
+        {{^isLecturer}}
+
+            {{#isAttendee}}
+                <a href="/showLecture/register/take_course/{{lecture.id}}" role="button" class="btn btn btn-primary">강의로 가기</a>
+            {{/isAttendee}}
+            {{^isAttendee}}
+                <button type="button" class="btn btn-primary" id="btn-lecture_registration">강의 수강</button>
+            {{/isAttendee}}
+        {{/isLecturer}}
 
 
     </div>

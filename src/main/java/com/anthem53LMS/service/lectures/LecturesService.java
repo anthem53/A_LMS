@@ -327,6 +327,34 @@ public class LecturesService {
 
     }
 
+    @Transactional
+    public boolean isLecturer(SessionUser sessionUser, Long lecture_id){
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
+
+        if (lecture.getLecturer().getId() == getUserBySessionUser(sessionUser).getId()){
+            System.out.println("this is lecturer!");
+            return true;
+        }
+        else{
+            System.out.println("this is another!");
+            return false;
+        }
+    }
+
+    @Transactional
+    public boolean isAttendee (SessionUser sessionUser, Long lecture_id){
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
+        User user = getUserBySessionUser(sessionUser);
+
+        for (CourseRegistration attendeesInfoItem : lecture.getCurrent_Attendees()){
+            if (attendeesInfoItem.getUser().getId() == user.getId()){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private String processYoutubeLink(String link){
         String youtubeVideoCode = parsingYoutubeVideoUniqueCode(link);
         String result = "https://www.youtube.com/embed/"+youtubeVideoCode;
@@ -373,5 +401,12 @@ public class LecturesService {
         }
 
         return "test";
+    }
+
+    private User getUserBySessionUser(SessionUser sessionUser){
+        String userEmail = sessionUser.getEmail();
+        User user = userRepository.findByEmail(userEmail).orElseThrow(()-> new IllegalArgumentException("해당 유저가 없습니다. Email ="+userEmail));
+
+        return user;
     }
 }

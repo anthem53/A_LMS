@@ -7,6 +7,9 @@ import com.anthem53LMS.service.file.FileService;
 import com.anthem53LMS.service.lectures.LecturesService;
 import com.anthem53LMS.service.notice.NoticeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 
 @Controller
@@ -23,6 +27,9 @@ public class indexController {
     private final LecturesService lecturesService;
     private final FileService fileService;
     private final NoticeService noticeService;
+
+    @Autowired
+    private ResourceLoader resourceLoader ;
 
     @GetMapping("/")
     public String index(Model model ,@LoginUser SessionUser user){
@@ -95,6 +102,29 @@ public class indexController {
         }
         System.out.println(uri);
 
+        Resource resource1 = resourceLoader.getResource("classpath:"+ "image/Naver_icon.png");
+        Resource resource2 = resourceLoader.getResource("classpath:"+ "image/Google_icon.png");
+        Resource resource3 = resourceLoader.getResource("classpath:"+ "image/Kakao_icon.png");
+
+
+        String result = "";
+        try{
+            String kakaoString = resource3.getURI().getPath();
+            kakaoString = kakaoString.substring(1, kakaoString.length());
+            model.addAttribute("NaverIcon",resource1.getURI().getPath());
+            model.addAttribute("GoogleIcon",resource2.getURI().getPath());
+            model.addAttribute("KakaoIcon",kakaoString);
+            System.out.println(resource1.getURI().getPath());
+            System.out.println(resource2.getURI().getPath());
+            System.out.println(kakaoString);
+
+
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+
+
 
         return "auth/login";
 
@@ -138,7 +168,8 @@ public class indexController {
         setLectureInfo(model, id);
         setUserInfo(model, sessionUser);
 
-
+        model.addAttribute("isLecturer",lecturesService.isLecturer(sessionUser,id));
+        model.addAttribute("isAttendee",lecturesService.isAttendee(sessionUser,id));
 
         return "lecture-inquiry";
 
@@ -173,6 +204,8 @@ public class indexController {
 
         model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(id));
         model.addAttribute("lecture_notice", lecturesService.findLectureNotice(id));
+        model.addAttribute("isLecturer",lecturesService.isLecturer(sessionUser,id));
+        model.addAttribute("isHome",true);
 
         return "lecture/lecture-home";
     }
@@ -182,6 +215,7 @@ public class indexController {
 
         setLectureInfo(model,lecture_id);
         setUserInfo(model,sessionUser);
+        model.addAttribute("isIntro",true);
 
         return "/lecture/lecture-introduction";
     }
@@ -207,7 +241,8 @@ public class indexController {
 
         model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(id));
         model.addAttribute("lecture_notice", lecturesService.findLectureNotice(id));
-
+        model.addAttribute("isLecturer",lecturesService.isLecturer(sessionUser,id));
+        model.addAttribute("isNotice",true);
         return "lecture/lecture-notice";
     }
 
@@ -222,7 +257,7 @@ public class indexController {
         }
 
         model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(id));
-
+        model.addAttribute("isNotice",true);
         return "lecture/lecture-notice-save";
     }
 
@@ -240,6 +275,8 @@ public class indexController {
 
         model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(lecture_id));
         model.addAttribute("lecture_notice",lecturesService.findLectureNoticeInfo(lecture_id,notice_id));
+        model.addAttribute("isLecturer",lecturesService.isLecturer(sessionUser,lecture_id));
+        model.addAttribute("isNotice",true);
 
         return "lecture/lecture-notice-inquiry";
     }
@@ -253,7 +290,8 @@ public class indexController {
 
         System.out.println("lecture_lesson_list call user");
         model.addAttribute("lecture_lesson",lecturesService.findLectureLesson(lecture_id));
-
+        model.addAttribute("isLecturer",lecturesService.isLecturer(sessionUser,lecture_id));
+        model.addAttribute("isLesson",true);
 
         return "lecture/lecture-lesson";
     }
@@ -268,6 +306,10 @@ public class indexController {
         model.addAttribute("prevLesson",lecturesService.findPrevLesson(lecture_id,lesson_id));
         model.addAttribute("nextLesson",lecturesService.findNextLesson(lecture_id,lesson_id));
 
+        model.addAttribute("isLecturer",lecturesService.isLecturer(sessionUser,lecture_id));
+        model.addAttribute("isLesson",true);
+
+
         return "lecture/lecture-lesson-inquiry";
 
     }
@@ -276,6 +318,7 @@ public class indexController {
     public String lecture_lesson_save (Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id){
         setUserInfo(model,sessionUser);
         setLectureInfo(model,lecture_id);
+        model.addAttribute("isLesson",true);
 
         return "lecture/lecture-lesson-save";
     }
@@ -286,6 +329,7 @@ public class indexController {
         setLectureInfo(model,lecture_id);
 
         model.addAttribute("lesson",lecturesService.findLessonInfo(lecture_id,lesson_id));
+        model.addAttribute("isLesson",true);
 
         return "lecture/lecture-lesson-update";
 
@@ -298,6 +342,9 @@ public class indexController {
         setLectureInfo(model,lecture_id);
 
         model.addAttribute("lecture_assignment", lecturesService.findLectureAssignment(lecture_id));
+        model.addAttribute("isLecturer",lecturesService.isLecturer(sessionUser,lecture_id));
+        model.addAttribute("isAssignment",true);
+
 
         return "lecture/lecture-assignment";
     }
@@ -306,7 +353,7 @@ public class indexController {
     public String lecture_assignment_save(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id){
         setUserInfo(model,sessionUser);
         setLectureInfo(model,lecture_id);
-
+        model.addAttribute("isAssignment",true);
         return "lecture/lecture-assignment-save";
     }
 
@@ -319,9 +366,9 @@ public class indexController {
         setLectureInfo(model,lecture_id);
 
         model.addAttribute("lectureAssignment",lecturesService.findLectureAssignmentInfo(assignment_id));
-
         model.addAttribute("submittedFile",fileService.findSubmittedFileList(assignment_id,sessionUser));
 
+        model.addAttribute("isAssignment",true);
 
         return "lecture/lecture-assignment-inquiry";
     }
@@ -334,6 +381,7 @@ public class indexController {
 
         //LectureAssignmentReponseDto
         model.addAttribute("lectureAssignment",lecturesService.findLectureAssignmentInfo(assignment_id));
+        model.addAttribute("isAssignment",true);
 
         return "lecture/lecture-assignment-update";
     }
@@ -349,6 +397,7 @@ public class indexController {
         model.addAttribute("lectureAssignment",lecturesService.findLectureAssignmentInfo(assignment_id));
         model.addAttribute("attendee",lecturesService.findAllSubmitfile(assignment_id));
 
+        model.addAttribute("isAssignment",true);
 
         return "lecture/lecture-assignment-submitted-file";
     }
@@ -432,6 +481,8 @@ public class indexController {
         //LectureTakeViewRespondDto
         model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(lecture_id));
     }
+
+
 
 
 }

@@ -11,9 +11,11 @@
             <div class="p-2 bd-highlight"> {{>layout/sidebar}}</div>
 
             <div class="d-flex flex-column flex-shrink-1  p-3 flex-fill" >
+                {{#isLecturer}}
                 <div class="d-flex justify-content-end">
                     <a type="button" href="/showLecture/register/take_course/{{lecture.id}}/notice/save" class="btn btn-success active  my-3"> 공지사항 등록</a>
                 </div>
+                {{/isLecturer}}
 
                 {{>lecture/lecture-layout/lecture-notice-board}}
 
