@@ -1,0 +1,31 @@
+{{>layout/header}}
+
+
+
+<!--여기서 본편-->
+<div   style="padding-top: 0px; ">
+    <!--여기서 본편 내용-->
+    <div class="container justify-content-around">
+        <h1 class=""> 알림 </h1>
+        <div class="list-group">
+
+
+            {{#messageList}}
+                <a href="{{link}}" class="list-group-item list-group-item-action" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{lecture_name}}</h5>
+                        <small>from {{modifiedDate}}</small>
+                    </div>
+                    <p class="mb-1">{{content}}</p>
+                </a>
+
+
+            {{/messageList}}
+
+        </div>
+
+    </div>
+</div>
+
+
+{{>layout/footer}}

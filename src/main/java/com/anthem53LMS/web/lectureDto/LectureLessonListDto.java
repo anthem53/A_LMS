@@ -14,7 +14,7 @@ public class LectureLessonListDto {
     private Integer order;
     private String title;
 
-    private LocalDateTime modifiedDate;
+    private String modifiedDate;
 
     public  LectureLessonListDto (LectureLesson lectureLesson){
         id = lectureLesson.getId();

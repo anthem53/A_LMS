@@ -6,6 +6,7 @@ import com.anthem53LMS.config.auth.dto.SessionUser;
 import com.anthem53LMS.service.file.FileService;
 import com.anthem53LMS.service.lectures.LecturesService;
 import com.anthem53LMS.service.notice.NoticeService;
+import com.anthem53LMS.web.Dto.NotificationListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 
 @Controller
@@ -32,17 +34,11 @@ public class indexController {
     private ResourceLoader resourceLoader ;
 
     @GetMapping("/")
-    public String index(Model model ,@LoginUser SessionUser user){
+    public String index(Model model ,@LoginUser SessionUser sessionUser){
 
         System.out.println("index!!");
 
-        if ( user == null){
-            System.out.println("guest");
-        }
-        else{
-            model.addAttribute("userName",user.getName());
-            System.out.println("User");
-        }
+        setUserInfo(model, sessionUser);
 
         model.addAttribute("lectures",lecturesService.findAllDesc());
         model.addAttribute("notices",noticeService.findAllDesc());
@@ -131,15 +127,9 @@ public class indexController {
     }
 
     @GetMapping("/showLecture")
-    public String lecture(Model model ,@LoginUser SessionUser user){
+    public String lecture(Model model ,@LoginUser SessionUser sessionUser){
 
-        if ( user == null){
-            System.out.println("guest");
-        }
-        else{
-            model.addAttribute("userName",user.getName());
-            System.out.println("User");
-        }
+        setUserInfo(model, sessionUser);
 
         model.addAttribute("lectures",lecturesService.findAllDesc());
 
@@ -147,17 +137,20 @@ public class indexController {
         return "lecture-show";
     }
 
+    @GetMapping("/notification")
+    public String notification(Model model , @LoginUser SessionUser sessionUser){
+
+        setUserInfo(model, sessionUser);
+
+        List<NotificationListResponseDto> temp =lecturesService.findUserNotification(sessionUser);
+        model.addAttribute("messageList", temp);
+
+        return "notification";
+    }
     @GetMapping("/openLecture")
-    public String lecture_open(Model model ,@LoginUser SessionUser user){
+    public String lecture_open(Model model ,@LoginUser SessionUser sessionUser){
 
-        if ( user == null){
-            System.out.println("guest");
-        }
-        else{
-            model.addAttribute("userName",user.getName());
-            System.out.println("User");
-        }
-
+        setUserInfo(model, sessionUser);
 
         return "lecture-open";
     }
@@ -194,13 +187,7 @@ public class indexController {
 
     @GetMapping("/showLecture/register/take_course/{id}")
     public String lecture_take (Model model, @LoginUser SessionUser sessionUser, @PathVariable Long id){
-        if ( sessionUser == null){
-            System.out.println("guest");
-        }
-        else{
-            model.addAttribute("userName",sessionUser.getName());
-            System.out.println("User");
-        }
+        setUserInfo(model, sessionUser);
 
         model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(id));
         model.addAttribute("lecture_notice", lecturesService.findLectureNotice(id));
@@ -220,6 +207,17 @@ public class indexController {
         return "/lecture/lecture-introduction";
     }
 
+    //showLecture/register/take_course/1/attendeeList
+    @GetMapping("/showLecture/register/take_course/{lecture_id}/attendeeList")
+    public String lecture_attendee(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id){
+
+        setLectureInfo(model,lecture_id);
+        setUserInfo(model,sessionUser);
+        model.addAttribute("attendee",lecturesService.findAttendeeList(lecture_id));
+
+        return "/lecture/lecture-attendee";
+    }
+
     @GetMapping("/showLecture/register/take_course/{lecture_id}/change")
     public String lecture_change(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id){
         setUserInfo(model,sessionUser);
@@ -231,13 +229,7 @@ public class indexController {
     }
     @GetMapping("/showLecture/register/take_course/{id}/notice")
     public String lecture_notice (Model model, @LoginUser SessionUser sessionUser, @PathVariable Long id){
-        if ( sessionUser == null){
-            System.out.println("guest");
-        }
-        else{
-            model.addAttribute("userName",sessionUser.getName());
-            System.out.println("User");
-        }
+        setUserInfo(model, sessionUser);
 
         model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(id));
         model.addAttribute("lecture_notice", lecturesService.findLectureNotice(id));
@@ -248,13 +240,7 @@ public class indexController {
 
     @GetMapping("/showLecture/register/take_course/{id}/notice/save")
     public String lecture_notice_save (Model model, @LoginUser SessionUser sessionUser, @PathVariable Long id){
-        if ( sessionUser == null){
-            System.out.println("guest");
-        }
-        else{
-            model.addAttribute("userName",sessionUser.getName());
-            System.out.println("User");
-        }
+        setUserInfo(model, sessionUser);
 
         model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(id));
         model.addAttribute("isNotice",true);
@@ -265,13 +251,7 @@ public class indexController {
     public String LectureNoticeInquiry(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id , @PathVariable Long notice_id ){
         System.out.println("LectureNoticeInquiry");
 
-        if ( sessionUser == null){
-            System.out.println("guest");
-        }
-        else{
-            model.addAttribute("userName",sessionUser.getName());
-            System.out.println("User");
-        }
+        setUserInfo(model, sessionUser);
 
         model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(lecture_id));
         model.addAttribute("lecture_notice",lecturesService.findLectureNoticeInfo(lecture_id,notice_id));
@@ -472,6 +452,7 @@ public class indexController {
         }
         else{
             model.addAttribute("userName",sessionUser.getName());
+            model.addAttribute("userPicture",sessionUser.getPicture());
             System.out.println("User");
         }
 

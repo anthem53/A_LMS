@@ -17,7 +17,7 @@ public class LectureRegisterListResponseDto {
     private Long id;
     private String title;
     private String Lecturer;
-    private LocalDateTime modifiedDate;
+    private String modifiedDate;
 
 
     public LectureRegisterListResponseDto (CourseRegistration courseRegistration){

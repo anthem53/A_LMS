@@ -3,6 +3,7 @@ package com.anthem53LMS.domain.user;
 
 import com.anthem53LMS.domain.BaseTimeEntity;
 import com.anthem53LMS.domain.courseRegistration.CourseRegistration;
+import com.anthem53LMS.domain.message.Message;
 import com.anthem53LMS.domain.studentAssignInfo.AssignmentCheck;
 import com.anthem53LMS.domain.subLecturer.SubLecturer;
 import com.anthem53LMS.domain.supportDomain.submitFile.SubmittedFile;
@@ -11,10 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @NoArgsConstructor
@@ -47,6 +45,10 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user")
     private List<SubmittedFile> SubmittedFile = new ArrayList<SubmittedFile>();
 
+
+
+    private LinkedHashMap<Long,Long> messageMap  = new LinkedHashMap<Long,Long>();;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
@@ -57,6 +59,8 @@ public class User extends BaseTimeEntity {
         this.email = email;
         this.picture = picture;
         this.role = role;
+
+
     }
 
     public User update(String name, String picture){

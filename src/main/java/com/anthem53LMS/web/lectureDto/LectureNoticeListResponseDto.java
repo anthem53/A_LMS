@@ -16,7 +16,7 @@ public class LectureNoticeListResponseDto {
     private Long id;
     private String title;
     private String author;
-    private LocalDateTime modifiedDate;
+    private String modifiedDate;
 
     public LectureNoticeListResponseDto (LectureNotice lectureNotice){
         this.id = lectureNotice.getId();

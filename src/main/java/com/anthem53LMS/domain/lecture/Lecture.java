@@ -5,6 +5,7 @@ import com.anthem53LMS.domain.courseRegistration.CourseRegistration;
 import com.anthem53LMS.domain.lecture_assignment.LectureAssignment;
 import com.anthem53LMS.domain.lecture_notice.LectureNotice;
 import com.anthem53LMS.domain.lesson.LectureLesson;
+import com.anthem53LMS.domain.message.Message;
 import com.anthem53LMS.domain.subLecturer.SubLecturer;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,6 +48,8 @@ public class Lecture extends BaseTimeEntity {
     List<LectureAssignment> lectureAssignment = new ArrayList<LectureAssignment>();
 
 
+    @OneToMany(mappedBy = "lecture", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+    List<Message> lectureMessageList = new ArrayList<Message>();
 
     @Builder
     public Lecture (String title, String outline, String lecturer, SubLecturer subLecturer ){

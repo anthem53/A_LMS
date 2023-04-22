@@ -16,7 +16,7 @@ public class LectureAssignmentListResponseDto {
 
     private Long id;
     private String title;
-    private LocalDateTime modifiedDate;
+    private String modifiedDate;
 
 
     public LectureAssignmentListResponseDto(LectureAssignment lectureAssignment){

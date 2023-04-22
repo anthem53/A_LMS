@@ -16,7 +16,7 @@ public class lecturesListResponseDto {
     private String title;
     private SubLecturer lecturer;
     //private String lecturer;
-    private LocalDateTime modifiedDate;
+    private String modifiedDate;
 
     public lecturesListResponseDto(Lecture lecture){
 

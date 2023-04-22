@@ -13,10 +13,13 @@ import com.anthem53LMS.domain.lecture_notice.LectureNotice;
 import com.anthem53LMS.domain.lecture_notice.LectureNoticeRepository;
 import com.anthem53LMS.domain.lesson.LectureLesson;
 import com.anthem53LMS.domain.lesson.LectureLessonRepository;
+import com.anthem53LMS.domain.message.Message;
+import com.anthem53LMS.domain.message.MessageRepository;
 import com.anthem53LMS.domain.studentAssignInfo.AssignmentCheck;
 import com.anthem53LMS.domain.supportDomain.submitFile.SubmittedFile;
 import com.anthem53LMS.domain.user.User;
 import com.anthem53LMS.domain.user.UserRepository;
+import com.anthem53LMS.service.file.FileService;
 import com.anthem53LMS.web.Dto.*;
 import com.anthem53LMS.web.lectureDto.*;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -40,7 +41,8 @@ public class LecturesService {
     private final LectureNoticeRepository lectureNoticeRepository;
     private final LectureLessonRepository lectureLessonRepository;
     private final LectureAsssignmentRepository lectureAsssignmentRepository;
-
+    private final MessageRepository messageRepository;
+    private final FileService fileService;
 
 
 
@@ -128,7 +130,12 @@ public class LecturesService {
         lecture.getLectureNotices().add(lectureNotice);
         lectureNotice.setLecture(lecture);
 
-        return lectureNoticeRepository.save(lectureNotice).getId();
+        Long notice_id = lectureNoticeRepository.save(lectureNotice).getId();
+        String tempLink = "/showLecture/register/take_course/"+String.valueOf(lecture_id)+"/notice/"+String.valueOf(notice_id);
+        Long message_id =saveMessage(lecture_id,"공지사항이 등록 되었습니다.",tempLink);
+
+
+        return notice_id;
 
     }
 
@@ -179,8 +186,12 @@ public class LecturesService {
         lectureLesson.setLecture(lecture);
         lectureLesson.setSequence(lecture.getLectureLessons().size());
 
+        Long lesson_id =lectureLessonRepository.save(lectureLesson).getId();
 
-        return lectureLessonRepository.save(lectureLesson).getId();
+        String tmepLink = "http://localhost:8080/showLecture/register/take_course/"+String.valueOf(lecture_id) +"/lesson/"+String.valueOf(lesson_id);
+        saveMessage(lecture_id,"새로운 수업이 등록 되었습니다.", tmepLink);
+
+        return lesson_id;
     }
 
     @Transactional
@@ -233,7 +244,11 @@ public class LecturesService {
         System.out.println("attendee num ");
         System.out.println(lecture.getCurrent_Attendees().size());
 
-        return lectureAsssignmentRepository.save(lectureAssignment).getId();
+        Long assign_id = lectureAsssignmentRepository.save(lectureAssignment).getId();
+        String tempLink = "http://localhost:8080/showLecture/register/take_course/"+String.valueOf(lecture_id)+"/assignment/"+String.valueOf(assign_id);
+        saveMessage(lecture_id,"새로운 과제가 등록 되었습니다.",tempLink);
+
+        return assign_id;
     }
 
     @Transactional
@@ -355,6 +370,131 @@ public class LecturesService {
         return false;
     }
 
+    @Transactional
+    public Long saveMessage (Long lecture_id, String content, String link){
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
+        Message message = new Message(lecture,content, link);
+
+        Long message_id = messageRepository.save(message).getId();
+        for (CourseRegistration attendeesInfoItem : lecture.getCurrent_Attendees()){
+
+            User attendee = attendeesInfoItem.getUser();
+            LinkedHashMap<Long,Long>  tempMap= attendee.getMessageMap();
+
+            if (tempMap.size() > 10 ){
+                for (Long key : tempMap.keySet()) {
+                    tempMap.remove(key);
+                    break;
+                }
+            }
+            tempMap.put(lecture_id,message_id);
+        }
+
+        return message_id;
+
+    }
+
+    @Transactional
+    public List<NotificationListResponseDto> findUserNotification (SessionUser sessionUser){
+
+        User user = getUserBySessionUser(sessionUser);
+
+        List<NotificationListResponseDto> result = new ArrayList<NotificationListResponseDto>();
+        LinkedHashMap<Long,Long>  tempMap= user.getMessageMap();
+        for (Long key : tempMap.keySet()) {
+            Long value = tempMap.get(key);
+            Lecture lecture = lectureRepository.findById(key).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
+            Message message = messageRepository.findById(value).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
+
+
+            NotificationListResponseDto temp = new NotificationListResponseDto(message);
+            result.add(temp);
+        }
+
+        return result;
+
+    }
+
+    @Transactional
+    public List<LectureAttendeeListResponseDto> findAttendeeList (Long lecture_id){
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
+
+        return lecture.getCurrent_Attendees().stream().map(LectureAttendeeListResponseDto::new).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public Long lectureLeave(Long lecture_id, SessionUser sessionUser){
+
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
+        User user = getUserBySessionUser(sessionUser);
+
+        for (LectureAssignment lectureAssignment : lecture.getLectureAssignment()){
+
+            for (SubmittedFile sf : lectureAssignment.getSubmittedFileSet()){
+                if (sf.getUser() == user){
+                    List<FileEntity> fileList = sf.getFileList();
+                    while( fileList.isEmpty() != true){
+                        FileEntity fileEntity = fileList.remove(0);
+                        fileService.fileDelete(fileEntity.getId());
+                    }
+                    break;
+                }
+                else{
+                    ;
+                }
+
+            }
+        }
+
+        System.out.println(user.getCurrent_Lectures().size());
+        CourseRegistration tempCr = null;
+
+        for (CourseRegistration cr : user.getCurrent_Lectures()) {
+            if (cr.getLecture() == lecture) {
+                tempCr = cr;
+                break;
+            }
+        }
+
+        user.getCurrent_Lectures().remove(tempCr);
+        lecture.getCurrent_Attendees().remove(tempCr);
+        courseRegistrationRepository.delete(tempCr);
+
+        System.out.println(user.getCurrent_Lectures().size());
+
+        System.out.println("service is finished");
+        return lecture_id;
+
+    }
+
+    @Transactional
+    public Long lectureKick(Long lecture_id, Long user_id){
+
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
+        User user = userRepository.findById(user_id).orElseThrow(()-> new IllegalArgumentException("There is no User that what you find."));
+
+        for (LectureAssignment lectureAssignment : lecture.getLectureAssignment()){
+
+            for (SubmittedFile sf : lectureAssignment.getSubmittedFileSet()){
+                if (sf.getUser() == user){
+                    List<FileEntity> fileList = sf.getFileList();
+                    while( fileList.isEmpty() != true){
+                        FileEntity fileEntity = fileList.remove(0);
+                        fileService.fileDelete(fileEntity.getId());
+                    }
+                    break;
+                }
+                else{
+                    ;
+                }
+
+            }
+        }
+
+        return lecture_id;
+
+    }
+
     private String processYoutubeLink(String link){
         String youtubeVideoCode = parsingYoutubeVideoUniqueCode(link);
         String result = "https://www.youtube.com/embed/"+youtubeVideoCode;
@@ -403,6 +543,8 @@ public class LecturesService {
         return "test";
     }
 
+
+
     private User getUserBySessionUser(SessionUser sessionUser){
         String userEmail = sessionUser.getEmail();
         User user = userRepository.findByEmail(userEmail).orElseThrow(()-> new IllegalArgumentException("해당 유저가 없습니다. Email ="+userEmail));
@@ -410,3 +552,4 @@ public class LecturesService {
         return user;
     }
 }
+

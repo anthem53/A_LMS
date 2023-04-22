@@ -19,7 +19,7 @@ public class LectureTakeViewRespondDto {
     private String picture;
     private String outline;
 
-    private LocalDateTime modifiedDate;
+    private String modifiedDate;
 
     public LectureTakeViewRespondDto(Lecture lecture){
         id = lecture.getId();

@@ -13,7 +13,7 @@ public class NoticesListResponseDto {
     private Long id;
     private String title;
     private String lecturer;
-    private LocalDateTime modifiedDate;
+    private String modifiedDate;
 
     public NoticesListResponseDto(Notice notice){
 

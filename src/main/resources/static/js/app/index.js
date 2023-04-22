@@ -65,8 +65,12 @@ var main = {
            _this.lectureAssignmentUpdate();
         });
         $('#btn-lecture-lesson-update').on('click',function(){
-                   _this.lectureLessonUpdate();
-                });
+           _this.lectureLessonUpdate();
+        });
+
+        $('#btn-lecture-leave').on('click',function(){
+            _this.lectureLeave();
+        });
 
         document.querySelectorAll('#btn-comment-update').forEach(function (item) {
             item.addEventListener('click', function () { // 버튼 클릭 이벤트 발생시
@@ -75,13 +79,30 @@ var main = {
             });
         });
     },
+    lectureLeave : function(){
+
+
+        var url = '/api/v1/lecture-leave/'+$('#lectureId').val()
+
+
+        $.ajax({
+             type: 'POST',
+             url: url,
+             contentType:'application/json; charset=utf-8'
+         }).done(function() {
+             alert('수업에서 탈퇴하셨습니다.');
+             window.location.href = '/';
+         }).fail(function (error) {
+             alert(JSON.stringify(error));
+         });
+    },
     lectureLessonUpdate : function (){
         var data = {
                         title: $('#title').val(),
                         link: $('#videoLink').val()
                     };
          var url = '/api/v1/lecture-lesson-update/'+$('#lessonId').val()
-         alert(url)
+
          $.ajax({
              type: 'POST',
              url: url,
@@ -103,7 +124,7 @@ var main = {
                     };
 
         var url = '/api/v1/lecture-assignment-update/'+$('#AssignmentId').val()
-        alert(url)
+
         $.ajax({
             type: 'POST',
             url: url,
@@ -124,7 +145,7 @@ var main = {
                 };
 
             var url = '/api/v1/lecture-update/'+$('#lectureId').val()
-            alert(url)
+
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -140,14 +161,14 @@ var main = {
 
     },
     noticeUpdate : function (){
-            alert("noticeUpdate")
+
             var data = {
                 title: $('#title').val(),
                 content: $('#content').val()
             };
 
             var url = '/api/v1/notice-update/'+$('#noticeId').val()
-            alert(url)
+
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -164,7 +185,7 @@ var main = {
     },
     lectureAssignmentSubmittedFileDownload : function(file_id){
         var url = '/api/v1/file-download/' + file_id;
-        alert(url)
+
 
         $.ajax({
            type: 'POST',
@@ -206,7 +227,7 @@ var main = {
         }
 
         var url = '/api/v1/file-save/' + $('#assignmentId').val();
-        alert(url)
+
         $.ajax({
             type: 'POST',
             url: url,
@@ -236,7 +257,8 @@ var main = {
             dataType: 'json',
             contentType:'application/json; charset=utf-8',
             data: JSON.stringify(data)
-        }).done(function() {
+        }).done(function(data) {
+
             alert('공지사항이 등록되었습니다.');
             window.location.href = '/notice';
         }).fail(function (error) {
@@ -245,7 +267,7 @@ var main = {
 
     },
     lectureAssignmentSave : function (){
-        alert("lectureAssignmentSave");
+
 
         var data = {
             title : $('#title').val(),
@@ -295,7 +317,7 @@ var main = {
 
     },
     lectureNoticeRegistration : function() {
-        alert("lectureNoticeRegistration")
+
 
         var data = {
             title : $('#title').val(),

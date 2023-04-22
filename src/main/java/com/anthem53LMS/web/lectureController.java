@@ -98,4 +98,11 @@ public class lectureController {
         return lecturesService.lectureLessonUpdate(requestDto,lesson_id);
     }
 
+    @PostMapping("/api/v1/lecture-leave/{lecture_id}")
+    public Long lecture_leave(@LoginUser SessionUser sessionUser, @PathVariable Long lecture_id){
+
+        System.out.println("lecture_leave call");
+        return lecturesService.lectureLeave(lecture_id, sessionUser);
+    }
+
 }

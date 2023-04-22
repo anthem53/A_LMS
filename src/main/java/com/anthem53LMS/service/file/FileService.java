@@ -139,6 +139,8 @@ public class FileService {
     }
 
 
+
+
     @Transactional
     public void fileDownload(Long file_id, HttpServletResponse response) throws IOException{
         FileEntity fileEntity = fileEntityRepository.findById(file_id).orElseThrow(() -> new IllegalArgumentException("해당 파일이 없습니다."));
