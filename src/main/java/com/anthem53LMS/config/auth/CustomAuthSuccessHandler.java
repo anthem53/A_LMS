@@ -54,17 +54,13 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
             uri = prevPage;
             System.out.println(2);
             // 회원가입 - 로그인으로 넘어온 경우 "/"로 redirect
-            /*if (prevPage.contains("/auth/join")) {
+            if (prevPage.contains("/login")) {
                 uri = "/";
             } else {
                 uri = prevPage;
-            }*/
+            }
         }
         System.out.println(uri);
-        //uri = prevPage;
-        if (uri.equals("http://localhost:8080/login")){
-            uri = "http://localhost:8080/";
-        }
         redirectStrategy.sendRedirect(request, response, uri);
 
 
