@@ -98,29 +98,6 @@ public class indexController {
         }
         System.out.println(uri);
 
-        Resource resource1 = resourceLoader.getResource("classpath:"+ "image/Naver_icon.png");
-        Resource resource2 = resourceLoader.getResource("classpath:"+ "image/Google_icon.png");
-        Resource resource3 = resourceLoader.getResource("classpath:"+ "image/Kakao_icon.png");
-
-
-        String result = "";
-        try{
-            String kakaoString = resource3.getURI().getPath();
-            kakaoString = kakaoString.substring(1, kakaoString.length());
-            model.addAttribute("NaverIcon",resource1.getURI().getPath());
-            model.addAttribute("GoogleIcon",resource2.getURI().getPath());
-            model.addAttribute("KakaoIcon",kakaoString);
-            System.out.println(resource1.getURI().getPath());
-            System.out.println(resource2.getURI().getPath());
-            System.out.println(kakaoString);
-
-
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-
-
 
         return "auth/login";
 
