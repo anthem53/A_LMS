@@ -49,6 +49,9 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         if (savedRequest != null) {
             uri = savedRequest.getRedirectUrl();
             System.out.println(1);
+            if (uri.contains("login")){
+                uri="/";
+            }
         } else if (prevPage != null && !prevPage.equals("")) {
 
             uri = prevPage;
@@ -60,6 +63,7 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
                 uri = prevPage;
             }
         }
+
         System.out.println(uri);
         redirectStrategy.sendRedirect(request, response, uri);
 
