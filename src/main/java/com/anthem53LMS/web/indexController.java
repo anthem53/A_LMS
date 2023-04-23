@@ -165,10 +165,9 @@ public class indexController {
     @GetMapping("/showLecture/register/take_course/{id}")
     public String lecture_take (Model model, @LoginUser SessionUser sessionUser, @PathVariable Long id){
         setUserInfo(model, sessionUser);
-
+        setLecturerAttendee(model, sessionUser,id);
         model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(id));
         model.addAttribute("lecture_notice", lecturesService.findLectureNotice(id));
-        model.addAttribute("isLecturer",lecturesService.isLecturer(sessionUser,id));
         model.addAttribute("isHome",true);
 
         return "lecture/lecture-home";
@@ -179,6 +178,8 @@ public class indexController {
 
         setLectureInfo(model,lecture_id);
         setUserInfo(model,sessionUser);
+        setLecturerAttendee(model, sessionUser,lecture_id);
+
         model.addAttribute("isIntro",true);
 
         return "lecture/lecture-introduction";
@@ -190,6 +191,7 @@ public class indexController {
 
         setLectureInfo(model,lecture_id);
         setUserInfo(model,sessionUser);
+        setLecturerAttendee(model, sessionUser,lecture_id);
         model.addAttribute("attendee",lecturesService.findAttendeeList(lecture_id));
 
         return "lecture/lecture-attendee";
@@ -199,7 +201,7 @@ public class indexController {
     public String lecture_change(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id){
         setUserInfo(model,sessionUser);
         setLectureInfo(model,lecture_id);
-
+        setLecturerAttendee(model, sessionUser,lecture_id);
 
 
         return "lecture-update";
@@ -207,10 +209,11 @@ public class indexController {
     @GetMapping("/showLecture/register/take_course/{id}/notice")
     public String lecture_notice (Model model, @LoginUser SessionUser sessionUser, @PathVariable Long id){
         setUserInfo(model, sessionUser);
+        setLecturerAttendee(model, sessionUser,id);
 
         model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(id));
         model.addAttribute("lecture_notice", lecturesService.findLectureNotice(id));
-        model.addAttribute("isLecturer",lecturesService.isLecturer(sessionUser,id));
+
         model.addAttribute("isNotice",true);
         return "lecture/lecture-notice";
     }
@@ -218,6 +221,7 @@ public class indexController {
     @GetMapping("/showLecture/register/take_course/{id}/notice/save")
     public String lecture_notice_save (Model model, @LoginUser SessionUser sessionUser, @PathVariable Long id){
         setUserInfo(model, sessionUser);
+        setLecturerAttendee(model, sessionUser,id);
 
         model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(id));
         model.addAttribute("isNotice",true);
@@ -226,13 +230,13 @@ public class indexController {
 
     @GetMapping("/showLecture/register/take_course/{lecture_id}/notice/{notice_id}")
     public String LectureNoticeInquiry(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id , @PathVariable Long notice_id ){
-        System.out.println("LectureNoticeInquiry");
 
         setUserInfo(model, sessionUser);
+        setLecturerAttendee(model, sessionUser,lecture_id);
 
         model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(lecture_id));
         model.addAttribute("lecture_notice",lecturesService.findLectureNoticeInfo(lecture_id,notice_id));
-        model.addAttribute("isLecturer",lecturesService.isLecturer(sessionUser,lecture_id));
+
         model.addAttribute("isNotice",true);
 
         return "lecture/lecture-notice-inquiry";
@@ -244,6 +248,7 @@ public class indexController {
 
         setUserInfo(model, sessionUser);
         setLectureInfo(model,lecture_id);
+        setLecturerAttendee(model, sessionUser,lecture_id);
 
         System.out.println("lecture_lesson_list call user");
         model.addAttribute("lecture_lesson",lecturesService.findLectureLesson(lecture_id));
@@ -258,12 +263,13 @@ public class indexController {
         System.out.println("lecture_lesson_inquiry");
         setUserInfo(model, sessionUser);
         setLectureInfo(model,lecture_id);
+        setLecturerAttendee(model, sessionUser,lecture_id);
 
         model.addAttribute("lesson",lecturesService.findLessonInfo(lecture_id,lesson_id));
         model.addAttribute("prevLesson",lecturesService.findPrevLesson(lecture_id,lesson_id));
         model.addAttribute("nextLesson",lecturesService.findNextLesson(lecture_id,lesson_id));
 
-        model.addAttribute("isLecturer",lecturesService.isLecturer(sessionUser,lecture_id));
+
         model.addAttribute("isLesson",true);
 
 
@@ -275,6 +281,8 @@ public class indexController {
     public String lecture_lesson_save (Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id){
         setUserInfo(model,sessionUser);
         setLectureInfo(model,lecture_id);
+        setLecturerAttendee(model, sessionUser,lecture_id);
+
         model.addAttribute("isLesson",true);
 
         return "lecture/lecture-lesson-save";
@@ -284,6 +292,7 @@ public class indexController {
     public String lecture_lesson_update(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id, @PathVariable Long lesson_id){
         setUserInfo(model, sessionUser);
         setLectureInfo(model,lecture_id);
+        setLecturerAttendee(model, sessionUser,lecture_id);
 
         model.addAttribute("lesson",lecturesService.findLessonInfo(lecture_id,lesson_id));
         model.addAttribute("isLesson",true);
@@ -297,6 +306,7 @@ public class indexController {
     public String lecture_assignment(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id){
         setUserInfo(model,sessionUser);
         setLectureInfo(model,lecture_id);
+        setLecturerAttendee(model, sessionUser,lecture_id);
 
         model.addAttribute("lecture_assignment", lecturesService.findLectureAssignment(lecture_id));
         model.addAttribute("isLecturer",lecturesService.isLecturer(sessionUser,lecture_id));
@@ -310,6 +320,8 @@ public class indexController {
     public String lecture_assignment_save(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id){
         setUserInfo(model,sessionUser);
         setLectureInfo(model,lecture_id);
+        setLecturerAttendee(model, sessionUser,lecture_id);
+
         model.addAttribute("isAssignment",true);
         return "lecture/lecture-assignment-save";
     }
@@ -317,8 +329,7 @@ public class indexController {
     @GetMapping("/showLecture/register/take_course/{lecture_id}/assignment/{assignment_id}")
     public String lecture_assignment_inquiry(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id , @PathVariable Long assignment_id){
 
-        System.out.println("lecture_assignment_inquiry");
-
+        setLecturerAttendee(model, sessionUser,lecture_id);
         setUserInfo(model,sessionUser);
         setLectureInfo(model,lecture_id);
 
@@ -335,6 +346,7 @@ public class indexController {
 
         setUserInfo(model,sessionUser);
         setLectureInfo(model,lecture_id);
+        setLecturerAttendee(model, sessionUser,lecture_id);
 
         //LectureAssignmentReponseDto
         model.addAttribute("lectureAssignment",lecturesService.findLectureAssignmentInfo(assignment_id));
@@ -346,8 +358,7 @@ public class indexController {
     @GetMapping("/showLecture/register/take_course/{lecture_id}/assignment/{assignment_id}/submittedList")
     public String lecture_assignment_submit_list(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id , @PathVariable Long assignment_id){
 
-        System.out.println("lecture_assignment_submit_list");
-
+        setLecturerAttendee(model, sessionUser,lecture_id);
         setUserInfo(model,sessionUser);
         setLectureInfo(model,lecture_id);
 
@@ -431,6 +442,7 @@ public class indexController {
             model.addAttribute("userName",sessionUser.getName());
             model.addAttribute("userPicture",sessionUser.getPicture());
             System.out.println("User");
+
         }
 
     }
@@ -440,7 +452,10 @@ public class indexController {
         model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(lecture_id));
     }
 
-
+    private void setLecturerAttendee(Model model, SessionUser sessionUser, Long lecture_id){
+        model.addAttribute("isLecturer",lecturesService.isLecturer(sessionUser,lecture_id));
+        model.addAttribute("isAttendee",lecturesService.isAttendee(sessionUser,lecture_id));
+    }
 
 
 }
