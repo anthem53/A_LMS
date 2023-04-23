@@ -181,7 +181,7 @@ public class indexController {
         setUserInfo(model,sessionUser);
         model.addAttribute("isIntro",true);
 
-        return "/lecture/lecture-introduction";
+        return "lecture/lecture-introduction";
     }
 
     //showLecture/register/take_course/1/attendeeList
@@ -192,7 +192,7 @@ public class indexController {
         setUserInfo(model,sessionUser);
         model.addAttribute("attendee",lecturesService.findAttendeeList(lecture_id));
 
-        return "/lecture/lecture-attendee";
+        return "lecture/lecture-attendee";
     }
 
     @GetMapping("/showLecture/register/take_course/{lecture_id}/change")
