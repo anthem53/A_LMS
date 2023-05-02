@@ -242,6 +242,22 @@ public class indexController {
         return "lecture/lecture-notice-inquiry";
     }
 
+    @GetMapping("/showLecture/register/take_course/{lecture_id}/notice/{notice_id}/update")
+    public String LectureNoticeUpdate(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id , @PathVariable Long notice_id ){
+
+        setUserInfo(model, sessionUser);
+        setLecturerAttendee(model, sessionUser,lecture_id);
+
+        model.addAttribute("lecture", lecturesService.findLectureTitleAndContent(lecture_id));
+        model.addAttribute("lecture_notice",lecturesService.findLectureNoticeInfo(lecture_id,notice_id));
+
+        model.addAttribute("isNotice",true);
+
+        return "lecture/lecture-notice-update";
+    }
+
+
+
     @GetMapping("/showLecture/register/take_course/{lecture_id}/lesson")
     public String lecture_lesson_list (Model model, @LoginUser SessionUser sessionUser, @PathVariable Long lecture_id ){
         System.out.println("lecture_lesson_list");

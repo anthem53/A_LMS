@@ -5,11 +5,13 @@ import com.anthem53LMS.domain.lecture.Lecture;
 import com.anthem53LMS.domain.subLecturer.SubLecturer;
 import com.anthem53LMS.domain.user.User;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class lecturesSaveRequestDto {
     private Long id;
     private String title;
@@ -19,10 +21,6 @@ public class lecturesSaveRequestDto {
     private SubLecturer subLecturer;
 
 
-
-    public lecturesSaveRequestDto(){
-
-    }
     public lecturesSaveRequestDto(String title, String outline){
 
         this.title=title;

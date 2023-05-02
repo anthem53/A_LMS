@@ -34,8 +34,7 @@ public class LectureAssignment extends BaseTimeEntity {
     @JoinColumn(name="Lecture_id")
     private Lecture lecture = null;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private Set<AssignmentCheck>  attendee = new HashSet<AssignmentCheck>();
+
     @OneToMany(mappedBy = "lectureAssignment", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Set<SubmittedFile> submittedFileSet = new HashSet<SubmittedFile>();
 

@@ -50,4 +50,10 @@ public class LectureNotice extends BaseTimeEntity {
 
     }
 
+    public void update(LectureNoticeSaveRequestDto requestDto){
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+
+    }
+
 }

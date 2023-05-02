@@ -72,12 +72,123 @@ var main = {
             _this.lectureLeave();
         });
 
+        $('#btn-notice-delete').on("click",function(){
+            _this.noticeDelete();
+        });
+        $('#btn-letureLesson-delete').on("click", function(){
+            _this.lectureLessonDelete();
+        });
+        $('#btn-lecture-notice-delete').on('click',function(){
+            _this.lectureNoticeDelete();
+        });
+        $('#btn-assignment-delete').on('click',function(){
+            _this.lectureAssignmentDelete();
+        });
+        $('#btn-lecture-notice-update').on('click',function(){
+            _this.lectureNoticeUpdate();
+        });
+
         document.querySelectorAll('#btn-comment-update').forEach(function (item) {
             item.addEventListener('click', function () { // 버튼 클릭 이벤트 발생시
                 const form = this.closest('form'); // btn의 가장 가까운 조상의 Element(form)를 반환 (closest)
                 _this.commentUpdate(form); // 해당 form으로 업데이트 수행
             });
         });
+    },
+    lectureNoticeUpdate : function(){
+        var lecture_id = $('#lectureId').val();
+        var lectureNotice_id = $('#lectureNoticeId').val();
+
+        var data = {
+            title : $('#title').val(),
+            content : $('#content').val()
+        }
+
+        var redirectUrl = '/showLecture/register/take_course/'+lecture_id+'/notice/'+lectureNotice_id;
+        var url = "/api/v1/lecture-notice-update/"+lectureNotice_id;
+        $.ajax({
+             type: 'POST',
+             url: url,
+             dataType: 'json',
+             contentType:'application/json; charset=utf-8',
+             data: JSON.stringify(data)
+         }).done(function() {
+             alert('강의 공지 정보가 변경되었습니다.');
+             window.location.href = '/showLecture/register/take_course/'+$('#lectureId').val()+"/notice";
+         }).fail(function (error) {
+             alert(JSON.stringify(error));
+         });
+
+    },
+    lectureAssignmentDelete : function(){
+        var lecture_id = $('#lectureId').val();
+        var lectureAssignment_id = $('#assignmentId').val();
+
+        var redirectUrl = '/showLecture/register/take_course/'+lecture_id+'/assignment'
+        $.ajax({
+            type: 'DELETE',
+            url: '/api/v1/lecture/'+lecture_id+'/assignment/delete/'+lectureAssignment_id,
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8'
+        }).done(function() {
+            alert('과제가 삭제되었습니다.');
+            window.location.href = redirectUrl;
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+
+    },
+    lectureNoticeDelete : function(){
+        var lecture_id = $('#lectureId').val();
+        var lectureNotice_id = $('#lectureNoticeId').val();
+
+        var redirectUrl = '/showLecture/register/take_course/'+lecture_id+'/notice'
+        $.ajax({
+            type: 'DELETE',
+            url: '/api/v1/lecture/'+lecture_id+'/lecture_notice/delete/'+lectureNotice_id,
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8'
+        }).done(function() {
+            alert('강의내 공지가 삭제되었습니다.');
+            window.location.href = redirectUrl;
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    lectureLessonDelete : function(){
+        var lesson_id = $('#lessonId').val();
+        var lecture_id = $('#lectureId').val();
+
+        var redirectUrl = '/showLecture/register/take_course/'+lecture_id+'/lesson'
+
+        $.ajax({
+            type: 'DELETE',
+            url: '/api/v1/lecture/'+lecture_id+'/lesson/delete/'+lesson_id,
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8'
+        }).done(function() {
+            alert('수업이 삭제되었습니다.');
+            window.location.href = redirectUrl;
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+
+
+    },
+    noticeDelete : function(){
+        var id = $('#noticeId').val();
+
+        $.ajax({
+                    type: 'DELETE',
+                    url: '/api/v1/notice-delete/'+id,
+                    dataType: 'json',
+                    contentType:'application/json; charset=utf-8'
+                }).done(function() {
+                    alert('공지사항이 삭제되었습니다.');
+                    window.location.href = '/notice';
+                }).fail(function (error) {
+                    alert(JSON.stringify(error));
+                });
     },
     lectureLeave : function(){
 
@@ -123,7 +234,7 @@ var main = {
                         content: $('#content').val()
                     };
 
-        var url = '/api/v1/lecture-assignment-update/'+$('#AssignmentId').val()
+        var url = '/api/v1/lecture-assignment-update/'+$('#assignmentId').val()
 
         $.ajax({
             type: 'POST',

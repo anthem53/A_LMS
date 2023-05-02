@@ -9,7 +9,7 @@
 
         <div class="d-flex flex-row mb-3" >
             <div class="p-2 bd-highlight"> {{>layout/sidebar}}</div>
-            <input type="hidden" id="lectureId2" value="{{lecture.id}}">
+            <input type="hidden" id="lessonId" value="{{lesson.id}}">
 
             <div class="d-flex flex-column flex-shrink-1  p-3 flex-fill" >
                 <div class="d-flex flex-row mb-3 justify-content-between" >
@@ -42,6 +42,7 @@
                 <div class="d-flex flex-row mb-3" >
                     <a href="/showLecture/register/take_course/{{lecture.id}}/lesson/" role="button" class="btn btn-secondary"> 수업목록</a>
                     <a href="/showLecture/register/take_course/{{lecture.id}}/lesson/{{lesson.id}}/update" role="button" class="btn btn-secondary"> 수정</a>
+                    <button type="button" class="btn btn-primary" id="btn-letureLesson-delete"> 삭제</button>
                 </div>
             </div>
 

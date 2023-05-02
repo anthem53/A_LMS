@@ -11,12 +11,10 @@ import com.anthem53LMS.web.lectureDto.LectureLessonSaveRequestDto;
 import com.anthem53LMS.web.lectureDto.LectureNoticeSaveRequestDto;
 import com.anthem53LMS.web.lectureDto.LectureTakeViewRespondDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PreDestroy;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -97,12 +95,35 @@ public class lectureController {
 
         return lecturesService.lectureLessonUpdate(requestDto,lesson_id);
     }
+    @PostMapping("/api/v1/lecture-notice-update/{notice_id}")
+    public Long update_lecture_notice(@RequestBody LectureNoticeSaveRequestDto requestDto, @LoginUser SessionUser sessionUser, @PathVariable Long notice_id){
+        return lecturesService.lectureNoticeUpdate(requestDto, sessionUser, notice_id);
+
+    }
 
     @PostMapping("/api/v1/lecture-leave/{lecture_id}")
     public Long lecture_leave(@LoginUser SessionUser sessionUser, @PathVariable Long lecture_id){
 
         System.out.println("lecture_leave call");
         return lecturesService.lectureLeave(lecture_id, sessionUser);
+    }
+
+    @DeleteMapping("/api/v1/lecture/{lecture_id}/lesson/delete/{lesson_id}")
+    public Long delete_lecture_lesson(@PathVariable Long lecture_id, @PathVariable Long lesson_id){
+        lecturesService.deleteLesson(lecture_id, lesson_id);
+        return lesson_id;
+    }
+
+    @DeleteMapping("/api/v1/lecture/{lecture_id}/assignment/delete/{assignment_id}")
+    public Long delete_lecture_assignment(@PathVariable Long lecture_id, @PathVariable Long assignment_id){
+        lecturesService.deleteLectureAssignment(lecture_id, assignment_id);
+        return assignment_id;
+    }
+
+    @DeleteMapping("/api/v1/lecture/{lecture_id}/lecture_notice/delete/{notice_id}")
+    public Long delete_lecture_notice(@PathVariable Long lecture_id, @PathVariable Long notice_id){
+        lecturesService.deleteLectureNotice(lecture_id, notice_id);
+        return notice_id;
     }
 
 }

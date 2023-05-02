@@ -23,10 +23,9 @@
                 </div>
 
 
-
+                {{#isAttendee}}
                 <h2> 제출한 파일 </h2>
                 <ol class="list-group form-group row mb-4">
-
                     {{#submittedFile}}
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <input type="hidden" id="submitFile--{{id}} value={{id}}">
@@ -57,13 +56,16 @@
                         <button type="button" class="btn btn-primary" id="btn-lecture-assignment-submit">파일 업로드</button>
                     </div>
                 </div>
-
+                {{/isAttendee}}
 
 
                 <div class="d-flex flex-row mb-3" >
                     <a href="/showLecture/register/take_course/{{lecture.id}}/assignment" role="button" class="btn btn-secondary">과제목록</a>
+                    {{#isLecturer}}
                     <a href="/showLecture/register/take_course/{{lecture.id}}/assignment/{{lectureAssignment.id}}/submittedList" role="button" class="btn btn-secondary">제출현황</a>
                     <a href="/showLecture/register/take_course/{{lecture.id}}/assignment/{{lectureAssignment.id}}/change" role="button" class="btn btn-secondary">수정</a>
+                    <button type="button" class="btn btn-primary" id="btn-assignment-delete"> 삭제</button>
+                    {{/isLecturer}}
 
 
                 </div>

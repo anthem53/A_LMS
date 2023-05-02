@@ -51,4 +51,14 @@ public class NoticeService {
 
         return notice.getId();
     }
+
+    @Transactional
+    public Long delete(Long notice_id){
+        Notice notice = noticeRepository.findById(notice_id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
+
+        noticeRepository.delete(notice);
+
+        return notice_id;
+
+    }
 }

@@ -1,6 +1,7 @@
 package com.anthem53LMS.service.lectures;
 
 
+import com.anthem53LMS.config.auth.LoginUser;
 import com.anthem53LMS.config.auth.dto.SessionUser;
 import com.anthem53LMS.domain.courseRegistration.CourseRegistration;
 import com.anthem53LMS.domain.courseRegistration.CourseRegistrationRepository;
@@ -17,6 +18,7 @@ import com.anthem53LMS.domain.message.Message;
 import com.anthem53LMS.domain.message.MessageRepository;
 import com.anthem53LMS.domain.studentAssignInfo.AssignmentCheck;
 import com.anthem53LMS.domain.supportDomain.submitFile.SubmittedFile;
+import com.anthem53LMS.domain.supportDomain.submitFile.SubmittedFileRepository;
 import com.anthem53LMS.domain.user.User;
 import com.anthem53LMS.domain.user.UserRepository;
 import com.anthem53LMS.service.file.FileService;
@@ -25,6 +27,8 @@ import com.anthem53LMS.web.lectureDto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.File;
 import java.net.*;
@@ -43,6 +47,8 @@ public class LecturesService {
     private final LectureAsssignmentRepository lectureAsssignmentRepository;
     private final MessageRepository messageRepository;
     private final FileService fileService;
+
+    private final SubmittedFileRepository submittedFileRepository;
 
 
 
@@ -232,9 +238,6 @@ public class LecturesService {
             User attendee = attendeesInfoItem.getUser();
             AssignmentCheck assignmentCheck = new AssignmentCheck(lectureAssignment,attendee);
             SubmittedFile submittedFile = new SubmittedFile(lectureAssignment, attendee);
-
-            attendee.getCurrent_Assignment().add(assignmentCheck);
-            lectureAssignment.getAttendee().add(assignmentCheck);
 
             attendee.getSubmittedFile().add(submittedFile);
             lectureAssignment.getSubmittedFileSet().add(submittedFile);
@@ -494,6 +497,65 @@ public class LecturesService {
         return lecture_id;
 
     }
+
+    @Transactional
+    public Long lectureNoticeUpdate( LectureNoticeSaveRequestDto requestDto, SessionUser sessionUser, Long lecture_Notice_id){
+
+        LectureNotice lectureNotice = lectureNoticeRepository.findById(lecture_Notice_id).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));
+
+        lectureNotice.update(requestDto);
+
+        return lecture_Notice_id;
+
+    }
+    @Transactional
+    public Long deleteLesson(Long lecture_id, Long lesson_id){
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
+        LectureLesson lectureLesson = lectureLessonRepository.findById(lesson_id).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));
+
+        lecture.getLectureLessons().remove(lectureLesson);
+        System.out.println(lecture.getLectureLessons().size());
+        lectureLessonRepository.delete(lectureLesson);
+
+        return lesson_id;
+
+
+    }
+
+    @Transactional
+    public Long deleteLectureNotice(Long lecture_id, Long lecture_Notice_id){
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
+        LectureNotice lectureNotice = lectureNoticeRepository.findById(lecture_Notice_id).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));
+
+        lecture.getLectureLessons().remove(lectureNotice);
+        lectureNoticeRepository.delete(lectureNotice);
+
+        return lecture_Notice_id;
+
+    }
+    @Transactional
+    public Long deleteLectureAssignment (Long lecture_id, Long assignment_id){
+
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
+        LectureAssignment lectureAssignment = lectureAsssignmentRepository.findById(assignment_id).orElseThrow(()-> new IllegalArgumentException("There is no Assignment that what you find."));
+
+        for (SubmittedFile sf : lectureAssignment.getSubmittedFileSet()){
+
+            List<FileEntity> fileList = sf.getFileList();
+            while( fileList.isEmpty() != true){
+                FileEntity fileEntity = fileList.remove(0);
+                fileService.fileDelete(fileEntity.getId());
+            }
+
+            submittedFileRepository.delete(sf);
+
+        }
+
+        lectureAsssignmentRepository.delete(lectureAssignment);
+
+        return assignment_id;
+    }
+
 
     private String processYoutubeLink(String link){
         String youtubeVideoCode = parsingYoutubeVideoUniqueCode(link);

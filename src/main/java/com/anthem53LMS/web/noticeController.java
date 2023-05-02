@@ -29,6 +29,12 @@ public class noticeController {
         return noticeService.update(requestDto,notice_id);
     }
 
+    @DeleteMapping("/api/v1/notice-delete/{notice_id}")
+    public  Long notice_delete(@PathVariable Long notice_id){
+
+        return noticeService.delete(notice_id);
+    }
+
 
 }
 

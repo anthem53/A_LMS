@@ -10,20 +10,23 @@
         <div class="d-flex flex-row mb-3" >
             <div class="p-2 bd-highlight"> {{>layout/sidebar}}</div>
 
+            <input type="hidden" id="lectureId" value="{{lecture.id}}">
+            <input type="hidden" id="lectureNoticeId" value="{{lecture_notice.id}}">
+
             <div class="d-flex flex-column flex-shrink-1  p-3 flex-fill" >
-                <h1> 과목 공지사항 등록 </h1>
+                <h1> 과목 공지사항 수정 </h1>
                 <div class="form-group row mb-4">
-                    <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요">
+                    <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요" value="{{lecture_notice.title}}">
                 </div>
 
                 <div class="form-group row mb-4">
-                    <textarea class="form-control col-sm-5" rows="5" id="content"> </textarea>
+                    <textarea class="form-control col-sm-5" rows="5" id="content">{{lecture_notice.content}}</textarea>
                     <!--<input type="text" class="form-control" id="content" placeholder="공지사항을 입력하세요.">-->
                 </div>
 
                 <div class="d-flex flex-row mb-3" >
                     <a href="/showLecture/register/take_course/{{lecture.id}}/notice/" role="button" class="btn btn-secondary">취소</a>
-                    <button type="button" class="btn btn-primary" id="btn-lecture-notice-save">등록</button>
+                    <button type="button" class="btn btn-primary" id="btn-lecture-notice-update">등록</button>
                 </div>
             </div>
 
