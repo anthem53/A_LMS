@@ -47,45 +47,6 @@ public class indexController {
         return "index";
     }
 
-    @GetMapping("/test")
-    public String test(Model model, @LoginUser SessionUser user){
-
-        if ( user == null){
-            System.out.println("guest");
-        }
-        else{
-            model.addAttribute("userName",user.getName());
-            System.out.println("User");
-        }
-
-        return "test";
-    }
-    @GetMapping("/test/notice")
-    public String test_notice(Model model, @LoginUser SessionUser user){
-
-        if ( user == null){
-            System.out.println("guest");
-        }
-        else{
-            model.addAttribute("userName",user.getName());
-            System.out.println("User");
-        }
-
-        return "lecture/lecture-notice";
-    }
-    @GetMapping("/test/notice/register")
-    public String test_notice_register(Model model, @LoginUser SessionUser user){
-
-        if ( user == null){
-            System.out.println("guest");
-        }
-        else{
-            model.addAttribute("userName",user.getName());
-            System.out.println("User");
-        }
-
-        return "lecture/lecture-notice-register";
-    }
 
     @GetMapping("/loginPage")
     public String loginPage(Model model, @LoginUser SessionUser user, HttpServletRequest request){
@@ -119,6 +80,7 @@ public class indexController {
 
         setUserInfo(model, sessionUser);
 
+        lecturesService.setAlarmCheck(sessionUser);
         List<NotificationListResponseDto> temp =lecturesService.findUserNotification(sessionUser);
         model.addAttribute("messageList", temp);
 
@@ -148,13 +110,7 @@ public class indexController {
     @GetMapping("/showLecture/register")
     public String lecture_register_show(Model model, @LoginUser SessionUser user){
 
-        if ( user == null){
-            System.out.println("guest");
-        }
-        else{
-            model.addAttribute("userName",user.getName());
-            System.out.println("User");
-        }
+        setUserInfo(model, user);
 
         model.addAttribute("lectures",lecturesService.findAttendedLecture(user));
 
@@ -436,8 +392,9 @@ public class indexController {
     }
 
     @GetMapping("/notice/inquiry/{id}")
-    public String noticeInquiry(Model model, @LoginUser SessionUser user, @PathVariable Long id) {
+    public String noticeInquiry(Model model, @LoginUser SessionUser sessionUser, @PathVariable Long id) {
 
+        setUserInfo(model, sessionUser);
         model.addAttribute("notice",noticeService.findById(id));
         System.out.println(id);
 
@@ -457,6 +414,7 @@ public class indexController {
         else{
             model.addAttribute("userName",sessionUser.getName());
             model.addAttribute("userPicture",sessionUser.getPicture());
+            model.addAttribute("isNewAlarm", lecturesService.isNewAlarm(sessionUser));
             System.out.println("User");
 
         }

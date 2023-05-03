@@ -464,6 +464,22 @@ public class LecturesService {
     }
 
     @Transactional
+    public boolean isNewAlarm (SessionUser sessionUser){
+        User user = getUserBySessionUser(sessionUser);
+
+        return user.getIsNewAlarm();
+
+    }
+    @Transactional
+    public Long setAlarmCheck(SessionUser sessionUser){
+        User user = getUserBySessionUser(sessionUser);
+        user.setIsNewAlarm(false);
+
+        return user.getId();
+
+    }
+
+    @Transactional
     public Long lectureKick(Long lecture_id, Long user_id){
 
         Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));

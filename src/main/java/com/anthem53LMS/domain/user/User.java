@@ -88,4 +88,8 @@ public class User extends BaseTimeEntity {
         this.isNewAlarm = value;
     }
 
+    public boolean getIsNewAlarm(){
+        return this.isNewAlarm;
+    }
+
 }
