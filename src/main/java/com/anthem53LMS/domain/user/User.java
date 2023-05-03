@@ -47,8 +47,15 @@ public class User extends BaseTimeEntity {
 
 
 
-    private LinkedHashMap<Long,Long> messageMap  = new LinkedHashMap<Long,Long>();;
+    @ManyToMany
+    @JoinTable(
+            name="message_userList",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "message_id")
+    )
+    private List<Message> messageList = new ArrayList<Message>();
 
+    private boolean isNewAlarm = false;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
@@ -59,7 +66,6 @@ public class User extends BaseTimeEntity {
         this.email = email;
         this.picture = picture;
         this.role = role;
-
 
     }
 
@@ -77,6 +83,9 @@ public class User extends BaseTimeEntity {
     public void setConnectEntity(SubLecturer subLecturer){
         this.subLecturer = subLecturer;
 
+    }
+    public void setIsNewAlarm(boolean value){
+        this.isNewAlarm = value;
     }
 
 }

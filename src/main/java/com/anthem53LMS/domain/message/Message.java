@@ -3,10 +3,13 @@ package com.anthem53LMS.domain.message;
 
 import com.anthem53LMS.domain.BaseTimeEntity;
 import com.anthem53LMS.domain.lecture.Lecture;
+import com.anthem53LMS.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,6 +27,9 @@ public class Message extends BaseTimeEntity {
 
     @ManyToOne
     private Lecture lecture;
+
+    @ManyToMany(mappedBy = "messageList")
+    private List<User> userList = new ArrayList<User>();
 
 
     public Message(Lecture lecture, String content, String link){

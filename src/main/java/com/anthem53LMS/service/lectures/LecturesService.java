@@ -1,7 +1,6 @@
 package com.anthem53LMS.service.lectures;
 
 
-import com.anthem53LMS.config.auth.LoginUser;
 import com.anthem53LMS.config.auth.dto.SessionUser;
 import com.anthem53LMS.domain.courseRegistration.CourseRegistration;
 import com.anthem53LMS.domain.courseRegistration.CourseRegistrationRepository;
@@ -27,12 +26,13 @@ import com.anthem53LMS.web.lectureDto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.io.File;
-import java.net.*;
-import java.util.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -382,15 +382,13 @@ public class LecturesService {
         for (CourseRegistration attendeesInfoItem : lecture.getCurrent_Attendees()){
 
             User attendee = attendeesInfoItem.getUser();
-            LinkedHashMap<Long,Long>  tempMap= attendee.getMessageMap();
+            List<Message> messageList = attendee.getMessageList();
 
-            if (tempMap.size() > 10 ){
-                for (Long key : tempMap.keySet()) {
-                    tempMap.remove(key);
-                    break;
-                }
+            if (messageList.size() > 10 ){
+                messageList.remove(0);
             }
-            tempMap.put(lecture_id,message_id);
+            messageList.add(message);
+            attendee.setIsNewAlarm(true);
         }
 
         return message_id;
@@ -403,13 +401,8 @@ public class LecturesService {
         User user = getUserBySessionUser(sessionUser);
 
         List<NotificationListResponseDto> result = new ArrayList<NotificationListResponseDto>();
-        LinkedHashMap<Long,Long>  tempMap= user.getMessageMap();
-        for (Long key : tempMap.keySet()) {
-            Long value = tempMap.get(key);
-            Lecture lecture = lectureRepository.findById(key).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
-            Message message = messageRepository.findById(value).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
-
-
+        List<Message> tempList= user.getMessageList();
+        for (Message message : tempList) {
             NotificationListResponseDto temp = new NotificationListResponseDto(message);
             result.add(temp);
         }
