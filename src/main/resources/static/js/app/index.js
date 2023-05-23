@@ -231,7 +231,8 @@ var main = {
     lectureAssignmentUpdate : function (){
         var data = {
                         title: $('#title').val(),
-                        content: $('#content').val()
+                        content: $('#content').val(),
+                        deadline: $('#dateTimePicker').val()
                     };
 
         var url = '/api/v1/lecture-assignment-update/'+$('#assignmentId').val()
@@ -244,7 +245,7 @@ var main = {
             data: JSON.stringify(data)
         }).done(function() {
             alert('과제 정보가 변경되었습니다.');
-            window.location.href = '/showLecture/register/take_course/'+$('#lectureId').val()+"/assignment";
+            window.location.href = '/showLecture/register/take_course/'+$('#lectureId').val()+"/assignment/"+$('#assignmentId').val();
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
@@ -382,7 +383,8 @@ var main = {
 
         var data = {
             title : $('#title').val(),
-            content : $('#content').val()
+            content : $('#content').val(),
+            deadline : $('#dateTimePicker').val()
         };
 
         var url = "/api/v1/lecture/"+ $('#lectureId').val()+"/assignment/save";

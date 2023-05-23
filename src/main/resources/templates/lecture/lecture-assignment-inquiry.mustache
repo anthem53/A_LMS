@@ -18,53 +18,61 @@
                     <input type="text" class="form-control" id="title" value="{{lectureAssignment.title}}" readonly>
                 </div>
 
+                <div class="d-flex flex-row mb-3 justify-content-start flex-shrink-1 " >
+                    <span class=" mx-3"> 마감기한 :     </span>
+                    <input type="text" id="deadline" class="border" value="{{lectureAssignment.deadline}}" readonly>
+                </div>
+
                 <div class="form-group row mb-4">
                     <textarea class="form-control col-sm-5" rows="5" id="content" readonly> {{lectureAssignment.content}} </textarea>
                 </div>
 
 
                 {{#isAttendee}}
-                <h2> 제출한 파일 </h2>
-                <ol class="list-group form-group row mb-4">
-                    {{#submittedFile}}
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <input type="hidden" id="submitFile--{{id}} value={{id}}">
-                        <div class="ms-2 me-auto">
-                            <div class="fw-bold">
-                                <a href="/api/v1/file-download/{{id}}">
-                                    {{originalName}}
-                                </a>
+                    <h2> 제출한 파일 </h2>
+                    <ol class="list-group form-group row mb-4">
+                        {{#submittedFile}}
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <input type="hidden" id="submitFile--{{id}} value={{id}}">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">
+                                    <a href="/api/v1/file-download/{{id}}">
+                                        {{originalName}}
+                                    </a>
+                                </div>
+                            </div>
+                            {{^isDeadlineOver}}
+                                <button type="button" class="btn-close" aria-label="Close" onclick="main.lectureAssignmentSubmittedFileDelete({{id}})"></button>
+                            {{/isDeadlineOver}}
+                        </li>
+                        {{/submittedFile}}
+                        {{^submittedFile}}
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="ms-2 me-auto">
+                                    <div class="fw-bold"> 제출한 파일이 없습니다. </div>
+                                </div>
+
+                            </li>
+                        {{/submittedFile}}
+                    </ol>
+
+                    {{^isDeadlineOver}}
+                        <div class="form-group row mb-4">
+                            <div class="d-flex flex-row mb-3" >
+                                <input type="file" id="assignFile" multiple>
+                                <button type="button" class="btn btn-primary" id="btn-lecture-assignment-submit">파일 업로드</button>
                             </div>
                         </div>
-                        <button type="button" class="btn-close" aria-label="Close" onclick="main.lectureAssignmentSubmittedFileDelete({{id}})"></button>
-                    </li>
-                    {{/submittedFile}}
-                    {{^submittedFile}}
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold"> 제출한 파일이 없습니다. </div>
-                            </div>
-
-                        </li>
-                    {{/submittedFile}}
-                </ol>
-
-
-                <div class="form-group row mb-4">
-                    <div class="d-flex flex-row mb-3" >
-                        <input type="file" id="assignFile" multiple>
-                        <button type="button" class="btn btn-primary" id="btn-lecture-assignment-submit">파일 업로드</button>
-                    </div>
-                </div>
+                    {{/isDeadlineOver}}
                 {{/isAttendee}}
 
 
                 <div class="d-flex flex-row mb-3" >
                     <a href="/showLecture/register/take_course/{{lecture.id}}/assignment" role="button" class="btn btn-secondary">과제목록</a>
                     {{#isLecturer}}
-                    <a href="/showLecture/register/take_course/{{lecture.id}}/assignment/{{lectureAssignment.id}}/submittedList" role="button" class="btn btn-secondary">제출현황</a>
-                    <a href="/showLecture/register/take_course/{{lecture.id}}/assignment/{{lectureAssignment.id}}/change" role="button" class="btn btn-secondary">수정</a>
-                    <button type="button" class="btn btn-primary" id="btn-assignment-delete"> 삭제</button>
+                        <a href="/showLecture/register/take_course/{{lecture.id}}/assignment/{{lectureAssignment.id}}/submittedList" role="button" class="btn btn-secondary">제출현황</a>
+                        <a href="/showLecture/register/take_course/{{lecture.id}}/assignment/{{lectureAssignment.id}}/change" role="button" class="btn btn-secondary">수정</a>
+                        <button type="button" class="btn btn-primary" id="btn-assignment-delete"> 삭제</button>
                     {{/isLecturer}}
 
 

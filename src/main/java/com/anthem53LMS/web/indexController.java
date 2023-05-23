@@ -302,6 +302,7 @@ public class indexController {
         setLecturerAttendee(model, sessionUser,lecture_id);
         setUserInfo(model,sessionUser);
         setLectureInfo(model,lecture_id);
+        setIsDeadlineOver(model,lecture_id,assignment_id);
 
         model.addAttribute("lectureAssignment",lecturesService.findLectureAssignmentInfo(assignment_id));
         model.addAttribute("submittedFile",fileService.findSubmittedFileList(assignment_id,sessionUser));
@@ -416,6 +417,11 @@ public class indexController {
     private void setLecturerAttendee(Model model, SessionUser sessionUser, Long lecture_id){
         model.addAttribute("isLecturer",lecturesService.isLecturer(sessionUser,lecture_id));
         model.addAttribute("isAttendee",lecturesService.isAttendee(sessionUser,lecture_id));
+    }
+
+    private void setIsDeadlineOver(Model model, Long lecture_id, Long assignment_id){
+        model.addAttribute("isDeadlineOver",lecturesService.isDeadlineOver(lecture_id,assignment_id));
+
     }
 
 

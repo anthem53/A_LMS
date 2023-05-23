@@ -41,18 +41,33 @@ public class LectureAssignment extends BaseTimeEntity {
 
     private boolean isDeadlineOver = false;
 
-    //private LocalDateTime deadline;
+    private LocalDateTime deadline;
 
     @Builder
-    public LectureAssignment(String title, String content, Lecture lecture){
+    public LectureAssignment(String title, String content, Lecture lecture, LocalDateTime deadline){
         this.title = title;
         this.content = content;
         this.lecture = lecture;
+        this.deadline = deadline;
     }
 
-    public void update(String title, String content){
+    public void update(String title, String content,String deadline){
+        String[] raw = deadline.split(" ");
+        String[] days= raw[0].split("-");
+        String[] times = raw[1].split(":");
+        int year = Integer.parseInt(days[0]);
+        int  month = Integer.parseInt(days[1]);
+        int  day = Integer.parseInt(days[2]);
+
+        int  hour = Integer.parseInt(times[0]);
+        int  minute = Integer.parseInt(times[1]);
+        int  second = 0;
+
+        LocalDateTime newDeadline = LocalDateTime.of(year,month,day,hour,minute,second);
+
         this.title = title;
         this.content = content;
+        this.deadline = newDeadline;
     }
 
 }

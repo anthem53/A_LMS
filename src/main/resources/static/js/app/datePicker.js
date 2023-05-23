@@ -43,30 +43,26 @@ var date = {
 };
 
 var dateTime = {
+
     init : function(){
         console.log("dateTime init")
+
         var today = new Date()
+
+        $.datetimepicker.setLocale('ko')
+
         $("#dateTimePicker").datetimepicker({
+
             changeMonth: true,
             changeYear: true,
             showButtonPanel: true,
             format:'Y-m-d H:i',
-            step: 1,
+            step: 15,
             defaultSelect: false,
             defaultDate: today,
             minDate: today,
-/*            onClose: function(ct, $i) {
-                let endDateInput = $("#dateEnd");
-                if($("#dateEnd").val() != ''){
-                    let tempStartDate = new Date(ct);
-                    let tempEndDate = new Date(endDateInput.val());
-                    if(tempStartDate > tempEndDate){
-                        endDateInput.val(getFormatDateTime(ct));
-                    }
-                }else {
-                    endDateInput.val(getFormatDateTime(ct));
-                }
-            },*/
+            minTime: today,
+
             onSelectDate: function(ct, $i){
                 let today = new Date()
                 $("#dateTimePicker").datetimepicker('setOptions', { minDate: today });
@@ -74,14 +70,10 @@ var dateTime = {
             },
             onSelectTime: function(ct, $i){
                 let today = new Date()
-                $("#dateTimePicker").datetimepicker('setOptions', { minDate: today });
+                $("#dateTimePicker").datetimepicker('setOptions', { minTime: today });
 
             }
         });
-    },
-      : function(){
-        let today = new Date()
-        $("#dateTimePicker").datetimepicker('setOptions', { minDate: today });
     }
 
 }

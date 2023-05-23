@@ -12,7 +12,7 @@
 
             <input type="hidden" id="assignmentId" value="{{lectureAssignment.id}}">
             <div class="d-flex flex-column flex-shrink-1  p-3 flex-fill" >
-                <h1> 과제 등록 </h1>
+                <h1> 과제 내용 수정 </h1>
                 <div class="form-group row mb-4">
                     <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요" value="{{lectureAssignment.title}}">
                 </div>
@@ -20,6 +20,9 @@
                 <div class="form-group row mb-4">
                     <textarea class="form-control col-sm-5" rows="5" id="content" placeholder="과제 내용을 입력하세요.">{{lectureAssignment.content}}</textarea>
                     <!--<input type="text" class="form-control" id="content" placeholder="과제 내용을 입력하세요.">-->
+                </div>
+                <div class="form-group row mb-4">
+                    <input type="text" id="dateTimePicker" class="form-control" value="{{lectureAssignment.deadline}}" readonly>
                 </div>
 
                 <div class="d-flex flex-row mb-3" >

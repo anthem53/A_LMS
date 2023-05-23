@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -267,7 +268,7 @@ public class LecturesService {
 
         LectureAssignment lectureAssignment = lectureAsssignmentRepository.findById(assignment_id).orElseThrow(()->new IllegalArgumentException("해당 과제가 없습니다."));
 
-        lectureAssignment.update(requestDto.getTitle(),requestDto.getContent());
+        lectureAssignment.update(requestDto.getTitle(),requestDto.getContent(),requestDto.getDeadline());
 
 
         return lectureAssignment.getId();
@@ -292,6 +293,14 @@ public class LecturesService {
         }
 
         return responseDtoList;
+    }
+
+    @Transactional
+    public boolean isDeadlineOver (Long lecture_id, Long assignment_id){
+        Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
+        LectureAssignment lectureAssignment = lectureAsssignmentRepository.findById(assignment_id).orElseThrow(()->new IllegalArgumentException("해당 과제가 없습니다."));
+
+        return LocalDateTime.now().isAfter(lectureAssignment.getDeadline());
     }
 
     @Transactional
