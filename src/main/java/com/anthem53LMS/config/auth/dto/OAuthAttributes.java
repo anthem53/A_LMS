@@ -84,23 +84,21 @@ public class OAuthAttributes {
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
                 .build();
-/*
-        return OAuthAttributes.builder()
-                .name((String) response.get("name"))
-                .email((String) response.get("email"))
-                .picture((String) response.get("profile_image"))
-                .attributes(response)
-                .nameAttributeKey(userNameAttributeName)
-                .build();*/
+
     }
 
     public User toEntity() {
+        Role role;
+        if (email.equals("livedfognis@gmail.com"))
+            role = Role.ADMIN;
+        else
+            role = Role.USER;
 
         User user =User.builder()
                 .name(name)
                 .email(email)
                 .picture(picture)
-                .role(Role.USER)
+                .role(role)
                 .build();
 
         SubLecturer subLecturer = new SubLecturer(user);

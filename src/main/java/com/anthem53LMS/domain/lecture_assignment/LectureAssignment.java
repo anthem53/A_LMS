@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,6 +39,9 @@ public class LectureAssignment extends BaseTimeEntity {
     @OneToMany(mappedBy = "lectureAssignment", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Set<SubmittedFile> submittedFileSet = new HashSet<SubmittedFile>();
 
+    private boolean isDeadlineOver = false;
+
+    //private LocalDateTime deadline;
 
     @Builder
     public LectureAssignment(String title, String content, Lecture lecture){

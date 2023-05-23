@@ -30,8 +30,6 @@ public class indexController {
     private final FileService fileService;
     private final NoticeService noticeService;
 
-    @Autowired
-    private ResourceLoader resourceLoader ;
 
     @GetMapping("/")
     public String index(Model model ,@LoginUser SessionUser sessionUser){
@@ -353,13 +351,7 @@ public class indexController {
 
     @GetMapping("/notice")
     public String notice(Model model, @LoginUser SessionUser user){
-        if ( user == null){
-            System.out.println("guest");
-        }
-        else{
-            model.addAttribute("userName",user.getName());
-            System.out.println("User");
-        }
+        setUserInfo(model,user);
 
         model.addAttribute("notices",noticeService.findAllDesc());
 
@@ -369,13 +361,7 @@ public class indexController {
 
     @GetMapping("/notice/post")
     public String notice_post(Model model, @LoginUser SessionUser user){
-        if ( user == null){
-            System.out.println("guest");
-        }
-        else{
-            model.addAttribute("userName",user.getName());
-            System.out.println("User");
-        }
+        setUserInfo(model,user);
 
         return "notice-post";
 
@@ -415,6 +401,7 @@ public class indexController {
             model.addAttribute("userName",sessionUser.getName());
             model.addAttribute("userPicture",sessionUser.getPicture());
             model.addAttribute("isNewAlarm", lecturesService.isNewAlarm(sessionUser));
+            model.addAttribute("isAdmin",lecturesService.isAdmin(sessionUser));
             System.out.println("User");
 
         }

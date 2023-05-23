@@ -18,6 +18,7 @@ import com.anthem53LMS.domain.message.MessageRepository;
 import com.anthem53LMS.domain.studentAssignInfo.AssignmentCheck;
 import com.anthem53LMS.domain.supportDomain.submitFile.SubmittedFile;
 import com.anthem53LMS.domain.supportDomain.submitFile.SubmittedFileRepository;
+import com.anthem53LMS.domain.user.Role;
 import com.anthem53LMS.domain.user.User;
 import com.anthem53LMS.domain.user.UserRepository;
 import com.anthem53LMS.service.file.FileService;
@@ -29,10 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -402,10 +400,14 @@ public class LecturesService {
 
         List<NotificationListResponseDto> result = new ArrayList<NotificationListResponseDto>();
         List<Message> tempList= user.getMessageList();
-        for (Message message : tempList) {
+
+
+        for (Message message : (tempList)) {
             NotificationListResponseDto temp = new NotificationListResponseDto(message);
             result.add(temp);
         }
+
+        Collections.reverse(result);
 
         return result;
 
@@ -563,6 +565,20 @@ public class LecturesService {
         lectureAsssignmentRepository.delete(lectureAssignment);
 
         return assignment_id;
+    }
+
+    @Transactional
+    public boolean isAdmin(SessionUser sessionUser){
+        User user = getUserBySessionUser(sessionUser);
+        System.out.println("isAdmin");
+        System.out.println("user.getRole() ");
+        if (user.getRole() == Role.ADMIN){
+            return true;
+        }
+        else{
+            return false;
+        }
+
     }
 
 

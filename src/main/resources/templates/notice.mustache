@@ -5,9 +5,11 @@
 <!--여기서 본편-->
 <div   style="padding-top: 0px; ">
 
+    {{#isAdmin}}
     <div class="container d-flex flex-wrap justify-content-end">
         <a type="button" href="/notice/post" class="btn btn-success active  my-3"> 공지사항 등록</a>
     </div>
+    {{/isAdmin}}
     <!--여기서 본편 내용-->
     <div class="container justify-content-around">
         <h1 class=""> 공지 사항 </h1>
