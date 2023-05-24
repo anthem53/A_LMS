@@ -88,12 +88,34 @@ var main = {
             _this.lectureNoticeUpdate();
         });
 
+        $('#btn-lecture-assignment-deleteAll').on('click',function(){
+            _this.lectureAssignmentSubmittedFileAllDelete();
+        });
+
         document.querySelectorAll('#btn-comment-update').forEach(function (item) {
             item.addEventListener('click', function () { // 버튼 클릭 이벤트 발생시
                 const form = this.closest('form'); // btn의 가장 가까운 조상의 Element(form)를 반환 (closest)
                 _this.commentUpdate(form); // 해당 form으로 업데이트 수행
             });
         });
+    },
+    lectureAssignmentSubmittedFileAllDelete : function(){
+        var lectureAssignment_id = $('#assignmentId').val();
+
+        var url = "/api/v1/file-all-delete/"+lectureAssignment_id;
+
+
+        $.ajax({
+                     type: 'DELETE',
+                     url: url,
+                     contentType:'application/json; charset=utf-8',
+                 }).done(function() {
+                     alert('모든 제출 파일을 삭제했습니다.');
+                     window.location.reload();
+                 }).fail(function (error) {
+                     alert(JSON.stringify(error));
+                 });
+
     },
     lectureNoticeUpdate : function(){
         var lecture_id = $('#lectureId').val();

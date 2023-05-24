@@ -53,6 +53,14 @@ public class fileController {
         return "redirect:/";
     }
 
+    @DeleteMapping("/api/v1/file-all-delete/{assignment_id}")
+    public String fileAllDelete(@LoginUser SessionUser sessionUser, @PathVariable Long assignment_id){
+        System.out.println("[Debug]file all delete");
+        fileService.fileAllDelete(sessionUser,assignment_id);
+
+        return "redirect:/";
+    }
+
     @GetMapping("/api/v1/file-download/{file_id}")
     public void fileDownload(@PathVariable Long file_id,  HttpServletResponse response){
 

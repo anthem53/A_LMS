@@ -15,7 +15,6 @@ import com.anthem53LMS.domain.lesson.LectureLesson;
 import com.anthem53LMS.domain.lesson.LectureLessonRepository;
 import com.anthem53LMS.domain.message.Message;
 import com.anthem53LMS.domain.message.MessageRepository;
-import com.anthem53LMS.domain.studentAssignInfo.AssignmentCheck;
 import com.anthem53LMS.domain.supportDomain.submitFile.SubmittedFile;
 import com.anthem53LMS.domain.supportDomain.submitFile.SubmittedFileRepository;
 import com.anthem53LMS.domain.user.Role;
@@ -235,7 +234,6 @@ public class LecturesService {
         for (CourseRegistration attendeesInfoItem : lecture.getCurrent_Attendees()){
 
             User attendee = attendeesInfoItem.getUser();
-            AssignmentCheck assignmentCheck = new AssignmentCheck(lectureAssignment,attendee);
             SubmittedFile submittedFile = new SubmittedFile(lectureAssignment, attendee);
 
             attendee.getSubmittedFile().add(submittedFile);

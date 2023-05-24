@@ -58,9 +58,12 @@
 
                     {{^isDeadlineOver}}
                         <div class="form-group row mb-4">
-                            <div class="d-flex flex-row mb-3" >
-                                <input type="file" id="assignFile" multiple>
-                                <button type="button" class="btn btn-primary" id="btn-lecture-assignment-submit">파일 업로드</button>
+                            <div class="d-flex flex-column mb-3" >
+                                <button type="button" class="btn btn-danger flex-shrink-1" id="btn-lecture-assignment-deleteAll">파일 일괄 제거</button>
+                                <div class="d-flex flex-row mb-3" >
+                                    <input type="file" id="assignFile" multiple>
+                                    <button type="button" class="btn btn-primary" id="btn-lecture-assignment-submit">파일 업로드</button>
+                                </div>
                             </div>
                         </div>
                     {{/isDeadlineOver}}

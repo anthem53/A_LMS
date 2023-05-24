@@ -4,6 +4,7 @@ package com.anthem53LMS.service.file;
 import com.anthem53LMS.config.auth.dto.SessionUser;
 import com.anthem53LMS.domain.file.FileEntity;
 import com.anthem53LMS.domain.file.FileEntityRepository;
+import com.anthem53LMS.domain.lecture.LectureRepository;
 import com.anthem53LMS.domain.lecture_assignment.LectureAssignment;
 import com.anthem53LMS.domain.lecture_assignment.LectureAsssignmentRepository;
 import com.anthem53LMS.domain.supportDomain.submitFile.SubmittedFile;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Session;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.file.Files;
@@ -42,6 +44,7 @@ public class FileService {
     private final FileEntityRepository fileEntityRepository;
     private final UserRepository userRepository;
     private final LectureAsssignmentRepository lectureAsssignmentRepository;
+    private final LectureRepository lectureRepository;
 
 
     @Transactional
@@ -138,7 +141,40 @@ public class FileService {
         fileEntityRepository.delete(fileEntity);
     }
 
+    @Transactional
 
+    public void fileAllDelete(SessionUser sessionUser, Long assignment_id){
+
+        User user = userRepository.findByEmail(sessionUser.getEmail()).orElseThrow(()->new IllegalArgumentException("해당 유저가 없습니다."));
+        LectureAssignment lectureAssignment = lectureAsssignmentRepository.findById(assignment_id).orElseThrow(()->new IllegalArgumentException("해당 과제가 없습니다."));
+
+        List<FileEntity> targetList = null;
+        for  (SubmittedFile temp : lectureAssignment.getSubmittedFileSet()){
+            System.out.println(temp.getUser().getName());
+
+            if (temp.getUser() == user){
+                targetList = temp.getFileList();
+                break;
+            }
+            else{;}
+        }
+
+        if (targetList == null){
+            System.out.println("He/She is Not attendee!");
+        }
+        else{
+            for (FileEntity temp : targetList){
+                File file = new File(temp.getSavedPath());
+                file.delete();
+                fileEntityRepository.delete(temp);
+            }
+            targetList.clear();
+
+        }
+
+
+
+    }
 
 
     @Transactional
