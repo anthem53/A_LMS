@@ -17,10 +17,23 @@
                 <div class="form-group row mb-4">
                     <input type="text" class="form-control" id="title" value="{{lectureAssignment.title}}" readonly>
                 </div>
+                <div class="d-flex flex-row justify-content-between" >
+                    <div class="d-flex flex-row mb-3 justify-content-start flex-shrink-1 " >
+                        <span class=" mx-3"> 마감기한 :     </span>
+                        <input type="text" id="deadline" class="border" value="{{lectureAssignment.deadline}}" readonly>
+                    </div>
+                    {{#isAttendee}}
+                        <div class="d-flex flex-row mb-3 justify-content-start flex-shrink-1 " >
+                            <span class=" mx-3"> 점수 :     </span>
+                            {{#isGrade}}
+                                <input type="text" id="score" class="border" value="{{score}}" readonly>
+                            {{/isGrade}}
+                            {{^isGrade}}
+                                <input type="text" id="score" class="border" value="-----" readonly>
+                            {{/isGrade}}
+                        </div>
+                    {{/isAttendee}}
 
-                <div class="d-flex flex-row mb-3 justify-content-start flex-shrink-1 " >
-                    <span class=" mx-3"> 마감기한 :     </span>
-                    <input type="text" id="deadline" class="border" value="{{lectureAssignment.deadline}}" readonly>
                 </div>
 
                 <div class="form-group row mb-4">
@@ -57,13 +70,12 @@
                     </ol>
 
                     {{^isDeadlineOver}}
-                        <div class="form-group row mb-4">
-                            <div class="d-flex flex-column mb-3" >
-                                <button type="button" class="btn btn-danger flex-shrink-1" id="btn-lecture-assignment-deleteAll">파일 일괄 제거</button>
-                                <div class="d-flex flex-row mb-3" >
-                                    <input type="file" id="assignFile" multiple>
-                                    <button type="button" class="btn btn-primary" id="btn-lecture-assignment-submit">파일 업로드</button>
-                                </div>
+                        <div class="d-flex flex-column mb-3" >
+
+                            <div class="d-flex flex-row mb-3" >
+                                <input type="file" id="assignFile" multiple>
+                                <button type="button" class="btn btn-primary mx-1" id="btn-lecture-assignment-submit">파일 업로드</button>
+                                <button type="button" class="btn btn-danger mx-1 align-items-center" id="btn-lecture-assignment-deleteAll">파일 일괄 제거</button>
                             </div>
                         </div>
                     {{/isDeadlineOver}}
@@ -73,9 +85,9 @@
                 <div class="d-flex flex-row mb-3" >
                     <a href="/showLecture/register/take_course/{{lecture.id}}/assignment" role="button" class="btn btn-secondary">과제목록</a>
                     {{#isLecturer}}
-                        <a href="/showLecture/register/take_course/{{lecture.id}}/assignment/{{lectureAssignment.id}}/submittedList" role="button" class="btn btn-secondary">제출현황</a>
-                        <a href="/showLecture/register/take_course/{{lecture.id}}/assignment/{{lectureAssignment.id}}/change" role="button" class="btn btn-secondary">수정</a>
-                        <button type="button" class="btn btn-primary" id="btn-assignment-delete"> 삭제</button>
+                        <a href="/showLecture/register/take_course/{{lecture.id}}/assignment/{{lectureAssignment.id}}/submittedList" role="button" class="btn btn-secondary mx-1">제출현황</a>
+                        <a href="/showLecture/register/take_course/{{lecture.id}}/assignment/{{lectureAssignment.id}}/change" role="button" class="btn btn-secondary mx-1">수정</a>
+                        <button type="button" class="btn btn-primary mx-1" id="btn-assignment-delete"> 삭제</button>
                     {{/isLecturer}}
 
 

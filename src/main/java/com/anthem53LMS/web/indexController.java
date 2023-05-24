@@ -306,6 +306,8 @@ public class indexController {
 
         model.addAttribute("lectureAssignment",lecturesService.findLectureAssignmentInfo(assignment_id));
         model.addAttribute("submittedFile",fileService.findSubmittedFileList(assignment_id,sessionUser));
+        model.addAttribute("score", lecturesService.getAssignmentScore(assignment_id,sessionUser));
+        model.addAttribute("isGrade", lecturesService.isSubmitedAssignment(assignment_id,sessionUser));
 
         model.addAttribute("isAssignment",true);
 

@@ -99,6 +99,30 @@ var main = {
             });
         });
     },
+    lectureAssignmentSetscore : function (student_id, assignment_id){
+
+        console.log("[debug] call lectureAssignmentSetscore");
+        var student_id_str = String(student_id);
+        var data = $("#score--"+student_id_str).val();
+
+        console.log(data);
+
+
+        var url = "/api/v1/assignment/"+String(assignment_id)+"/setScore/"+String(student_id);
+        $.ajax({
+             type: 'POST',
+             url: url,
+             dataType: 'json',
+             contentType:'application/json; charset=utf-8',
+             data: JSON.stringify(data)
+         }).done(function() {
+             alert('채점 점수가 반영되었습니다.');
+             window.location.reload();
+         }).fail(function (error) {
+             alert(JSON.stringify(error));
+         });
+
+    },
     lectureAssignmentSubmittedFileAllDelete : function(){
         var lectureAssignment_id = $('#assignmentId').val();
 
@@ -142,7 +166,6 @@ var main = {
             alert(errorMessage);
             return;
        }
-
 
 
         var redirectUrl = '/showLecture/register/take_course/'+lecture_id+'/notice/'+lectureNotice_id;
@@ -881,5 +904,6 @@ var main = {
     }
 
 };
+
 
 main.init();

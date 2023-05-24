@@ -108,6 +108,13 @@ public class lectureController {
         return lecturesService.lectureLeave(lecture_id, sessionUser);
     }
 
+    @PostMapping("/api/v1/assignment/{assignment_id}/setScore/{student_id}")
+    public float grade_assignemt(@RequestBody float score, @PathVariable Long assignment_id, @PathVariable Long student_id ){
+
+        return lecturesService.grade(assignment_id,student_id,score);
+
+    }
+
     @DeleteMapping("/api/v1/lecture/{lecture_id}/lesson/delete/{lesson_id}")
     public Long delete_lecture_lesson(@PathVariable Long lecture_id, @PathVariable Long lesson_id){
         lecturesService.deleteLesson(lecture_id, lesson_id);

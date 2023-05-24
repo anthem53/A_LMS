@@ -28,5 +28,8 @@ public class LectureAssignmentReponseDto {
         content  =lectureAssignment.getContent();
         deadline = String.valueOf(temp.getYear())+"-"+String.format("%02d", temp.getMonthValue())+"-"+String.valueOf(temp.getDayOfMonth())+" "+String.format("%02d", temp.getHour())+":"+String.format("%02d", temp.getMinute());
 
+
+
+
     }
 }

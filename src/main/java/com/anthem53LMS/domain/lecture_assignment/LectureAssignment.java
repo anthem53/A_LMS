@@ -2,7 +2,6 @@ package com.anthem53LMS.domain.lecture_assignment;
 
 import com.anthem53LMS.domain.BaseTimeEntity;
 import com.anthem53LMS.domain.lecture.Lecture;
-import com.anthem53LMS.domain.studentAssignInfo.AssignmentCheck;
 import com.anthem53LMS.domain.supportDomain.submitFile.SubmittedFile;
 import com.anthem53LMS.domain.user.User;
 import lombok.Builder;
