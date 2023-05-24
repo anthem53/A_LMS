@@ -68,6 +68,7 @@ public class indexController {
         setUserInfo(model, sessionUser);
 
         model.addAttribute("lectures",lecturesService.findAllDesc());
+        model.addAttribute("isUser", sessionUser != null);
 
 
         return "lecture-show";
@@ -97,9 +98,8 @@ public class indexController {
 
         setLectureInfo(model, id);
         setUserInfo(model, sessionUser);
+        setLecturerAttendee(model, sessionUser,id);
 
-        model.addAttribute("isLecturer",lecturesService.isLecturer(sessionUser,id));
-        model.addAttribute("isAttendee",lecturesService.isAttendee(sessionUser,id));
 
         return "lecture-inquiry";
 
@@ -417,6 +417,7 @@ public class indexController {
     private void setLecturerAttendee(Model model, SessionUser sessionUser, Long lecture_id){
         model.addAttribute("isLecturer",lecturesService.isLecturer(sessionUser,lecture_id));
         model.addAttribute("isAttendee",lecturesService.isAttendee(sessionUser,lecture_id));
+        model.addAttribute("isGuest", sessionUser == null);
     }
 
     private void setIsDeadlineOver(Model model, Long lecture_id, Long assignment_id){

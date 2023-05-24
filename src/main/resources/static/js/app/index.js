@@ -126,6 +126,25 @@ var main = {
             content : $('#content').val()
         }
 
+        var isBlank = false;
+        var errorMessage = "필수 항목";
+        if (data.title.trim() == ""){
+            isBlank = true;
+            errorMessage = errorMessage + " [제목]"
+        }
+        if (data.content.trim() == ""){
+            isBlank = true;
+            errorMessage = errorMessage + " [내용]"
+        }
+
+       if (isBlank == true){
+            errorMessage = errorMessage +"이 비어있습니다. 필수 항목은 채워주시길 바랍니다.";
+            alert(errorMessage);
+            return;
+       }
+
+
+
         var redirectUrl = '/showLecture/register/take_course/'+lecture_id+'/notice/'+lectureNotice_id;
         var url = "/api/v1/lecture-notice-update/"+lectureNotice_id;
         $.ajax({
@@ -234,7 +253,31 @@ var main = {
                         title: $('#title').val(),
                         link: $('#videoLink').val()
                     };
-         var url = '/api/v1/lecture-lesson-update/'+$('#lessonId').val()
+
+
+        var isBlank = false;
+        var isLink = false;
+        var errorMessage = "필수 항목";
+        if (data.title.trim() == ""){
+            isBlank = true;
+            errorMessage = errorMessage + " [제목]"
+        }
+        if (data.link.trim() == ""){
+            isBlank = true;
+            isLink = true;
+            errorMessage = errorMessage + " [동영상 링크]"
+        }
+
+       if (isBlank == true){
+            if (isLink == false)
+                errorMessage = errorMessage +"이 비어있습니다. 필수 항목은 채워주시길 바랍니다.";
+            else
+                errorMessage = errorMessage +"가 비어있습니다. 필수 항목은 채워주시길 바랍니다.";
+            alert(errorMessage);
+            return;
+       }
+
+        var url = '/api/v1/lecture-lesson-update/'+$('#lessonId').val()
 
          $.ajax({
              type: 'POST',
@@ -257,6 +300,27 @@ var main = {
                         deadline: $('#dateTimePicker').val()
                     };
 
+        var isBlank = false;
+        var errorMessage = "필수 항목";
+        if (data.title.trim() == ""){
+            isBlank = true;
+            errorMessage = errorMessage + " [제목]"
+        }
+        if (data.content.trim() == ""){
+            isBlank = true;
+            errorMessage = errorMessage + " [내용]"
+        }
+        if (data.deadline.trim() == ""){
+            isBlank = true;
+            errorMessage = errorMessage + " [데드라인]"
+        }
+
+       if (isBlank == true){
+            errorMessage = errorMessage +"이 비어있습니다. 필수 항목은 채워주시길 바랍니다.";
+            alert(errorMessage);
+            return;
+       }
+
         var url = '/api/v1/lecture-assignment-update/'+$('#assignmentId').val()
 
         $.ajax({
@@ -278,8 +342,26 @@ var main = {
                     outline: $('#outline').val()
                 };
 
-            var url = '/api/v1/lecture-update/'+$('#lectureId').val()
 
+            var isBlank = false;
+            var errorMessage = "필수 항목";
+            if (data.title.trim() == ""){
+                isBlank = true;
+                errorMessage = errorMessage + " [제목]"
+            }
+            if (data.outline.trim() == ""){
+                isBlank = true;
+                errorMessage = errorMessage + " [소개글]"
+            }
+
+           if (isBlank == true){
+                errorMessage = errorMessage +"이 비어있습니다. 필수 항목은 채워주시길 바랍니다.";
+                alert(errorMessage);
+                return;
+           }
+
+
+            var url = '/api/v1/lecture-update/'+$('#lectureId').val()
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -300,6 +382,23 @@ var main = {
                 title: $('#title').val(),
                 content: $('#content').val()
             };
+
+            var isBlank = false;
+            var errorMessage = "필수 항목";
+            if (data.title.trim() == ""){
+                isBlank = true;
+                errorMessage = errorMessage + " [제목]"
+            }
+            if (data.content.trim() == ""){
+                isBlank = true;
+                errorMessage = errorMessage + " [내용]"
+            }
+
+           if (isBlank == true){
+                errorMessage = errorMessage +"이 비어있습니다. 필수 항목은 채워주시길 바랍니다.";
+                alert(errorMessage);
+                return;
+           }
 
             var url = '/api/v1/notice-update/'+$('#noticeId').val()
 
@@ -385,6 +484,24 @@ var main = {
             content: $('#content').val()
         };
 
+        var isBlank = false;
+        var errorMessage = "필수 항목";
+        if (data.title.trim() == ""){
+            isBlank = true;
+            errorMessage = errorMessage + " [제목]"
+        }
+        if (data.content.trim() == ""){
+            isBlank = true;
+            errorMessage = errorMessage + " [내용]"
+        }
+
+       if (isBlank == true){
+            errorMessage = errorMessage +"이 비어있습니다. 필수 항목은 채워주시길 바랍니다.";
+            alert(errorMessage);
+            return;
+       }
+
+
         $.ajax({
             type: 'POST',
             url: '/api/v1/notice-save',
@@ -409,6 +526,28 @@ var main = {
             deadline : $('#dateTimePicker').val()
         };
 
+        var isBlank = false;
+        var errorMessage = "필수 항목";
+        if (data.title.trim() == ""){
+            isBlank = true;
+            errorMessage = errorMessage + " [제목]"
+        }
+        if (data.content.trim() == ""){
+            isBlank = true;
+            errorMessage = errorMessage + " [내용]"
+        }
+        if (data.deadline.trim() == ""){
+            isBlank = true;
+            errorMessage = errorMessage + " [데드라인]"
+        }
+
+       if (isBlank == true){
+            errorMessage = errorMessage +"이 비어있습니다. 필수 항목은 채워주시길 바랍니다.";
+            alert(errorMessage);
+            return;
+       }
+
+
         var url = "/api/v1/lecture/"+ $('#lectureId').val()+"/assignment/save";
         var redirectUrl = "/showLecture/register/take_course/"+$('#lectureId').val()+"/assignment/"
 
@@ -432,6 +571,28 @@ var main = {
             title: $('#title').val(),
             link: $('#videoLink').val()
         };
+
+        var isBlank = false;
+        var isLink = false;
+        var errorMessage = "필수 항목";
+        if (data.title.trim() == ""){
+            isBlank = true;
+            errorMessage = errorMessage + " [제목]"
+        }
+        if (data.link.trim() == ""){
+            isBlank = true;
+            isLink = true;
+            errorMessage = errorMessage + " [동영상 링크]"
+        }
+
+       if (isBlank == true){
+            if (isLink == false)
+                errorMessage = errorMessage +"이 비어있습니다. 필수 항목은 채워주시길 바랍니다.";
+            else
+                errorMessage = errorMessage +"가 비어있습니다. 필수 항목은 채워주시길 바랍니다.";
+            alert(errorMessage);
+            return;
+       }
 
         var url = "/api/v1/lecture/"+ $('#lectureId').val()+"/lesson/save";
         var redirectUrl = "/showLecture/register/take_course/"+$('#lectureId').val()+"/lesson/"
@@ -458,6 +619,28 @@ var main = {
             title : $('#title').val(),
             content : $('#content').val()
         }
+
+        var data = {
+            title : $('#title').val(),
+            content : $('#content').val()
+        }
+
+        var isBlank = false;
+        var errorMessage = "필수 항목";
+        if (data.title.trim() == ""){
+            isBlank = true;
+            errorMessage = errorMessage + " [제목]"
+        }
+        if (data.content.trim() == ""){
+            isBlank = true;
+            errorMessage = errorMessage + " [내용]"
+        }
+
+       if (isBlank == true){
+            errorMessage = errorMessage +"이 비어있습니다. 필수 항목은 채워주시길 바랍니다.";
+            alert(errorMessage);
+            return;
+       }
 
 
         var url = "/api/v1/lecture/"+ $('#lectureId').val()+"/notice/save";
@@ -507,6 +690,25 @@ var main = {
             title: $('#title').val(),
             outline: $('#outline').val()
         };
+
+        var isBlank = false;
+        var errorMessage = "필수 항목";
+        if (data.title.trim() == ""){
+            isBlank = true;
+            errorMessage = errorMessage + " [제목]"
+        }
+        if (data.outline.trim() == ""){
+            isBlank = true;
+            errorMessage = errorMessage + " [소개글]"
+        }
+
+       if (isBlank == true){
+            errorMessage = errorMessage +"이 비어있습니다. 필수 항목은 채워주시길 바랍니다.";
+            alert(errorMessage);
+            return;
+       }
+
+
 
         $.ajax({
             type: 'POST',

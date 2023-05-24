@@ -5,9 +5,11 @@
 <!--여기서 본편-->
 <div   style="padding-top: 0px; ">
     <!--여기서 본편 내용-->
-    <div class="container d-flex flex-wrap justify-content-end">
-        <a type="button" href="/openLecture" class="btn btn-success active  my-3"> 강의 개설</a>
-    </div>
+    {{^isGuest}}
+        <div class="container d-flex flex-wrap justify-content-end">
+            <a type="button" href="/openLecture" class="btn btn-success active  my-3"> 강의 개설</a>
+        </div>
+    {{/isGuest}}
     <div class="container justify-content-around">
 
         <h4>강의 정보</h4>
@@ -35,8 +37,7 @@
                 {{lecture.outline}}
             </div>
             </div>
-            <!--<input type="text" class="form-control" id="outline" placeholder="과제에 대한 소개글" readonly value="{{lecture.outline}}">-->
-            <!--<textarea class="form-control col-sm-5" rows="5" id="outline" readonly > {{lecture.outline}} </textarea>-->
+
         </div>
 
         <input type="hidden" id="lectureId" value="{{lecture.id}}">
@@ -51,7 +52,9 @@
                 <a href="/showLecture/register/take_course/{{lecture.id}}" role="button" class="btn btn btn-primary">강의로 가기</a>
             {{/isAttendee}}
             {{^isAttendee}}
-                <button type="button" class="btn btn-primary" id="btn-lecture_registration">강의 수강</button>
+                {{^isGuest}}
+                    <button type="button" class="btn btn-primary" id="btn-lecture_registration">강의 수강</button>
+                {{/isGuest}}
             {{/isAttendee}}
         {{/isLecturer}}
 

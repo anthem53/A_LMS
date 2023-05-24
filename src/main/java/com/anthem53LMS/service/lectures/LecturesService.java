@@ -354,6 +354,11 @@ public class LecturesService {
     public boolean isLecturer(SessionUser sessionUser, Long lecture_id){
         Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
 
+        if (sessionUser == null){
+            System.out.println("this is guest!");
+            return false;
+
+        }
         if (lecture.getLecturer().getId() == getUserBySessionUser(sessionUser).getId()){
             System.out.println("this is lecturer!");
             return true;
@@ -366,8 +371,17 @@ public class LecturesService {
 
     @Transactional
     public boolean isAttendee (SessionUser sessionUser, Long lecture_id){
+
+
+        if (sessionUser == null){
+            System.out.println("this is guest!");
+            return false;
+
+        }
+
         Lecture lecture = lectureRepository.findById(lecture_id).orElseThrow(()-> new IllegalArgumentException("There is no Lecture that what you find."));
         User user = getUserBySessionUser(sessionUser);
+
 
         for (CourseRegistration attendeesInfoItem : lecture.getCurrent_Attendees()){
             if (attendeesInfoItem.getUser().getId() == user.getId()){
