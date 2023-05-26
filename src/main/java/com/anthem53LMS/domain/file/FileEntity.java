@@ -29,13 +29,15 @@ public class FileEntity extends BaseTimeEntity {
     @ManyToOne
     private SubmittedFile submittedFile;
 
+    private Long fileSize ;
     @Builder
-    public FileEntity(Long id , String rawName, String uuid, String savedPath){
+    public FileEntity(Long id , String rawName, String uuid, String savedPath, Long fileSize){
 
         this.id = id;
         this.originalName = rawName;
         this.uuid = uuid;
         this.savedPath = savedPath;
+        this.fileSize = fileSize;
 
     }
 

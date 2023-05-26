@@ -28,21 +28,39 @@ public class fileController {
 
 
     @PostMapping("/api/v1/file-save/{assignment_id}")
-    public String fileSave(MultipartFile[] uploadFile , @PathVariable Long assignment_id, @LoginUser SessionUser sessionUser) {
+    public Long fileSave(MultipartFile[] uploadFile , @PathVariable Long assignment_id, @LoginUser SessionUser sessionUser) {
 
-
-        for(MultipartFile file :uploadFile){
-            System.out.println(file.getOriginalFilename());
-            try{
-                fileService.fileSave(file, assignment_id, sessionUser);
-            }
-            catch (IOException e) {
-                e.printStackTrace(); //오류 출력(방법은 여러가지)
-
-            }
+        if (fileService.checkFilesSize(uploadFile,assignment_id, sessionUser) == false){
+            return -1l;
         }
+        else{
+            for(MultipartFile file :uploadFile){
 
-        return "redirect:/";
+                System.out.println(file.getOriginalFilename());
+                try{
+                    fileService.fileSave(file, assignment_id, sessionUser);
+                }
+                catch (IOException e) {
+                    e.printStackTrace(); //오류 출력(방법은 여러가지)
+
+                }
+            }
+
+
+
+            for(MultipartFile file :uploadFile){
+                System.out.println(file.getOriginalFilename());
+                try{
+                    fileService.fileSave(file, assignment_id, sessionUser);
+                }
+                catch (IOException e) {
+                    e.printStackTrace(); //오류 출력(방법은 여러가지)
+
+                }
+            }
+
+            return 1l;
+        }
     }
 
     @DeleteMapping("/api/v1/file-delete/{file_id}")

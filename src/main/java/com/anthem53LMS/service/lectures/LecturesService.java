@@ -87,7 +87,7 @@ public class LecturesService {
     @Transactional
     public Long LectureRegister(LectureRegisterRequestDto requestDto, SessionUser sessionUser) {
         User user = userRepository.findByEmail(sessionUser.getEmail()).orElseThrow(()->new IllegalArgumentException("해당 유저가 없습니다."));
-        Lecture lecture = lectureRepository.findById(requestDto.getLecture_id()).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));;
+        Lecture lecture = lectureRepository.findById(requestDto.getLecture_id()).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));
 
         CourseRegistration courseRegistration = new CourseRegistration(lecture,user);
 

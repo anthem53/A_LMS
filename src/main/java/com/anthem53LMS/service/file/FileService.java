@@ -46,6 +46,7 @@ public class FileService {
     private final LectureAsssignmentRepository lectureAsssignmentRepository;
     private final LectureRepository lectureRepository;
 
+    private Long maxSum = 20000000l;
 
     @Transactional
     public Long fileSave (MultipartFile file , Long assignment_id, SessionUser sessionUser) throws IOException {
@@ -63,8 +64,13 @@ public class FileService {
 
         String savedName = uuid + extension;
         String savedPath = fileDir + savedName;
+        Long filesize = file.getSize();
 
-        FileEntity fileEntity = FileEntity.builder().rawName(rawName).uuid(uuid).savedPath(savedPath).build();
+        System.out.println("[Filesize]");
+        System.out.println(filesize);
+        System.out.println("[**********]");
+
+        FileEntity fileEntity = FileEntity.builder().rawName(rawName).uuid(uuid).savedPath(savedPath).fileSize(filesize).build();
 
         file.transferTo(new File(savedPath));
 
@@ -72,17 +78,11 @@ public class FileService {
         for  (SubmittedFile temp : lectureAssignment.getSubmittedFileSet()){
             if (temp.getUser() == user){
                 temp.getFileList().add(fileEntity);
+                temp.addFileSize(filesize);
                 fileEntity.setSubmittedFile(temp);
+
                 is_check_debug = "Checked";
                 break;
-            }
-        }
-        System.out.println("*********"+is_check_debug+"************");
-        for  (SubmittedFile temp : lectureAssignment.getSubmittedFileSet()){
-            if (temp.getUser() == user){
-                for (FileEntity tempFile : temp.getFileList()){
-                    System.out.println("file name : " + tempFile.getOriginalName());
-                }
             }
         }
 
@@ -91,6 +91,34 @@ public class FileService {
         return id;
     }
 
+    @Transactional
+    public boolean checkFilesSize(MultipartFile[] fileList , Long assignment_id , SessionUser sessionUser){
+        User user = userRepository.findByEmail(sessionUser.getEmail()).orElseThrow(()->new IllegalArgumentException("해당 유저가 없습니다."));
+        LectureAssignment lectureAssignment = lectureAsssignmentRepository.findById(assignment_id).orElseThrow(()->new IllegalArgumentException("해당 과제가 없습니다."));
+
+        SubmittedFile submittedFile = null;
+        for (SubmittedFile temp : lectureAssignment.getSubmittedFileSet()){
+            if (temp.getUser() == user){
+                submittedFile = temp;
+                break;
+            }
+        }
+
+        Long current_size = submittedFile.getTotolFileSize();
+        Long new_file_size = 0l;
+        for (MultipartFile file : fileList){
+            new_file_size += file.getSize();
+
+        }
+
+        if (current_size + new_file_size <= 20000000){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
 
     @Transactional
     public List<SubmittedFileResponseDto> findSubmittedFileList(Long assignment_id, SessionUser sessionUser){
@@ -128,11 +156,9 @@ public class FileService {
         FileEntity fileEntity = fileEntityRepository.findById(file_id).orElseThrow(() -> new IllegalArgumentException("해당 파일이 없습니다."));
         SubmittedFile submittedFile = fileEntity.getSubmittedFile();
 
-
-
-        System.out.println(submittedFile.getFileList());
+        submittedFile.subFileSize(fileEntity.getFileSize());
         submittedFile.getFileList().remove(fileEntity);
-        System.out.println(submittedFile.getFileList());
+
 
         File file = new File(fileEntity.getSavedPath());
         file.delete();
@@ -149,11 +175,13 @@ public class FileService {
         LectureAssignment lectureAssignment = lectureAsssignmentRepository.findById(assignment_id).orElseThrow(()->new IllegalArgumentException("해당 과제가 없습니다."));
 
         List<FileEntity> targetList = null;
+        SubmittedFile submittedFile = null;
         for  (SubmittedFile temp : lectureAssignment.getSubmittedFileSet()){
             System.out.println(temp.getUser().getName());
 
             if (temp.getUser() == user){
                 targetList = temp.getFileList();
+                submittedFile = temp;
                 break;
             }
             else{;}
@@ -168,6 +196,7 @@ public class FileService {
                 file.delete();
                 fileEntityRepository.delete(temp);
             }
+            submittedFile.setFileSize(0l);
             targetList.clear();
 
         }

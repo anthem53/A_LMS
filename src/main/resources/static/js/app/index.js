@@ -490,9 +490,16 @@ var main = {
             processData: false,
             contentType:  false,
             data: formData
-        }).done(function() {
-            alert('과제 제출이 완료되었습니다.');
+        }).done(function(result) {
+            console.log(result)
+            if (result == 1){
+                alert('과제 제출이 완료되었습니다.');
+            }
+            else{
+                alert('최대 제출 가능 과제 용량은 20MB입니다.');
+            }
             window.location.reload();
+
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });

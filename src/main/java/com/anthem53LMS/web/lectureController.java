@@ -9,11 +9,9 @@ import com.anthem53LMS.web.Dto.lecturesSaveRequestDto;
 import com.anthem53LMS.web.lectureDto.LectureAssignmentSaveRequestDto;
 import com.anthem53LMS.web.lectureDto.LectureLessonSaveRequestDto;
 import com.anthem53LMS.web.lectureDto.LectureNoticeSaveRequestDto;
-import com.anthem53LMS.web.lectureDto.LectureTakeViewRespondDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PreDestroy;
 
 
 @RequiredArgsConstructor

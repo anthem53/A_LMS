@@ -70,9 +70,22 @@ var dateTime = {
             },
             onSelectTime: function(ct, $i){
                 let today = new Date()
-                $("#dateTimePicker").datetimepicker('setOptions', { minTime: today });
-
+                let temp = new Date(ct)
+                temp.setHours(0)
+                temp.setMinutes(0)
+                console.log(ct)
+                console.log($i)
+                console.log(temp)
+                if (today > temp){
+                    console.log("deadine is today")
+                    $("#dateTimePicker").datetimepicker('setOptions', { minTime: today });
+                }
+                 else{
+                 console.log("deadine is next or more day")
+                    $("#dateTimePicker").datetimepicker('setOptions', { minTime: temp });
+                 }
             }
+
         });
     }
 
