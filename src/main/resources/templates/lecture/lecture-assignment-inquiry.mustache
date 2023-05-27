@@ -69,11 +69,10 @@
                         {{/fileList}}
                     </ol>
 
-                    <div class="d-flex flex-row justify-content-start">
+                    <div class="d-flex flex-row justify-content-start m-2">
                         <span class="flex-grow-1  me-3 align-self-center">
-                            용량 :
+                            용량 : {{submittedFile.totalSize}} / 20MB
                         </span>
-                        <span> {{submittedFile.current}}MB / 20MB </span>
                     </div>
                     {{^isDeadlineOver}}
                         <div class="d-flex flex-column mb-3" >
