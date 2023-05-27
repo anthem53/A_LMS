@@ -51,21 +51,53 @@ var dateTime = {
 
         $.datetimepicker.setLocale('ko')
 
-        $("#dateTimePicker").datetimepicker({
+        $("#timePicker").datetimepicker({
+
+                    changeMonth: true,
+                    changeYear: true,
+                    showButtonPanel: true,
+                    format:'H:i',
+                    step: 5,
+                    defaultSelect: false,
+                    defaultDate: today,
+                    minDate: today,
+                    datepicker : false
+
+        });
+
+
+        $("#datePicker").datetimepicker({
 
             changeMonth: true,
             changeYear: true,
             showButtonPanel: true,
-            format:'Y-m-d H:i',
+            format:'Y-m-d',
             step: 15,
             defaultSelect: false,
             defaultDate: today,
             minDate: today,
-            minTime: today,
+            timepicker : false,
 
             onSelectDate: function(ct, $i){
                 let today = new Date()
-                $("#dateTimePicker").datetimepicker('setOptions', { minDate: today });
+                let temp = new Date(ct)
+                temp.setHours(0)
+                temp.setMinutes(0)
+                console.log(ct)
+                console.log($i)
+                console.log(temp)
+
+                $("#datePicker").datetimepicker('setOptions', { minDate: today });
+                if (today > temp){
+                    console.log("deadine is today")
+                    $("#timePicker").datetimepicker('setOptions', { minTime: today });
+                }
+                else{
+                console.log("deadine is next or more day")
+                    $("#timePicker").datetimepicker('setOptions', { minTime: temp });
+                }
+
+                $("#timePicker").val("");
 
             },
             onSelectTime: function(ct, $i){
@@ -78,12 +110,12 @@ var dateTime = {
                 console.log(temp)
                 if (today > temp){
                     console.log("deadine is today")
-                    $("#dateTimePicker").datetimepicker('setOptions', { minTime: today });
+                    $("#timePicker").datetimepicker('setOptions', { minTime: today });
                 }
-                 else{
-                 console.log("deadine is next or more day")
-                    $("#dateTimePicker").datetimepicker('setOptions', { minTime: temp });
-                 }
+                else{
+                console.log("deadine is next or more day")
+                    $("#timePicker").datetimepicker('setOptions', { minTime: temp });
+                }
             }
 
         });
@@ -91,6 +123,6 @@ var dateTime = {
 
 }
 
-date.init();
+//date.init();
 dateTime.init()
 

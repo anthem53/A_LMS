@@ -10,27 +10,16 @@ import com.anthem53LMS.domain.lecture_assignment.LectureAsssignmentRepository;
 import com.anthem53LMS.domain.supportDomain.submitFile.SubmittedFile;
 import com.anthem53LMS.domain.user.User;
 import com.anthem53LMS.domain.user.UserRepository;
-import com.anthem53LMS.web.lectureDto.LectureAssignmentSubmittedFileDto;
-import com.anthem53LMS.web.lectureDto.SubmittedFileResponseDto;
+import com.anthem53LMS.web.lectureDto.FileResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ContentDisposition;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.mail.Session;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -121,7 +110,7 @@ public class FileService {
     }
 
     @Transactional
-    public List<SubmittedFileResponseDto> findSubmittedFileList(Long assignment_id, SessionUser sessionUser){
+    public List<FileResponseDto> findSubmittedFileList(Long assignment_id, SessionUser sessionUser){
         User user = userRepository.findByEmail(sessionUser.getEmail()).orElseThrow(()->new IllegalArgumentException("해당 유저가 없습니다."));
         LectureAssignment lectureAssignment = lectureAsssignmentRepository.findById(assignment_id).orElseThrow(()->new IllegalArgumentException("해당 과제가 없습니다."));
 
@@ -144,7 +133,7 @@ public class FileService {
             if (targetList.isEmpty() != true){
                 System.out.println(targetList.get(0).getOriginalName());
             }
-            return targetList.stream().map(SubmittedFileResponseDto::new).collect(Collectors.toList());
+            return targetList.stream().map(FileResponseDto::new).collect(Collectors.toList());
         }
 
 

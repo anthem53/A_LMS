@@ -317,10 +317,13 @@ var main = {
 
     },
     lectureAssignmentUpdate : function (){
+
+        var dateTime = $('#datePicker').val() +" "+$('#timePicker').val();
+
         var data = {
                         title: $('#title').val(),
                         content: $('#content').val(),
-                        deadline: $('#dateTimePicker').val()
+                        deadline: dateTime
                     };
 
         var isBlank = false;
@@ -478,6 +481,11 @@ var main = {
 
         console.log(files);
 
+        if (files.length == 0 ){
+            alert('파일을 선택해주세요.');
+            return;
+        }
+
         for (var i = 0 ; i < files.length; i++){
             formData.append("uploadFile",files[i]);
         }
@@ -549,11 +557,13 @@ var main = {
     },
     lectureAssignmentSave : function (){
 
+        var dateTime = $('#datePicker').val() +" "+$('#timePicker').val();
+        console.log(dateTime)
 
         var data = {
             title : $('#title').val(),
             content : $('#content').val(),
-            deadline : $('#dateTimePicker').val()
+            deadline : dateTime
         };
 
         var isBlank = false;

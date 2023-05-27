@@ -288,6 +288,23 @@ public class LecturesService {
 
         return score;
     }
+
+    @Transactional
+    public SubmittedFileResonseDto findSubmittedFile (Long assignment_id, SessionUser sessionUser){
+        LectureAssignment lectureAssignment = lectureAsssignmentRepository.findById(assignment_id).orElseThrow(()->new IllegalArgumentException("해당 과제가 없습니다."));
+        User user = getUserBySessionUser(sessionUser);
+        SubmittedFileResonseDto submittedFileResonseDto = null;
+        for (SubmittedFile submittedFile : lectureAssignment.getSubmittedFileSet()){
+            if (submittedFile.getUser() == user){
+                submittedFileResonseDto = new SubmittedFileResonseDto(submittedFile);
+                break;
+            }
+
+        }
+
+        return submittedFileResonseDto;
+
+    }
     @Transactional
     public boolean isSubmitedAssignment(Long assignment_id, SessionUser sessionUser){
 
@@ -316,7 +333,7 @@ public class LecturesService {
             User current_student = submittedFile.getUser();
             List<FileEntity> fileList = submittedFile.getFileList();
 
-            List<SubmittedFileResponseDto> fileResponseDtoList = fileList.stream().map(SubmittedFileResponseDto::new).collect(Collectors.toList());
+            List<FileResponseDto> fileResponseDtoList = fileList.stream().map(FileResponseDto::new).collect(Collectors.toList());
             LectureAssignmentSubmittedFileDto tempResponseDto = new LectureAssignmentSubmittedFileDto(current_student,fileResponseDtoList,submittedFile.getScore());
 
             responseDtoList.add(tempResponseDto);

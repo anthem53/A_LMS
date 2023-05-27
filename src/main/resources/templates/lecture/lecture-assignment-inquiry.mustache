@@ -25,12 +25,12 @@
                     {{#isAttendee}}
                         <div class="d-flex flex-row mb-3 justify-content-start flex-shrink-1 " >
                             <span class=" mx-3"> 점수 :     </span>
-                            {{#isGrade}}
-                                <input type="text" id="score" class="border" value="{{score}}" readonly>
-                            {{/isGrade}}
-                            {{^isGrade}}
+                            {{#submittedFile.isGrade}}
+                                <input type="text" id="score" class="border" value="{{submittedFile.score}}" readonly>
+                            {{/submittedFile.isGrade}}
+                            {{^submittedFile.isGrade}}
                                 <input type="text" id="score" class="border" value="-----" readonly>
-                            {{/isGrade}}
+                            {{/submittedFile.isGrade}}
                         </div>
                     {{/isAttendee}}
 
@@ -44,7 +44,7 @@
                 {{#isAttendee}}
                     <h2> 제출한 파일 </h2>
                     <ol class="list-group form-group row mb-4">
-                        {{#submittedFile}}
+                        {{#fileList}}
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <input type="hidden" id="submitFile--{{id}} value={{id}}">
                             <div class="ms-2 me-auto">
@@ -58,17 +58,23 @@
                                 <button type="button" class="btn-close" aria-label="Close" onclick="main.lectureAssignmentSubmittedFileDelete({{id}})"></button>
                             {{/isDeadlineOver}}
                         </li>
-                        {{/submittedFile}}
-                        {{^submittedFile}}
+                        {{/fileList}}
+                        {{^fileList}}
                             <li class="list-group-item d-flex justify-content-between align-items-start">
                                 <div class="ms-2 me-auto">
                                     <div class="fw-bold"> 제출한 파일이 없습니다. </div>
                                 </div>
 
                             </li>
-                        {{/submittedFile}}
+                        {{/fileList}}
                     </ol>
 
+                    <div class="d-flex flex-row justify-content-start">
+                        <span class="flex-grow-1  me-3 align-self-center">
+                            용량 :
+                        </span>
+                        <span> {{submittedFile.current}}MB / 20MB </span>
+                    </div>
                     {{^isDeadlineOver}}
                         <div class="d-flex flex-column mb-3" >
 

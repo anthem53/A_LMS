@@ -9,12 +9,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SubmittedFileResponseDto {
+public class FileResponseDto {
 
     private Long id;
     private String originalName;
 
-    public SubmittedFileResponseDto(FileEntity fileEntity){
+    public FileResponseDto(FileEntity fileEntity){
 
         id = fileEntity.getId();
         originalName = fileEntity.getOriginalName();

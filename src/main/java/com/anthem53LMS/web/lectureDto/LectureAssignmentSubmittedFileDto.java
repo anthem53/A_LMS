@@ -14,14 +14,14 @@ import java.util.List;
 public class LectureAssignmentSubmittedFileDto {
 
     private User student;
-    private List<SubmittedFileResponseDto> submittedFile;
+    private List<FileResponseDto> fileList;
 
     private float curScore;
 
-    public LectureAssignmentSubmittedFileDto(User student,List<SubmittedFileResponseDto> submittedFile,float curScore){
+    public LectureAssignmentSubmittedFileDto(User student, List<FileResponseDto> submittedFile, float curScore){
 
         this.student = student;
-        this.submittedFile = submittedFile;
+        this.fileList = submittedFile;
         this.curScore = curScore;
 
     }
