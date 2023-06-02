@@ -17,12 +17,13 @@
 
                     {{#user}}
                         <input type="hidden" id="user--{{id}}" value="{{id}}">
-                        <a href="#" class="list-group-item list-group-item-action active py-3 lh-tight border-3" aria-current="true">
+
+                        <button type="button" class="list-group-item list-group-item-action active py-3 lh-tight border-3" id="btn-addmin-user-list-item" onclick="admin.getUserInfo({{id}})">
                             <div class="d-flex w-100 align-items-center justify-content-between">
                                 <strong class="mb-1">{{name}}</strong>
                                 <small>{{role}}</small>
                             </div>
-                        </a>
+                        </button>
                     {{/user}}
                     {{^user}}
                         <a href="#" class="list-group-item list-group-item-action active py-3 lh-tight" aria-current="true">
@@ -41,28 +42,46 @@
             <div class="d-flex flex-column  flex-grow-1">
 
 
-                <ul class="nav  justify-content-center ">
+                <ul class="nav  justify-content-center mb-4">
                     <li><a href="#" class="nav-link px-5 fs-2 link-secondary btn btn-primary text-white" aria-current="page">저장</a></li>
                     <li><a href="#" class="nav-link px-5 fs-2 link-dark btn btn-danger text-white">강퇴 </a></li>
                     <!--<li><a href="#" class="nav-link px-2 link-dark">기타 등등</a></li>-->
                 </ul>
 
                 <div class="mb-3 row">
-                    <label for="staticId" class="col-sm-2 col-form-label">id : </label>
-                    <div class="col-sm-10">
-                        <input type="text" readonly class="form-control-plaintext" id="staticId" value="------">
+                    <label for="staticId" class="col-sm-2 col-form-label">Id : </label>
+                    <div class="col-sm-10 border border-2">
+                        <input type="text" readonly class="form-control-plaintext text-center" id="staticId" value="------">
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="staticName" class="col-sm-2 col-form-label">id : </label>
-                    <div class="col-sm-10">
-                        <input type="text" readonly class="form-control-plaintext" id="staticName" value="------">
+                    <label for="staticName" class="col-sm-2 col-form-label">Name : </label>
+                    <div class="col-sm-10 border border-2">
+                        <input type="text" readonly class="form-control-plaintext text-center" id="staticName" value="------">
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="staticEmail" class="col-sm-2 col-form-label">id : </label>
-                    <div class="col-sm-10">
-                        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="------">
+                    <label for="staticName" class="col-sm-2 col-form-label">Role : </label>
+                    <div class="col-sm-10 border border-2">
+                        <input type="text" readonly class="form-control-plaintext text-center" id="staticRole" value="------">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">Email : </label>
+                    <div class="col-sm-10 border border-2">
+                        <input type="text" readonly class="form-control-plaintext text-center" id="staticEmail" value="------">
+                    </div>
+                </div>
+                <div class="mb-3 ">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">개설한 강좌  </label>
+                    <div class="col-sm-10 border border-2">
+                        <input type="text" readonly class="form-control-plaintext text-center" id="staticLectureOffering" value="------">
+                    </div>
+                </div>
+                <div class="mb-3 ">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">수강중인 강좌  </label>
+                    <div class="col-sm-10 border border-2">
+                        <input type="text" readonly class="form-control-plaintext text-center" id="staticLectureAttended" value="------">
                     </div>
                 </div>
 
@@ -78,4 +97,4 @@
 </div>
 
 
-{{>layout/footer}}
+{{>admin/layout/footer}}
