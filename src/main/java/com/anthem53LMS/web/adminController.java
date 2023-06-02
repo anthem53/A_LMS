@@ -22,18 +22,85 @@ public class adminController {
 
     final private LecturesService lecturesService;
     final private AdminService adminService;
-    private final UserRepository userRepository;
+
 
     @GetMapping("/admin")
-    public String adminUser(Model model, @LoginUser SessionUser sessionUser){
+    public String admin(Model model, @LoginUser SessionUser sessionUser){
 
         setUserInfo(model, sessionUser);
+        setTabType(model, "user");
 
         model.addAttribute("user",adminService.findAllUserInfo());
 
-        return "admin/user";
+        return "admin/main";
     }
 
+    @GetMapping("/admin/user")
+    public String adminUser(Model model, @LoginUser SessionUser sessionUser){
+
+        setUserInfo(model, sessionUser);
+        setTabType(model, "user");
+
+        model.addAttribute("user",adminService.findAllUserInfo());
+
+        return "admin/main";
+    }
+
+    @GetMapping("/admin/request")
+    public String adminRequest(Model model, @LoginUser SessionUser sessionUser){
+
+        setUserInfo(model, sessionUser);
+        setTabType(model, "open");
+
+        model.addAttribute("user",adminService.findAllUserInfo());
+
+        return "admin/main";
+    }
+
+    @GetMapping("/admin/lecture")
+    public String adminLecture(Model model, @LoginUser SessionUser sessionUser){
+
+        setUserInfo(model, sessionUser);
+        setTabType(model, "lecture");
+
+        model.addAttribute("lecture",lecturesService.findAllDesc());
+
+        return "admin/main";
+    }
+
+
+    @GetMapping("/admin/report")
+    public String adminReport(Model model, @LoginUser SessionUser sessionUser){
+
+        setUserInfo(model, sessionUser);
+        setTabType(model, "report");
+
+        model.addAttribute("user",adminService.findAllUserInfo());
+
+        return "admin/main";
+    }
+
+
+    private void setTabType(Model model, String tab_type){
+
+        if (tab_type.equals("user")){
+            model.addAttribute("type_user",true);
+        }
+        else if (tab_type.equals("open")){
+            model.addAttribute("type_open",true);
+        }
+        else if (tab_type.equals("lecture")){
+            model.addAttribute("type_lecture",true);
+        }
+        else if (tab_type.equals("report")){
+            model.addAttribute("type_report",true);
+        }
+        else{
+            return;
+        }
+
+
+    }
     private void setUserInfo(Model model, SessionUser sessionUser){
         if ( sessionUser == null){
             System.out.println("guest");

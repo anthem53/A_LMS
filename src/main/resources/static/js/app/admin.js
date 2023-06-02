@@ -19,8 +19,46 @@ var admin = {
              $("#staticName").val(result.name)
              $("#staticEmail").val(result.email)
              $("#staticRole").val(result.role)
-             $("#staticLectureOffering").val(result.lecture_offering)
-             $("#staticLectureAttended").val(result.lecture_submit)
+             console.log(typeof(result.lecture_offering))
+
+             if (result.lecture_offering.length == 0){
+                $("#staticLectureOffering").val("No Lecture")
+             }
+             else{
+                $("#staticLectureOffering").val(result.lecture_offering)
+             }
+             if (result.lecture_submit.length == 0){
+                 $("#staticLectureAttended").val("No Lecture")
+              }
+              else{
+                 $("#staticLectureAttended").val(result.lecture_submit)
+              }
+
+
+
+
+        }).fail(function (error) {
+             alert(JSON.stringify(error));
+        });
+
+    },
+    getLectureInfo : function(lecture_id){
+        console.log(lecture_id)
+        var url = "/api/v1/admin/lectureInfo/"+lecture_id;
+        $.ajax({
+             type: 'POST',
+             url: url,
+             contentType:'application/json; charset=utf-8',
+        }).done(function(result) {
+             console.log(result);
+
+             $("#staticLecturerId").val(result.lecturer_id)
+             $("#staticId").val(result.id)
+             $("#staticLecturer").val(result.lecturer)
+             $("#staticTitle").val(result.title)
+             $("#staticOutline").val(result.outline)
+             $("#staticAttendeeNum").val(result.attendeeNum)
+
 
 
 

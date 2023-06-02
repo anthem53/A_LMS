@@ -3,6 +3,7 @@ package com.anthem53LMS.domain.subLecturer;
 import com.anthem53LMS.domain.lecture.Lecture;
 import com.anthem53LMS.domain.user.Role;
 import com.anthem53LMS.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,10 +24,13 @@ public class SubLecturer{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "Lecturer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @OrderBy("id")
     private List<Lecture> lectures = new ArrayList<Lecture>();
 
+
+    @JsonIgnore
     @OneToOne(mappedBy = "subLecturer")
     @JoinColumn(name="User_id")
     private User user ;

@@ -1,0 +1,79 @@
+<div class="d-flex flex-row">
+    <div class="d-flex flex-column align-items-stretch  bg-white" style="width: 380px; ">
+        <a href="#" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+
+            <span class="fs-5 fw-semibold">수업 목록</span>
+        </a>
+        <div class="list-group list-group-flush border-bottom border-right scrollarea overflow-auto vh-100" >
+
+            {{#lecture}}
+                <input type="hidden" id="lecture--{{id}}" value="{{id}}">
+
+                <button type="button" class="list-group-item list-group-item-action active py-3 lh-tight border-3" id="btn-addmin-lecture-list-item" onclick="admin.getLectureInfo({{id}})">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">{{title}}</strong>
+                    </div>
+                </button>
+            {{/lecture}}
+            {{^lecture}}
+                <a href="#" class="list-group-item list-group-item-action active py-3 lh-tight" aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1"> 개설된 강의가 없습니다. </strong>
+
+                    </div>
+                </a>
+            {{/lecture}}
+        </div>
+
+    </div>
+
+    <div class="vr mx-3"></div>
+
+    <div class="d-flex flex-column  flex-grow-1">
+
+
+        <ul class="nav  justify-content-center mb-4">
+            <li><a href="#" class="nav-link px-5 fs-2 link-secondary btn btn-primary text-white" aria-current="page">저장</a></li>
+            <li><a href="#" class="nav-link px-5 fs-2 link-dark btn btn-danger text-white">삭제 </a></li>
+            <!--<li><a href="#" class="nav-link px-2 link-dark">기타 등등</a></li>-->
+        </ul>
+        <input type="hidden" id="staticLecturerId" value="">
+        <div class="mb-3 row">
+            <label for="staticId" class="col-sm-2 col-form-label">Id : </label>
+            <div class="col-sm-10 border border-2">
+                <input type="text" readonly class="form-control-plaintext text-center" id="staticId" value="------">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="staticLecturer" class="col-sm-2 col-form-label"> 강사 : </label>
+            <div class="col-sm-10 border border-2">
+                <input type="text" readonly class="form-control-plaintext text-center" id="staticLecturer" value="------">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="staticTitle" class="col-sm-2 col-form-label">Title : </label>
+            <div class="col-sm-10 border border-2">
+                <input type="text" readonly class="form-control-plaintext text-center" id="staticTitle" value="------">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="staticOutline" class="col-sm-2 col-form-label">Outline : </label>
+            <div class="col-sm-10 ">
+                <textarea class="form-control text-center" id="staticOutline" rows="3" readonly>-----</textarea>
+<!--                <input type="text" readonly class="form-control-plaintext text-center" id="staticEmail" value="------">-->
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="staticAttendeeNum" class="col-sm-2 col-form-label">수강인원 :  </label>
+            <div class="col-sm-10 border border-2">
+                <input type="text" readonly class="form-control-plaintext text-center" id="staticAttendeeNum" value="------">
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+

@@ -1,0 +1,30 @@
+{{>admin/layout/header}}
+
+
+
+<!--여기서 본편-->
+<div   style="padding-top: 0px; ">
+    <!--여기서 본편 내용-->
+    <div class="container justify-content-around " >
+
+        {{#type_user}}
+            {{>admin/layout/user}}
+        {{/type_user}}
+        {{#type_lecture}}
+            {{>admin/layout/lecture}}
+        {{/type_lecture}}
+        {{#type_open}}
+            {{>admin/layout/open}}
+        {{/type_open}}
+        {{#type_report}}
+            {{>admin/layout/report}}
+        {{/type_report}}
+
+
+    </div>
+
+
+</div>
+
+
+{{>admin/layout/footer}}
