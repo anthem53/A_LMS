@@ -66,6 +66,30 @@ var admin = {
              alert(JSON.stringify(error));
         });
 
+    },
+    getReportInfo : function(report_id){
+        console.log(report_id)
+        var url = "/api/v1/admin/reportInfo/"+report_id;
+        $.ajax({
+             type: 'POST',
+             url: url,
+             contentType:'application/json; charset=utf-8',
+        }).done(function(result) {
+             console.log(result);
+
+             $("#staticId").val(result.id)
+             $("#staticReporterName").val(result.reporterName)
+             $("#staticReporterId").val(result.reporterId)
+             $("#staticLink").val(result.link)
+             $("#staticContent").val(result.content)
+
+
+
+        }).fail(function (error) {
+             alert(JSON.stringify(error));
+        });
+
+
     }
 
 }

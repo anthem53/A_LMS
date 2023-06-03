@@ -55,9 +55,7 @@ public class FileService {
         String savedPath = fileDir + savedName;
         Long filesize = file.getSize();
 
-        System.out.println("[Filesize]");
-        System.out.println(filesize);
-        System.out.println("[**********]");
+
 
         FileEntity fileEntity = FileEntity.builder().rawName(rawName).uuid(uuid).savedPath(savedPath).fileSize(filesize).build();
 

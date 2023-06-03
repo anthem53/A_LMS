@@ -4,6 +4,7 @@ package com.anthem53LMS.domain.user;
 import com.anthem53LMS.domain.BaseTimeEntity;
 import com.anthem53LMS.domain.courseRegistration.CourseRegistration;
 import com.anthem53LMS.domain.message.Message;
+import com.anthem53LMS.domain.report.Report;
 import com.anthem53LMS.domain.subLecturer.SubLecturer;
 import com.anthem53LMS.domain.supportDomain.submitFile.SubmittedFile;
 import lombok.Builder;
@@ -43,7 +44,8 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user")
     private List<SubmittedFile> SubmittedFile = new ArrayList<SubmittedFile>();
 
-
+    @OneToMany(mappedBy = "reporter")
+    Set<Report> reportList = new HashSet<Report>();
 
     @ManyToMany
     @JoinTable(

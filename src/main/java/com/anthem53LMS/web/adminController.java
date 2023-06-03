@@ -69,17 +69,56 @@ public class adminController {
     }
 
 
-    @GetMapping("/admin/report")
-    public String adminReport(Model model, @LoginUser SessionUser sessionUser){
+    @GetMapping("/admin/report/undone")
+    public String adminReportUndone(Model model, @LoginUser SessionUser sessionUser){
 
         setUserInfo(model, sessionUser);
         setTabType(model, "report");
 
-        model.addAttribute("user",adminService.findAllUserInfo());
+        setReportTabType(model, "undone");
+
 
         return "admin/main";
     }
 
+    @GetMapping("/admin/report/all")
+    public String adminReportAll(Model model, @LoginUser SessionUser sessionUser){
+
+        setUserInfo(model, sessionUser);
+        setTabType(model, "report");
+
+        setReportTabType(model, "all");
+
+
+        return "admin/main";
+    }
+
+    @GetMapping("/admin/report/done")
+    public String adminReportDone(Model model, @LoginUser SessionUser sessionUser){
+
+        setUserInfo(model, sessionUser);
+        setTabType(model, "report");
+
+        setReportTabType(model, "done");
+
+
+        return "admin/main";
+    }
+
+
+    private void setReportTabType(Model model, String tab_type){
+        if (tab_type == "all"){
+            model.addAttribute("report",adminService.findAllReportList());
+        }
+        else if (tab_type == "done"){
+            model.addAttribute("report",adminService.findDoneReportList());
+        }
+        else{
+            model.addAttribute("report",adminService.findUndoneReportList());
+        }
+
+
+    }
 
     private void setTabType(Model model, String tab_type){
 

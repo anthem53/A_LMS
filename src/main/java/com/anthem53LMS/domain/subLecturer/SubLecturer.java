@@ -24,13 +24,13 @@ public class SubLecturer{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "Lecturer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @OrderBy("id")
     private List<Lecture> lectures = new ArrayList<Lecture>();
 
 
-    @JsonIgnore
+
     @OneToOne(mappedBy = "subLecturer")
     @JoinColumn(name="User_id")
     private User user ;

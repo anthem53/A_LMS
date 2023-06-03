@@ -660,11 +660,6 @@ var main = {
             content : $('#content').val()
         }
 
-        var data = {
-            title : $('#title').val(),
-            content : $('#content').val()
-        }
-
         var isBlank = false;
         var errorMessage = "필수 항목";
         if (data.title.trim() == ""){
@@ -923,4 +918,60 @@ var main = {
 };
 
 
+var report = {
+
+    init : function(){
+        var _this = this;
+        $('#btn-report').on('click', function () {
+            _this.sendReport();
+        });
+
+
+    },
+    sendReport : function(){
+    console.log(" sendReport function called")
+        var cur_url = window.location.href
+
+        var data = {
+            link : cur_url,
+            content : $("#reportContent").val()
+
+        }
+
+        console.log(data)
+
+        var isBlank = false;
+        var errorMessage = "필수 항목";
+
+        if (data.content.trim() == ""){
+            isBlank = true;
+            errorMessage = errorMessage + " [신고내용]"
+        }
+
+       if (isBlank == true){
+            errorMessage = errorMessage +"이 비어있습니다. 필수 항목은 채워주시길 바랍니다.";
+            alert(errorMessage);
+            return;
+       }
+
+
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/v1/report',
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function() {
+            alert('신고가 완료 되었습니다.');
+            window.location.reload();
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+
+    }
+
+};
+
 main.init();
+report.init();

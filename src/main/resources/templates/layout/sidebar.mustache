@@ -93,11 +93,40 @@
             {{/isLecturer}}
             <li><a class="dropdown-item" href="/showLecture/register/take_course/{{lecture.id}}/attendeeList">수강생 조회</a></li>
 
+            <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#reportModal"  > 신고 </button></li>
             {{#isAttendee}}
             <li><hr class="dropdown-divider"></li>
+
             <li><button type="button" class="dropdown-item" id="btn-lecture-leave" >강의 탈퇴</button></li>
             {{/isAttendee}}
 
         </ul>
     </div>
+    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reportModalLabel">신고</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">Message:</label>
+                            <textarea class="form-control" id="reportContent"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btn-report">Send message</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
+
+
+
