@@ -81,6 +81,10 @@ var admin = {
              $("#staticReporterName").val(result.reporterName)
              $("#staticReporterId").val(result.reporterId)
              $("#staticLink").val(result.link)
+             $("#staticLink").on("click",function(){
+                alert("신고받은 페이지로 이동합니다.")
+                window.location.href = result.link
+             });
              $("#staticContent").val(result.content)
 
 

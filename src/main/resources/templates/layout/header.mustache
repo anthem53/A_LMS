@@ -62,8 +62,8 @@
         </ul>
 
 
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0">
-            <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 " onsubmit="return false">
+            <input type="search" id="searchBar" class="form-control" placeholder="Search..." aria-label="Search"  onkeypress="if( event.keyCode == 13 ){search.searchAll()}">
         </form>
     </div>
 

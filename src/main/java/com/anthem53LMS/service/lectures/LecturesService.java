@@ -85,6 +85,36 @@ public class LecturesService {
     }
 
     @Transactional
+    public List<lecturesListResponseDto> findLectureWithLectureName (String lectureName){
+
+        List<lecturesListResponseDto>  temp = new ArrayList<lecturesListResponseDto>();
+
+        for (lecturesListResponseDto dto :lectureRepository.findAllDesc().stream().map(lecturesListResponseDto::new).collect(Collectors.toList())){
+            if (dto.getTitle().contains(lectureName)){
+                temp.add(dto);
+            }
+
+        }
+
+        return temp;
+    }
+    @Transactional
+    public List<lecturesListResponseDto> findLectureWithLecturerName (String lecturerName){
+
+        List<lecturesListResponseDto>  temp = new ArrayList<lecturesListResponseDto>();
+
+        for (lecturesListResponseDto dto :lectureRepository.findAllDesc().stream().map(lecturesListResponseDto::new).collect(Collectors.toList())){
+            if (dto.getLecturer().getUser().getName().contains(lecturerName)){
+                temp.add(dto);
+            }
+
+        }
+
+        return temp;
+    }
+
+
+    @Transactional
     public Long LectureRegister(LectureRegisterRequestDto requestDto, SessionUser sessionUser) {
         User user = userRepository.findByEmail(sessionUser.getEmail()).orElseThrow(()->new IllegalArgumentException("해당 유저가 없습니다."));
         Lecture lecture = lectureRepository.findById(requestDto.getLecture_id()).orElseThrow(()->new IllegalArgumentException("해당 강의가 없습니다."));
@@ -108,6 +138,8 @@ public class LecturesService {
         Long id = courseRegistrationRepository.save(courseRegistration).getId();
         return id;
     }
+
+
 
     @Transactional
     public Set<LectureRegisterListResponseDto> findAttendedLecture(SessionUser sessionUser){

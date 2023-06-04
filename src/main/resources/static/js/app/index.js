@@ -973,5 +973,29 @@ var report = {
 
 };
 
+var search = {
+    init : function(){
+
+
+    },
+    searchAll : function(){
+        var searchContent  = $("#searchBar").val();
+        console.log("뭔가 실행.")
+        if (searchContent.length > 1) {
+            location.href = "/search?searchContent="+searchContent;
+
+            console.log("동작끗")
+        }
+        else{
+            console.log("알람전")
+            alert("최소 2글자 이상을 입력해주십시오.")
+            console.log("알람후")
+
+        }
+    }
+
+}
+
 main.init();
 report.init();
+search.init();

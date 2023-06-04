@@ -1,0 +1,69 @@
+{{>layout/header}}
+
+
+
+<!--여기서 본편-->
+<div   style="padding-top: 0px; ">
+    <!--여기서 본편 내용-->
+    <div class="container justify-content-around">
+        <h1 class=""> 수업으로 검색 </h1>
+        <table class="table table-horizontal table-bordered px-3 mb-3" >
+            <thead class="thead-strong">
+            <colgroup>
+                <col width=10%>
+                <col width=60%>
+                <col width=20%>
+                <col width=10%>
+            </colgroup>
+            <tr>
+                <th>강의번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>최종수정일</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            {{#lecturesWithName}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td><a href="/showLecture/inquiry/{{id}}">{{title}}</a></td>
+                    <td>{{lecturer.user.name}}</td>
+                    <td>{{modifiedDate}}</td>
+                </tr>
+            {{/lecturesWithName}}
+            </tbody>
+        </table>
+
+        <h1> 강사 이름으로 검색</h1>
+        <table class="table table-horizontal table-bordered px-3"  >
+            <thead class="thead-strong">
+            <colgroup>
+                <col width=10%>
+                <col width=60%>
+                <col width=20%>
+                <col width=10%>
+            </colgroup>
+            <tr>
+                <th>강의번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>최종수정일</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            {{#lecturesWithLecturer}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td><a href="/showLecture/inquiry/{{id}}">{{title}}</a></td>
+                    <td>{{lecturer.user.name}}</td>
+                    <td>{{modifiedDate}}</td>
+                </tr>
+            {{/lecturesWithLecturer}}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+{{>layout/footer}}

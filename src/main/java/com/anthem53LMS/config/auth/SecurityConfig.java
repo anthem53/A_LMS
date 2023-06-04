@@ -24,7 +24,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile").permitAll()
                 .antMatchers("/",  "/loginPage","login","/showLecture","/showLecture/inquiry/*","/notice","/notice/inquiry/*").permitAll() // 설정된 url은 인증되지 않더라도 누구든 접근 가능
-                .antMatchers("/test").permitAll() // 설정된 url은 인증되지 않더라도 누구든 접근 가능
+                .antMatchers("/test","/search").permitAll() // 설정된 url은 인증되지 않더라도 누구든 접근 가능
                 .antMatchers("/notice/post", "/notice/update/*", "/admin/*").hasRole("ADMIN")
                 .anyRequest().authenticated()
             .and()

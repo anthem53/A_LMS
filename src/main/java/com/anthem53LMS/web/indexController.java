@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -386,6 +387,15 @@ public class indexController {
         System.out.println(id);
 
         return "notice-inquiry";
+    }
+
+    @GetMapping("/search")
+    public String searchPage (Model model, @LoginUser SessionUser sessionUser, @RequestParam String searchContent){
+        System.out.println("SearchContent is " + searchContent);
+
+        model.addAttribute("lecturesWithName" , lecturesService.findLectureWithLectureName(searchContent));
+        model.addAttribute("lecturesWithLecturer" , lecturesService.findLectureWithLecturerName(searchContent));
+        return "search";
     }
 
 
